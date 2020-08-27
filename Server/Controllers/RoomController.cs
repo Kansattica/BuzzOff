@@ -9,15 +9,16 @@ namespace BuzzOff.Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class WeatherForecastController : ControllerBase
+    public class RoomController : ControllerBase
     {
-        private readonly ILogger<WeatherForecastController> logger;
+        private readonly ILogger<RoomController> logger;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+        public RoomController(ILogger<RoomController> logger)
         {
             this.logger = logger;
         }
 
+        
         [HttpGet]
         public IEnumerable<int> Get()
         {
