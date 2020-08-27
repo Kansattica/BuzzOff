@@ -1,4 +1,5 @@
-﻿using System.Collections.Concurrent;
+﻿using BuzzOff.Shared;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,7 +10,7 @@ namespace BuzzOff.Server
     {
         private ConcurrentDictionary<string, Room> _activeRooms = new ConcurrentDictionary<string, Room>();
 
-        public Room EnterRoom(string userName, string userId, string roomId)
+        public RoomUser EnterRoom(string userName, string userId, string roomId)
         {
             var user = new User
             {
@@ -35,6 +36,8 @@ namespace BuzzOff.Server
                 }
                 return existingRoom;
             });
+
+            return new RoomUser { User = user, Room = updated };
         }
 
 

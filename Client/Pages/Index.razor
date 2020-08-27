@@ -9,21 +9,28 @@
         <input @bind="userInput" />
     </label>
 </div>
-<button @onclick="Buzz" disabled="@(!IsConnected)">Buzz!</button>
+<button @onclick="Buzz" disabled="@((!IsConnected) || (!buttonEnabled))">Buzz!</button>
 
-<hr>
+<hr />
 
-<ul id="messagesList">
-    @foreach (var message in messages)
+<span>@message</span>
+
+<hr />
+
+<ul id="userList">
+    @foreach (var user in users)
     {
-        <li>@message</li>
+        <li>@($"{(user.IsRoomHost ? "🌟 " : "")}{user.Name}")</li>
     }
 </ul>
 
 @code {
     private HubConnection hubConnection;
-    private List<string> messages = new List<string>();
+    private List<User> users = new List<User>();
+    private string message;
     private string userInput;
+    private bool buttonEnabled = true;
+    private string roomId;
 
     protected override async Task OnInitializedAsync()
     {
@@ -31,14 +38,29 @@
             .WithUrl(NavigationManager.ToAbsoluteUri("/buzz"))
             .Build();
 
+        roomId = NavigationManager.Uri.Split('?', StringSplitOptions.RemoveEmptyEntries).Last();
+
         hubConnection.On<string>("BuzzedIn", (user) =>
         {
-            var encodedMsg = $"{user} buzzed in!";
-            messages.Add(encodedMsg);
+            message = $"{user} buzzed in!";
+            StateHasChanged();
+        });
+
+        hubConnection.On<bool>("SetButton", (canClick) =>
+        {
+            buttonEnabled = canClick;
+            StateHasChanged();
+        });
+
+        hubConnection.On<List<User>>("UpdateUserList", (userList) =>
+        {
+            users = userList;
             StateHasChanged();
         });
 
         await hubConnection.StartAsync();
+
+        await hubConnection.SendAsync("JoinRoom", roomId, "steve");
     }
 
     Task Buzz() =>
@@ -46,7 +68,7 @@
 
     public bool IsConnected =>
         hubConnection.State == HubConnectionState.Connected;
-        
+
     public void Dispose()
     {
         _ = hubConnection.DisposeAsync();

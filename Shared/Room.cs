@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace BuzzOff.Server
+namespace BuzzOff.Shared
 {
     public class Room : IEquatable<Room>
     {
-        public string Name;
-        public string SignalRId;
-        public User RoomHost;
-        public List<User> Users;
+        public string Name { get; set; }
+        public string SignalRId { get; set; }
+        public User RoomHost { get; set; }
+        public List<User> Users { get; set; }
 
         public override bool Equals(object obj)
         {

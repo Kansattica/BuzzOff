@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.SignalR;
+﻿using BuzzOff.Shared;
+using Microsoft.AspNetCore.SignalR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,9 +16,17 @@ namespace BuzzOff.Server.Hubs
             _rooms = rooms;
         }
 
-        public async Task BuzzIn(string user)
+        public async Task JoinRoom(string roomId, string userName)
         {
-            await Clients.All.SendAsync("BuzzedIn", user);
+            var entered = _rooms.EnterRoom(userName, Context.ConnectionId, roomId);
+            await Groups.AddToGroupAsync(Context.ConnectionId, roomId);
+            await Clients.Group(roomId).SendAsync("UpdateUserList", entered.Room.Users);
+        }
+
+        public async Task BuzzIn(string roomId)
+        {
+            await Clients.All.SendAsync("SetButton", false);
+            //await Clients.All.SendAsync("BuzzedIn", user);
         }
     }
 }
