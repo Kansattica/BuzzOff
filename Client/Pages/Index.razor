@@ -9,6 +9,9 @@
         <input @bind="userInput" />
     </label>
 </div>
+
+<button @onclick="Reset" hidden="@(!isRoomOwner)">Reset</button>
+<br />
 <button @onclick="Buzz" disabled="@((!IsConnected) || (!buttonEnabled))">Buzz!</button>
 
 <hr />
@@ -17,10 +20,11 @@
 
 <hr />
 
+Users:
 <ul id="userList">
     @foreach (var user in users)
     {
-        <li>@($"{(user.IsRoomHost ? "🌟 " : "")}{user.Name}")</li>
+        <li class="@(user.BuzzedIn ? "buzzed-in" : "")">@($"{(user.IsRoomHost ? "🌟 " : "")}{user.Name}")</li>
     }
 </ul>
 
@@ -30,6 +34,7 @@
     private string message;
     private string userInput;
     private bool buttonEnabled = true;
+    private bool isRoomOwner = false;
     private string roomId;
 
     protected override async Task OnInitializedAsync()
@@ -40,11 +45,17 @@
 
         roomId = NavigationManager.Uri.Split('?', StringSplitOptions.RemoveEmptyEntries).Last();
 
-        hubConnection.On<string>("BuzzedIn", (user) =>
+        hubConnection.On<User>("BuzzedIn", (user) =>
         {
-            message = $"{user} buzzed in!";
+            message = $"{user.Name} buzzed in!";
+            users.ForEach(x =>
+            {
+                if (x.Id == user.Id) { x.BuzzedIn = true; }
+            });
             StateHasChanged();
         });
+
+        hubConnection.On("ClearMessage", () => { message = ""; StateHasChanged(); });
 
         hubConnection.On<bool>("SetButton", (canClick) =>
         {
@@ -58,13 +69,22 @@
             StateHasChanged();
         });
 
+        hubConnection.On<bool>("IsRoomOwner", (isOwner) =>
+        {
+            isRoomOwner = isOwner;
+            //StateHasChanged();
+        });
+
         await hubConnection.StartAsync();
 
         await hubConnection.SendAsync("JoinRoom", roomId, "steve");
     }
 
     Task Buzz() =>
-        hubConnection.SendAsync("BuzzIn", userInput);
+        hubConnection.SendAsync("BuzzIn");
+
+    Task Reset() =>
+        hubConnection.SendAsync("Reset");
 
     public bool IsConnected =>
         hubConnection.State == HubConnectionState.Connected;

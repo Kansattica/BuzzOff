@@ -181,3 +181,7 @@ app {
         display: block;
     }
 }
+
+.buzzed-in {
+    color: red;
+}
