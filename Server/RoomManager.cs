@@ -60,7 +60,7 @@ namespace BuzzOff.Server
                     {
                         var userIdx = room.Users.FindIndex(x => x.SignalRId == userId);
 
-                        if (userIdx > 0)
+                        if (userIdx != -1)
                         {
                             var user = room.Users[userIdx];
                             room.Users.RemoveAt(userIdx);
