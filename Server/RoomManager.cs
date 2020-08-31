@@ -58,7 +58,20 @@ namespace BuzzOff.Server
                 {
                     lock(room.Users)
                     {
-                        room.Users.RemoveAll(x => x.SignalRId == userId);
+                        var userIdx = room.Users.FindIndex(x => x.SignalRId == userId);
+
+                        if (userIdx < 0)
+                        {
+                            var user = room.Users[userIdx];
+                            room.Users.RemoveAt(userIdx);
+
+                            if (user.IsRoomHost && room.Users.Count > 0)
+                            {
+                                room.Users.First().IsRoomHost = true;
+                            }
+
+                        }
+
                         if (room.Users.Count == 0)
                         {
                             // I don't think this leads to a race condition if the last person leaves while someone new comes in
