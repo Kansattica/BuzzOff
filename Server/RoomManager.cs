@@ -9,8 +9,8 @@ namespace BuzzOff.Server
 {
     public class RoomManager
     {
-        private ConcurrentDictionary<string, Room> _activeRooms = new ConcurrentDictionary<string, Room>();
-        private ConcurrentDictionary<string, Room> _userConnectionToRoom = new ConcurrentDictionary<string, Room>();
+        private readonly ConcurrentDictionary<string, Room> _activeRooms = new ConcurrentDictionary<string, Room>();
+		private readonly ConcurrentDictionary<string, Room> _userConnectionToRoom = new ConcurrentDictionary<string, Room>();
 
         public RoomUser EnterRoom(string userName, string userId, string roomId)
         {
