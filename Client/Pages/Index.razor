@@ -1,11 +1,12 @@
 ﻿@page "/"
 @using Microsoft.AspNetCore.SignalR.Client
 @inject NavigationManager NavigationManager
+@inject IJSRuntime JSRuntime;
 @implements IDisposable
 
-<button @onclick="Reset" hidden="@(!isRoomOwner)">Reset</button>
+<button id="ResetButton" @onclick="Reset" hidden="@(!isRoomOwner)">Reset</button>
 <br />
-<button @onclick="Buzz" disabled="@((!IsConnected) || (!buttonEnabled))">Buzz!</button>
+<button id="BuzzButton" title="You can also hit the space bar to buzz in." @onclick="Buzz" disabled="@((!IsConnected) || (!buttonEnabled))">Buzz!</button>
 
 <hr />
 
@@ -52,7 +53,9 @@ Users:
 
         hubConnection.On<bool>("SetButton", (canClick) =>
         {
-            buttonEnabled = canClick;
+            // not a typo- set buttonEnabled, then focus the buzz button if the button is, in fact, enabled.
+            if (buttonEnabled = canClick)
+                FocusBuzz();
             StateHasChanged();
         });
 
@@ -65,13 +68,15 @@ Users:
         hubConnection.On<bool>("IsRoomOwner", (isOwner) =>
         {
             isRoomOwner = isOwner;
-            // I'm pretty sure this can't change without the user list changing at the moment.
+            // I'm pretty sure this can't change without the user list changing at the same time.
             //StateHasChanged();
         });
 
         await hubConnection.StartAsync();
 
         await hubConnection.SendAsync("JoinRoom", roomId, userName);
+
+        FocusBuzz();
     }
 
     Task Buzz() =>
@@ -86,5 +91,10 @@ Users:
     public void Dispose()
     {
         _ = hubConnection.DisposeAsync();
+    }
+
+    private void FocusBuzz()
+    {
+        JSRuntime.InvokeVoidAsync("FocusBuzzButton");
     }
 }
