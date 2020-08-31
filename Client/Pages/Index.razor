@@ -43,12 +43,12 @@ Users:
             message = $"{user.Name} buzzed in!";
             users.ForEach(x =>
             {
-                if (x.Id == user.Id) { x.BuzzedIn = true; }
+                if (x.SignalRId == user.SignalRId) { x.BuzzedIn = true; }
             });
             StateHasChanged();
         });
 
-        hubConnection.On("ClearMessage", () => { message = ""; StateHasChanged(); });
+        hubConnection.On<string>("SendMessage", (val) => { message = val; StateHasChanged(); });
 
         hubConnection.On<bool>("SetButton", (canClick) =>
         {

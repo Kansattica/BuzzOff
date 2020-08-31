@@ -16,7 +16,6 @@ namespace BuzzOff.Server
         {
             var user = new User
             {
-                Id = Guid.NewGuid(),
                 Name = userName,
                 SignalRId = userId,
             };

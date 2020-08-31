@@ -5,7 +5,6 @@ namespace BuzzOff.Shared
 {
     public class User : IEquatable<User>
     {
-        public Guid Id { get; set; }
         public string Name { get; set; }
 
         public string SignalRId { get; set; }

@@ -70,7 +70,7 @@ namespace BuzzOff.Server.Hubs
             await Task.WhenAll(
                 Clients.Group(room.SignalRId).SendAsync("SetButton", true),
                 Clients.Group(room.SignalRId).SendAsync("UpdateUserList", room.Users),
-                Clients.Group(room.SignalRId).SendAsync("ClearMessage"));
+                Clients.Group(room.SignalRId).SendAsync("SendMessage", ""));
         }
 
         public override async Task OnDisconnectedAsync(Exception exception)
