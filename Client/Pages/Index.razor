@@ -3,9 +3,9 @@
 @inject NavigationManager NavigationManager
 @implements IDisposable
 
-<button id="ResetButton" @onclick="Reset" hidden="@(!isRoomOwner)">Reset</button>
-<br />
 <button id="BuzzButton" title="You can also hit the space bar to buzz in." @onclick="Buzz" disabled="@((!IsConnected) || (!buttonEnabled))">Buzz!</button>
+<br />
+<button id="ResetButton" @onclick="Reset" hidden="@(!isRoomOwner)">Reset</button>
 
 <hr />
 
