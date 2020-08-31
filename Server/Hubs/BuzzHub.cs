@@ -35,8 +35,8 @@ namespace BuzzOff.Server.Hubs
             User buzzedIn = null;
 
             // this lock should ensure that the first one in (from the server's perspective) wins.
-            lock (room)
-            {
+            lock (room.Users)
+            { 
                 if (room.Users.Any(x => x.BuzzedIn)) { return; } // if someone's already buzzed in, no prize
 
                 room.Users.ForEach(x =>
@@ -48,7 +48,6 @@ namespace BuzzOff.Server.Hubs
                     }
                 });
             }
-
 
             if (buzzedIn != null)
                 await Clients.Group(room.SignalRId).SendAsync("BuzzedIn", buzzedIn);
@@ -64,9 +63,12 @@ namespace BuzzOff.Server.Hubs
                 return;
             }
 
-            room.Users.ForEach(x => x.BuzzedIn = false);
+            lock (room.Users)
+			{
+				room.Users.ForEach(x => x.BuzzedIn = false);
+			}
 
-            await Task.WhenAll(
+			await Task.WhenAll(
                 Clients.Group(room.SignalRId).SendAsync("SetButton", true),
                 Clients.Group(room.SignalRId).SendAsync("UpdateUserList", room.Users),
                 Clients.Group(room.SignalRId).SendAsync("SendMessage", ""));
