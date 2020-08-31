@@ -3,13 +3,6 @@
 @inject NavigationManager NavigationManager
 @implements IDisposable
 
-<div class="form-group">
-    <label>
-        User:
-        <input @bind="userInput" />
-    </label>
-</div>
-
 <button @onclick="Reset" hidden="@(!isRoomOwner)">Reset</button>
 <br />
 <button @onclick="Buzz" disabled="@((!IsConnected) || (!buttonEnabled))">Buzz!</button>
@@ -24,7 +17,7 @@ Users:
 <ul id="userList">
     @foreach (var user in users)
     {
-        <li class="@(user.BuzzedIn ? "buzzed-in" : "")">@($"{(user.IsRoomHost ? "🌟 " : "")}{user.Name}")</li>
+        <li title="@((user.IsRoomHost ? "This person is the host." : ""))" class="@(user.BuzzedIn ? "buzzed-in" : "")">@($"{(user.IsRoomHost ? "🌟 " : "")}{user.Name}")</li>
     }
 </ul>
 
@@ -32,7 +25,7 @@ Users:
     private HubConnection hubConnection;
     private List<User> users = new List<User>();
     private string message;
-    private string userInput;
+    private string userName = RandomName.RandomString(1);
     private bool buttonEnabled = true;
     private bool isRoomOwner = false;
     private string roomId;
@@ -78,7 +71,7 @@ Users:
 
         await hubConnection.StartAsync();
 
-        await hubConnection.SendAsync("JoinRoom", roomId, "steve");
+        await hubConnection.SendAsync("JoinRoom", roomId, userName);
     }
 
     Task Buzz() =>
