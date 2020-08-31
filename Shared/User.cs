@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text.Json.Serialization;
 
 namespace BuzzOff.Shared
 {
@@ -9,7 +8,6 @@ namespace BuzzOff.Shared
         public Guid Id { get; set; }
         public string Name { get; set; }
 
-        [JsonIgnore]
         public string SignalRId { get; set; }
         public bool IsRoomHost { get; set; }
         public bool BuzzedIn { get; set; }

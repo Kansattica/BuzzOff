@@ -22,11 +22,6 @@ namespace BuzzOff.Server.Hubs
         {
             var entered = _rooms.EnterRoom(userName, Context.ConnectionId, roomId);
 
-            if (entered.User.IsRoomHost)
-            {
-                await Clients.Caller.SendAsync("IsRoomOwner", true);
-            }
-
             await Groups.AddToGroupAsync(Context.ConnectionId, roomId);
             await Clients.Group(roomId).SendAsync("UpdateUserList", entered.Room.Users);
         }
