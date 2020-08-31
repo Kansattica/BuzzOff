@@ -1,7 +1,6 @@
 ﻿@page "/"
 @using Microsoft.AspNetCore.SignalR.Client
 @inject NavigationManager NavigationManager
-@inject IJSRuntime JSRuntime;
 @implements IDisposable
 
 <button id="ResetButton" @onclick="Reset" hidden="@(!isRoomOwner)">Reset</button>
@@ -53,9 +52,7 @@ Users:
 
         hubConnection.On<bool>("SetButton", (canClick) =>
         {
-            // not a typo- set buttonEnabled, then focus the buzz button if the button is, in fact, enabled.
-            if (buttonEnabled = canClick)
-                FocusBuzz();
+            buttonEnabled = canClick;
             StateHasChanged();
         });
 
@@ -75,8 +72,6 @@ Users:
         await hubConnection.StartAsync();
 
         await hubConnection.SendAsync("JoinRoom", roomId, userName);
-
-        FocusBuzz();
     }
 
     Task Buzz() =>
@@ -91,10 +86,5 @@ Users:
     public void Dispose()
     {
         _ = hubConnection.DisposeAsync();
-    }
-
-    private void FocusBuzz()
-    {
-        JSRuntime.InvokeVoidAsync("FocusBuzzButton");
     }
 }
