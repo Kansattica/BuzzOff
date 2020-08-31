@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BuzzOff.Server
 {
-    public partial class RoomManager
+    public class RoomManager
     {
         private ConcurrentDictionary<string, Room> _activeRooms = new ConcurrentDictionary<string, Room>();
         private ConcurrentDictionary<string, Room> _userConnectionToRoom = new ConcurrentDictionary<string, Room>();
