@@ -30,7 +30,7 @@ namespace BuzzOff.Server.Hubs
         {
             var room = _rooms.GetRoomFromUser(Context.ConnectionId);
 
-            var disableButtons = Clients.Group(room.SignalRId).SendAsync("SetButton", false);
+            await Clients.Group(room.SignalRId).SendAsync("SetButton", false);
 
             User buzzedIn = null;
 
@@ -49,7 +49,6 @@ namespace BuzzOff.Server.Hubs
                 });
             }
 
-            await disableButtons;
 
             if (buzzedIn != null)
                 await Clients.Group(room.SignalRId).SendAsync("BuzzedIn", buzzedIn);
