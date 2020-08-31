@@ -3,11 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30420.98
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuzzOff.Server", "Server\BuzzOff.Server.csproj", "{AB66F5A5-368F-47E7-B42D-B75FB21F0B17}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BuzzOff.Server", "Server\BuzzOff.Server.csproj", "{AB66F5A5-368F-47E7-B42D-B75FB21F0B17}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuzzOff.Client", "Client\BuzzOff.Client.csproj", "{95C813F0-C3A3-446F-8B45-35640D13AE3D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BuzzOff.Client", "Client\BuzzOff.Client.csproj", "{95C813F0-C3A3-446F-8B45-35640D13AE3D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuzzOff.Shared", "Shared\BuzzOff.Shared.csproj", "{24E61948-B2BF-4FF5-BD55-C11560768A0C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BuzzOff.Shared", "Shared\BuzzOff.Shared.csproj", "{24E61948-B2BF-4FF5-BD55-C11560768A0C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{AE4DFC2E-CF9E-41E9-B8DA-25D23B0F16B2}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\azure-release.yml = .github\workflows\azure-release.yml
+		.github\workflows\dotnet-build.yml = .github\workflows\dotnet-build.yml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
