@@ -73,7 +73,7 @@ namespace BuzzOff.Server.Hubs
             room.Users.ForEach(x => x.BuzzedIn = false);
 
             await Task.WhenAll(
-                Clients.All.SendAsync("SetButton", true),
+                Clients.Group(room.SignalRId).SendAsync("SetButton", true),
                 Clients.Group(room.SignalRId).SendAsync("UpdateUserList", room.Users),
                 Clients.Group(room.SignalRId).SendAsync("ClearMessage"));
         }
