@@ -34,11 +34,12 @@ namespace BuzzOff.Server.Hubs
         public async Task BuzzIn()
         {
             var room = _rooms.GetRoomFromUser(Context.ConnectionId);
-            // lock on something to make sure that the first one in wins?
-            // like lock on the room object? I dunno. I'll think about it.
-            await Clients.Group(room.SignalRId).SendAsync("SetButton", false);
+
+            var disableButtons = Clients.Group(room.SignalRId).SendAsync("SetButton", false);
 
             User buzzedIn = null;
+
+            // this lock should ensure that the first one in (from the server's perspective) wins.
             lock (room)
             {
                 if (room.Users.Any(x => x.BuzzedIn)) { return; } // if someone's already buzzed in, no prize
@@ -53,8 +54,10 @@ namespace BuzzOff.Server.Hubs
                 });
             }
 
+            await disableButtons;
+
             if (buzzedIn != null)
-                await Clients.All.SendAsync("BuzzedIn", buzzedIn);
+                await Clients.Group(room.SignalRId).SendAsync("BuzzedIn", buzzedIn);
         }
 
         public async Task Reset()

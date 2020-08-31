@@ -72,6 +72,7 @@ Users:
         hubConnection.On<bool>("IsRoomOwner", (isOwner) =>
         {
             isRoomOwner = isOwner;
+            // I'm pretty sure this can't change without the user list changing at the moment.
             //StateHasChanged();
         });
 
