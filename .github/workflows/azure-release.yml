@@ -19,8 +19,6 @@ jobs:
       run: dotnet restore
     - name: Publish
       run: dotnet publish --configuration Release --no-restore -o built
-    - name: Test
-      run: dotnet test --no-restore --verbosity normal
     - name: Azure Login
       uses: Azure/login@v1
       with:
