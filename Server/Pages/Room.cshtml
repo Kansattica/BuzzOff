@@ -2,7 +2,7 @@
 @model BuzzOff.Server.Pages.RoomModel
 @{
     Layout = "_Layout";
-    ViewData["Title"] = $"{Model.RoomId} | Buzz Off!";
+    ViewData["Title"] = $"{System.Web.HttpUtility.HtmlDecode(Model.RoomId)} | Buzz Off!";
     ViewData["IncludeBuzz"] = true;
     ViewData["InitialVars"] = $"var roomId = '{Model.RoomId}', userName = '{Model.UserName}';";
 }
