@@ -29,7 +29,8 @@
     <p><label for="roomname">Room name to create or join:</label></p>
     <p><input id="roomname" type="text" value="@Model.SuggestedName"/></p>
     <p><label for="output">Click here to enter, then send the link to your friends:</label></p>
-    <p><a id="output"></a></p>
+    @*Fill in the link section so you don't get that jarring jump between when the page loads and when the javascript fills it in.**@
+    <p><a href="https://buzzoff.hypnovir.us/Room/@Model.SuggestedName" id="output">https://buzzoff.hypnovir.us/Room/@Model.SuggestedName</a></p>
     <p class="license">This software is available under the terms of the AGPL at <a href="https://github.com/Kansattica/BuzzOff">https://github.com/Kansattica/BuzzOff</a>.</p>
     <p>@Model.FlankEmoji By Grace Danger Lovelace @Model.FlankEmoji</p>
     <p>Built from git commit <a href="https://github.com/Kansattica/BuzzOff/commit/@(BuzzOff.Server.BuildInfo.GitHash)">@BuzzOff.Server.BuildInfo.ShortGitHash</a> at @BuzzOff.Server.BuildInfo.BuildTimestamp.</p>
