@@ -5,9 +5,15 @@
 <head>
     <meta charset="utf-8" />
     <title>Buzz Off!</title>
-    <link href="~/css/buzzoff.css" rel="stylesheet" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <script defer type="text/javascript" src="~/js/index.js"></script>
+    <environment include="Development">
+        <link href="~/css/buzzoff.css" rel="stylesheet" />
+        <script defer type="text/javascript" src="~/js/index.js"></script>
+    </environment>
+    <environment exclude="Development">
+        <link href="~/css/buzzoff.min.css" asp-append-version="true" rel="stylesheet" />
+        <script defer type="text/javascript" asp-append-version="true" src="~/js/index.min.js"></script>
+    </environment>
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">

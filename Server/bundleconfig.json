@@ -1,0 +1,30 @@
+[
+  {
+    "outputFileName": "wwwroot/css/buzzoff.min.css",
+    "inputFiles": [
+      "wwwroot/css/buzzoff.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/buzz.min.js",
+    "inputFiles": [
+      "wwwroot/js/buzz.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/js/index.min.js",
+    "inputFiles": [
+      "wwwroot/js/index.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  }
+]
