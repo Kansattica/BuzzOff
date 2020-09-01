@@ -22,6 +22,12 @@ jobs:
         dotnet tool install -g Microsoft.Web.LibraryManager.Cli
         cd Server
         libman restore
+        # fail if libman couldn't download the files.
+        if [[ -f wwwroot/js/dist/browser/signalr.js && -f wwwroot/js/dist/browser/signalr.min.js ]]; then
+          exit 0;
+        else
+          exit 1;
+        fi
     - name: Publish
       run: dotnet publish --configuration Release --no-restore -o built
     - name: Azure Login
