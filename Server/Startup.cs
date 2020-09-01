@@ -9,6 +9,7 @@ using System.Linq;
 using BuzzOff.Server.Hubs;
 using Microsoft.AspNetCore.StaticFiles;
 using System;
+using Microsoft.ApplicationInsights;
 
 namespace BuzzOff.Server
 {
@@ -49,6 +50,8 @@ namespace BuzzOff.Server
             var appInsightsKey = Configuration.GetValue("APPINSIGHTS_INSTRUMENTATIONKEY", "");
             if (!string.IsNullOrWhiteSpace(appInsightsKey))
                 services.AddApplicationInsightsTelemetry();
+            else
+                services.AddSingleton<TelemetryClient>(_ => null);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

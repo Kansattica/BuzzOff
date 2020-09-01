@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using BuzzOff.Server.Entities;
+using Microsoft.ApplicationInsights;
 
 namespace BuzzOff.Server
 {
@@ -10,6 +11,14 @@ namespace BuzzOff.Server
     {
         private readonly ConcurrentDictionary<string, Room> _activeRooms = new ConcurrentDictionary<string, Room>();
 		private readonly ConcurrentDictionary<string, Room> _userConnectionToRoom = new ConcurrentDictionary<string, Room>();
+
+        // note that this guy is null if there's no app insights!
+        private readonly TelemetryClient _telemetry;
+
+        public RoomManager(TelemetryClient telemetryClient)
+        {
+            _telemetry = telemetryClient;
+        }
 
         public RoomUser EnterRoom(string userName, string userId, string roomId)
         {
@@ -40,6 +49,7 @@ namespace BuzzOff.Server
 
             _userConnectionToRoom.TryAdd(userId, updated);
 
+            CollectMetrics();
             return new RoomUser { User = user, Room = updated };
         }
 
@@ -87,9 +97,16 @@ namespace BuzzOff.Server
                 }
             }
 
+            CollectMetrics();
             return room;
         }
 
+        private void CollectMetrics()
+        {
+            if (_telemetry == null) { return; }
+            _telemetry.GetMetric("TotalUsers").TrackValue(_userConnectionToRoom.Count);
+            _telemetry.GetMetric("TotalRooms").TrackValue(_activeRooms.Count);
+        }
 
     }
 }
