@@ -9,7 +9,7 @@ namespace BuzzOff.Server
 	{
 		public const string GitHash = "@@GIT_HASH@@";
 		public static string ShortGitHash = GitHash.Substring(0, 8);
-		public static DateTimeOffset BuildTimestamp = GetTimestamp();
+		public static string BuildTimestamp = GetTimestamp().ToString("R");
 		
 		private static DateTimeOffset GetTimestamp()
 		{
