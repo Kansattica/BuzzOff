@@ -5,6 +5,7 @@ const resetbutton = document.getElementById("resetbutton");
 const currentmessage = document.getElementById("currentmessage");
 const hideifnomessage = document.getElementById("hideifnomessage");
 const userlist = document.getElementById("userlist");
+const ownerbuttons = document.getElementById("ownerbuttons");
 
 function updateMessage (message) {
     currentmessage.textContent = message;
@@ -49,7 +50,7 @@ connection.on("UpdateUserList", (users) => {
         if (user.isRoomHost && user.signalRId === connection.connectionId)
             amRoomHost = true;
     }
-    resetbutton.disabled = !amRoomHost;
+    ownerbuttons.hidden = !amRoomHost;
 });
 
 connection.on("SetButton", (shouldEnable) => {
