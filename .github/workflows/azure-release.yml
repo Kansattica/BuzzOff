@@ -31,12 +31,19 @@ jobs:
     - name: Ahead-of-time compress static assets
       run: |
         cd Server
-        gzip -k -9 wwwroot/js/*.js
-        gzip -k -9 wwwroot/js/dist/browser/*.js
-        gzip -k -9 wwwroot/css/*.css
-        gzip -k -9 wwwroot/*.xml
-        gzip -k -9 wwwroot/*.webmanifest
-        gzip -k -9 wwwroot/*.svg
+        gzip -k --best wwwroot/js/*.js
+        gzip -k --best wwwroot/js/dist/browser/*.js
+        gzip -k --best wwwroot/css/*.css
+        gzip -k --best wwwroot/*.xml
+        gzip -k --best wwwroot/*.webmanifest
+        gzip -k --best wwwroot/*.svg
+        sudo apt install -y --no-install-recommends brotli
+        brotli -k --best wwwroot/js/*.js
+        brotli -k --best wwwroot/js/dist/browser/*.js
+        brotli -k --best wwwroot/css/*.css
+        brotli -k --best wwwroot/*.xml
+        brotli -k --best wwwroot/*.webmanifest
+        brotli -k --best wwwroot/*.svg
     - name: Publish
       run: dotnet publish --configuration Release --no-restore -o built
     - name: Azure Login
