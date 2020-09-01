@@ -1,4 +1,6 @@
-﻿const buzzbutton = document.getElementById("buzzbutton");
+﻿"use strict";
+
+const buzzbutton = document.getElementById("buzzbutton");
 const resetbutton = document.getElementById("resetbutton");
 const currentmessage = document.getElementById("currentmessage");
 const hideifnomessage = document.getElementById("hideifnomessage");
@@ -6,6 +8,8 @@ const userlist = document.getElementById("userlist");
 const ownerbuttons = document.getElementById("ownerbuttons");
 const newname = document.getElementById("newname");
 const updatename = document.getElementById("updatename");
+
+let userName = newname.value;
 
 function updateMessage (message) {
     currentmessage.textContent = message;
@@ -92,7 +96,6 @@ function pressedKey(ev, keyCode) {
 }
 
 window.onkeydown = function (ev) {
-    console.log(ev);
     if (pressedKey(ev, "Space")) {
         connection.send("BuzzIn");
 
