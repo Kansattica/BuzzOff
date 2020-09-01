@@ -1,4 +1,4 @@
-﻿using BuzzOff.Shared;
+﻿using BuzzOff.Server.Entities;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -39,21 +39,41 @@ namespace BuzzOff.Server.Hubs
             { 
                 if (room.Users.Any(x => x.BuzzedIn)) { return; } // if someone's already buzzed in, no prize
 
-                room.Users.ForEach(x =>
-                {
-                    if (x.SignalRId == Context.ConnectionId)
-                    {
-                        x.BuzzedIn = true;
-                        buzzedIn = x;
-                    }
-                });
-            }
+                var foundUser = room.Users.FirstOrDefault(x => x.SignalRId == Context.ConnectionId);
 
-            if (buzzedIn != null)
-                await Clients.Group(room.SignalRId).SendAsync("BuzzedIn", buzzedIn);
+                if (foundUser != null)
+				{
+					foundUser.BuzzedIn = true;
+                    buzzedIn = foundUser;
+				}
+			}
+
+			if (buzzedIn != null)
+            {
+                await Task.WhenAll(
+                    Clients.Group(room.SignalRId).SendAsync("SendMessage", $"{buzzedIn.Name} buzzed in!"),
+                    Clients.Group(room.SignalRId).SendAsync("UpdateUserList", room.Users));
+            }
         }
 
-        public async Task Reset()
+        public async Task UpdateName(string newName)
+		{
+            var room = _rooms.GetRoomFromUser(Context.ConnectionId);
+
+            lock (room.Users)
+			{
+                var toChange = room.Users.FirstOrDefault(x => x.SignalRId == Context.ConnectionId);
+                if (toChange != null)
+				{
+                    toChange.Name = newName;
+				}
+			}
+
+            await Clients.Group(room.SignalRId).SendAsync("UpdateUserList", room.Users);
+
+		}
+
+		public async Task Reset()
         {
             var room = _rooms.GetRoomFromUser(Context.ConnectionId);
 
@@ -77,9 +97,12 @@ namespace BuzzOff.Server.Hubs
         public override async Task OnDisconnectedAsync(Exception exception)
         {
             var room = _rooms.LeaveRoom(Context.ConnectionId);
-            await Clients.Group(room.SignalRId).SendAsync("UpdateUserList", room.Users);
 
-            await base.OnDisconnectedAsync(exception);
+            // shouldn't happen, but it's possible and cheap to guard against
+            if (room != null)
+				await Clients.Group(room.SignalRId).SendAsync("UpdateUserList", room.Users);
+
+			await base.OnDisconnectedAsync(exception);
         }
 
     }

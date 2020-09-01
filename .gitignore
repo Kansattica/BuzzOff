@@ -1,3 +1,4 @@
 bin
 obj
 .vs
+/Server/wwwroot/js/dist/browser

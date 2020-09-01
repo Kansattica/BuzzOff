@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace BuzzOff.Shared
+namespace BuzzOff.Server.Entities
 {
     public class RoomUser
     {
