@@ -32,8 +32,8 @@ connection.onclose(async () => {
     await start();
 });
 
-function surround(name, isHost, emoji) {
-    return isHost ? `${emoji} ${name} ${emoji}` : name;
+function surround(name, shouldSurround, emoji) {
+    return shouldSurround ? `${emoji} ${name} ${emoji}` : name;
 }
 
 function updateName() {
