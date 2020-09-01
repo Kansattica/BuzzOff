@@ -8,6 +8,7 @@ using Microsoft.Extensions.Hosting;
 using System.Linq;
 using BuzzOff.Server.Hubs;
 using Microsoft.AspNetCore.StaticFiles;
+using System;
 
 namespace BuzzOff.Server
 {
@@ -35,6 +36,12 @@ namespace BuzzOff.Server
                     new[] { "application/octet-stream" });
             });
             services.AddSingleton<RoomManager>();
+            services.AddHsts(options =>
+            {
+                options.Preload = true;
+                options.IncludeSubDomains = true;
+                options.MaxAge = TimeSpan.FromDays(365 * 10);
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
