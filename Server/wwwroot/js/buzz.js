@@ -6,6 +6,8 @@ const currentmessage = document.getElementById("currentmessage");
 const hideifnomessage = document.getElementById("hideifnomessage");
 const userlist = document.getElementById("userlist");
 const ownerbuttons = document.getElementById("ownerbuttons");
+const newname = document.getElementById("newname");
+const updatename = document.getElementById("updatename");
 
 function updateMessage (message) {
     currentmessage.textContent = message;
@@ -34,6 +36,19 @@ function starify(name, isHost) {
     return isHost ? `🌟 ${name} 🌟` : name;
 }
 
+function updateName() {
+    const newName = newname.value;
+
+    if (newName !== userName) {
+        userName = newName;
+        connection.send("UpdateName", userName);
+    }
+}
+
+updatename.onclick = updateName;
+
+var firstTime = true;
+
 connection.on("UpdateUserList", (users) => {
     userlist.innerHTML = "";
     let amRoomHost = false;
@@ -49,7 +64,15 @@ connection.on("UpdateUserList", (users) => {
 
         if (user.isRoomHost && user.signalRId === connection.connectionId)
             amRoomHost = true;
+
+        // if our randomly generated name is the same as another's, we have to change
+        // but only if we just got here
+        if (firstTime && userName === user.name && user.signalRId !== connection.connectionId) {
+            newname.value = "The other " + user.name;
+            updateName();
+        }
     }
+    firstTime = false;
     ownerbuttons.hidden = !amRoomHost;
 });
 
@@ -76,19 +99,8 @@ window.onkeydown = function (ev) {
 
 resetbutton.onclick = function () { connection.send("Reset"); };
 
-function updateName() {
-    const newName = document.getElementById("newname").value;
 
-    if (newName !== userName) {
-        userName = newName;
-        connection.send("UpdateName", userName);
-    }
-}
-
-const updatename = document.getElementById("updatename");
-
-updatename.onclick = updateName;
-document.getElementById("newname").onkeydown = function (ev) {
+newname.onkeydown = function (ev) {
     if (ev.repeat === false && ev.code === "Enter")
         updateName();
 }
