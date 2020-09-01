@@ -1,4 +1,4 @@
-﻿using BuzzOff.Shared;
+﻿using BuzzOff.Server.Entities;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Configuration;
 using System;

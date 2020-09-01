@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace BuzzOff.Shared
+namespace BuzzOff.Server.Entities
 {
     public class User : IEquatable<User>
     {
