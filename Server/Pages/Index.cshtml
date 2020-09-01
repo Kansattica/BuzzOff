@@ -6,6 +6,7 @@
     <meta charset="utf-8" />
     <title>Buzz Off!</title>
     <link href="~/css/buzzoff.css" rel="stylesheet" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <script defer type="text/javascript" src="~/js/index.js"></script>
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
@@ -25,10 +26,10 @@
     <h2>Welcome to Buzz Off!</h2>
     <h3>A simple website for running quiz shows, classes, and anything else that needs to know who "buzzed in" first.</h3>
 
-    <label for="roomname">Room name to create or join:</label><br />
-    <input id="roomname" type="text" value="@Model.SuggestedName"/><br/>
-    <label for="output">Click here to enter, then send the link to your friends:</label><br />
-    <a id="output"></a><br />
+    <p><label for="roomname">Room name to create or join:</label></p>
+    <p><input id="roomname" type="text" value="@Model.SuggestedName"/></p>
+    <p><label for="output">Click here to enter, then send the link to your friends:</label></p>
+    <p><a id="output"></a></p>
     <p class="license">This software is available under the terms of the AGPL at <a href="https://github.com/Kansattica/BuzzOff">https://github.com/Kansattica/BuzzOff</a>.</p>
     <p>Copyright 2020 Grace Lovelace</p>
 </body>
