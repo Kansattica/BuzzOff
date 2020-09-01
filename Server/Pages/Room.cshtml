@@ -7,7 +7,7 @@
     ViewData["InitialVars"] = $"var roomId = '{Model.RoomId}', userName = '{Model.UserName}';";
 }
 
-Welcome to @Model.RoomId, @Model.UserName! <br />
+Welcome to @Model.RoomId! <br />
 
 <button id="buzzbutton" title="You can also hit the space bar to buzz in.">Buzz!</button>
 <br />
@@ -18,3 +18,6 @@ Welcome to @Model.RoomId, @Model.UserName! <br />
 Users:
 <ul id="userlist">
 </ul>
+<hr />
+<label for="newname">Update your username:</label><br />
+<input type="text" id="newname" value="@Model.UserName"> <button id="updatename">Update</button>

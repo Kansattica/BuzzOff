@@ -54,3 +54,14 @@ start();
 buzzbutton.onclick = function () { connection.send("BuzzIn"); };
 resetbutton.onclick = function () { connection.send("Reset"); };
 
+function updateName() {
+    connection.send("UpdateName", document.getElementById("newname").value);
+}
+
+const updatename = document.getElementById("updatename");
+
+updatename.onclick = updateName;
+document.getElementById("newname").onkeydown = function (ev) {
+    if (ev.repeat === false && ev.code === "Enter")
+        updateName();
+}
