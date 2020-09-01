@@ -28,7 +28,7 @@ async function start() {
 };
 
 connection.onclose(async () => {
-    updateMessage("Whoops, got disconnected. Hang on.")
+    updateMessage("Disconnected. If it doesn't come back in a few seconds, try refreshing.")
     await start();
 });
 
