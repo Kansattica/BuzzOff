@@ -6,7 +6,7 @@ if (!baseUrl.endsWith('/'))
 
 roomname.oninput = function() {
     roomname.size = Math.max(roomname.value.length, 30);
-    output.innerText = output.href = encodeURI(baseUrl + "Room/" + roomname.value);
+    output.innerText = output.href = roomname.value.length === 0 ? "" : encodeURI(baseUrl + "Room/" + roomname.value);
 };
 
 roomname.oninput();

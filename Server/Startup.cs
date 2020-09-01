@@ -24,7 +24,10 @@ namespace BuzzOff.Server
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSignalR();
-            services.AddRazorPages();
+            services.AddRazorPages(options =>
+            {
+                options.Conventions.AddPageRoute("/Index", "/Room");
+            });
             services.AddResponseCompression(opts =>
             {
                 opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
