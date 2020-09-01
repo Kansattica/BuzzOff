@@ -94,7 +94,7 @@ namespace BuzzOff.Server.Hubs
         {
             var room = _rooms.LeaveRoom(Context.ConnectionId);
 
-            // shouldn't happen, but it's possible and cheap to guard against
+            // shouldn't happen, but it's possible with a misbehaving client and cheap to guard against
             if (room != null)
 				await Clients.Group(room.SignalRId).SendAsync("UpdateUserList", room.Users);
 
