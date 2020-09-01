@@ -34,6 +34,9 @@ jobs:
         gzip -k -9 wwwroot/js/*
         gzip -k -9 wwwroot/js/dist/browser/*
         gzip -k -9 wwwroot/css/*
+        gzip -k -9 wwwroot/*.xml
+        gzip -k -9 wwwroot/*.webmanifest
+        gzip -k -9 wwwroot/*.svg
     - name: Publish
       run: dotnet publish --configuration Release --no-restore -o built
     - name: Azure Login

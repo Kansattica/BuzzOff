@@ -10,6 +10,7 @@ using BuzzOff.Server.Hubs;
 using Microsoft.AspNetCore.StaticFiles;
 using System;
 using Microsoft.ApplicationInsights;
+using CompressedStaticFiles;
 
 namespace BuzzOff.Server
 {
@@ -72,7 +73,9 @@ namespace BuzzOff.Server
             var provider = new FileExtensionContentTypeProvider();
             provider.Mappings[".webmanifest"] = "application/manifest+json";
             
-            app.UseStaticFiles(new StaticFileOptions() {
+            // Try serving .gz'd static files if they exist
+            // https://github.com/AnderssonPeter/CompressedStaticFiles
+            app.UseCompressedStaticFiles(new StaticFileOptions() {
                 ContentTypeProvider = provider
             });
 
