@@ -1,3 +1,41 @@
 ﻿.buzzed-in {
     color: red;
 }
+
+body {
+    background-color: #111111;
+    color: #F2F1EF;
+}
+
+h2, h3 {
+    color: #00AA00;
+}
+
+a {
+    color: #19B5FE;
+}
+
+a:visited {
+    color: #6495ED;
+}
+
+hr {
+    max-width: 15%;
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
+.fancy-buttons {
+    margin: 0 auto;
+    display: block;
+    text-align: center;
+    font-size: 24px;
+}
+
+.center {
+    text-align: center;
+}
+
+#roomname {
+    margin-bottom: 1%;
+}

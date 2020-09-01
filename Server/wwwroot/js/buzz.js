@@ -31,6 +31,7 @@ connection.onclose(async () => {
 
 connection.on("UpdateUserList", (users) => {
     userlist.innerHTML = "";
+    let amRoomHost = false;
     for (const user of users) {
         const roomHostStar = user.isRoomHost ? '🌟 ' : '';
         const li = document.createElement("li");
@@ -43,8 +44,9 @@ connection.on("UpdateUserList", (users) => {
         userlist.appendChild(li);
 
         if (user.isRoomHost && user.signalRId === connection.connectionId)
-            resetbutton.hidden = false;
+            amRoomHost = true;
     }
+    resetbutton.disabled = !amRoomHost;
 });
 
 connection.on("SetButton", (shouldEnable) => {
