@@ -61,7 +61,7 @@ namespace BuzzOff.Server.Hubs
                 var toChange = room.Users.FirstOrDefault(x => x.SignalRId == Context.ConnectionId);
 
                 // if someone tries some funny business where they change their name to someone else's
-                if (room.Users.Any(x => x.Name.Trim() == newName.Trim() && x.SignalRId != Context.ConnectionId))
+                if (room.Users.Any(x => x.SignalRId != Context.ConnectionId && x.Name.Trim() == newName.Trim()))
                     newName = "Counterfeit " + newName;
 
                 if (toChange != null)
@@ -69,7 +69,6 @@ namespace BuzzOff.Server.Hubs
 			}
 
             await Clients.Group(room.SignalRId).SendAsync("UpdateUserList", room.Users);
-
 		}
 
 		public async Task Reset()

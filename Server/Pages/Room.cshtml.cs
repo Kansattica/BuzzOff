@@ -13,7 +13,6 @@ namespace BuzzOff.Server.Pages
 	{
 		[BindProperty(SupportsGet = true)]
 		public string RoomId { get; set; }
-
 		public string UserName { get; set; }
 
 		public void OnGet()
