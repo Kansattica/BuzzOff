@@ -1,6 +1,4 @@
-﻿"use strict";
-
-const buzzbutton = document.getElementById("buzzbutton");
+﻿const buzzbutton = document.getElementById("buzzbutton");
 const resetbutton = document.getElementById("resetbutton");
 const currentmessage = document.getElementById("currentmessage");
 const hideifnomessage = document.getElementById("hideifnomessage");

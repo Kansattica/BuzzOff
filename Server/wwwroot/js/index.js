@@ -1,8 +1,11 @@
 ﻿const output = document.getElementById("output");
 const roomname = document.getElementById("roomname");
-const baseUrl = new URL('/', location.href).href;
-if (!baseUrl.endsWith('/'))
-    baseUrl += '/';
+const baseUrl = function () {
+    let base = new URL('/', location.href).href;
+    if (!base.endsWith('/'))
+        base += '/';
+    return base;
+}();
 
 roomname.oninput = function() {
     roomname.size = Math.max(roomname.value.length, 30);
