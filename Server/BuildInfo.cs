@@ -8,7 +8,7 @@ namespace BuzzOff.Server
 	public static class BuildInfo
 	{
 		public const string GitHash = "@@GIT_HASH@@";
-		public static string ShortGitHash = GitHash.Substring(0, 8);
+		public static string ShortGitHash = GitHash[0] == '@' ? "(local build)" : GitHash.Substring(0, 12);
 		public static string BuildTimestamp = GetTimestamp().ToString("R");
 		
 		private static DateTimeOffset GetTimestamp()
