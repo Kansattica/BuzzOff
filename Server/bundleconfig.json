@@ -6,17 +6,6 @@
     ]
   },
   {
-    "outputFileName": "wwwroot/js/buzz.min.js",
-    "inputFiles": [
-      "wwwroot/js/buzz.js"
-    ],
-    "minify": {
-      "enabled": true,
-      "renameLocals": true
-    },
-    "sourceMap": false
-  },
-  {
     "outputFileName": "wwwroot/js/index.min.js",
     "inputFiles": [
       "wwwroot/js/index.js"
