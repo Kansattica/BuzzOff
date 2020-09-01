@@ -1,14 +1,17 @@
-﻿<!DOCTYPE html>
+﻿@page "/"
+@model BuzzOff.Server.Pages.IndexModel
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
     <title>Buzz Off!</title>
-    <script defer type="text/javascript" src="/js/index.js"></script>
+    <script defer type="text/javascript" src="~/js/index.js"></script>
 </head>
 <body>
     Welcome to Buzz Off!, a simple website for running quiz shows and anything else that needs to know who "buzzed in" first. <br />
 
-    <label for="roomname">Room name to create or join:</label> <input id="roomname" type="text" /> <br/>
+    <label for="roomname">Room name to create or join:</label>
+    <input id="roomname" type="text" value="@Model.SuggestedName"/> <br/>
     <label for="output">Click here to enter, and send the link to your friends:</label><br />
     <a id="output"></a>
 </body>

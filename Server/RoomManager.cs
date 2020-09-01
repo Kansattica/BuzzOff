@@ -48,6 +48,11 @@ namespace BuzzOff.Server
             return _userConnectionToRoom.GetValueOrDefault(userId);
         }
 
+        public bool RoomExists(string roomId)
+        {
+            return _activeRooms.ContainsKey(roomId);
+        }
+
         public Room LeaveRoom(string userId)
         {
             if (_userConnectionToRoom.TryRemove(userId, out var room))
