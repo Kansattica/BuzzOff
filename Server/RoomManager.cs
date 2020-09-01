@@ -49,6 +49,7 @@ namespace BuzzOff.Server
 
             _userConnectionToRoom.TryAdd(userId, updated);
 
+            _telemetry.TrackEvent("JoinRoom", new Dictionary<string, string> { { "UserId", userId }, { "RoomId", roomId } });
             CollectMetrics();
             return new RoomUser { User = user, Room = updated };
         }
@@ -97,6 +98,7 @@ namespace BuzzOff.Server
                 }
             }
 
+            _telemetry.TrackEvent("LeaveRoom", new Dictionary<string, string> { { "UserId", userId }, { "RoomId", room.SignalRId } });
             CollectMetrics();
             return room;
         }
