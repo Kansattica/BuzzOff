@@ -27,7 +27,7 @@ hr {
 
 .fancy-buttons {
     margin: 0 auto;
-    display: block;
+    margin-top: .5em;
     text-align: center;
     font-size: x-large;
 }
