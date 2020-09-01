@@ -4,6 +4,17 @@
     Layout = "_Layout";
     ViewData["Title"] = $"{Model.RoomId} | Buzz Off!";
     ViewData["IncludeBuzz"] = true;
+    ViewData["InitialVars"] = $"var roomId = '{Model.RoomId}', userName = '{Model.UserName}';";
 }
 
-Welcome to @Model.RoomId, @Model.UserName!
+Welcome to @Model.RoomId, @Model.UserName! <br />
+
+<button id="buzzbutton" title="You can also hit the space bar to buzz in.">Buzz!</button>
+<br />
+<button id="resetbutton" hidden>Reset</button>
+<hr />
+<span id="currentmessage"></span>
+<hr id="hideifnomessage" hidden/>
+Users:
+<ul id="userlist">
+</ul>

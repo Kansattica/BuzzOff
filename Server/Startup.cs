@@ -24,7 +24,6 @@ namespace BuzzOff.Server
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSignalR();
-            services.AddControllersWithViews();
             services.AddRazorPages();
             services.AddResponseCompression(opts =>
             {
@@ -59,7 +58,6 @@ namespace BuzzOff.Server
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();
-                endpoints.MapControllers();
                 endpoints.MapHub<BuzzHub>("/buzz");
                 endpoints.MapFallbackToFile("index.html");
             });
