@@ -30,6 +30,7 @@ jobs:
         fi
     - name: Ahead-of-time compress static assets
       run: |
+        cd Server
         gzip -k -9 wwwroot/js/*
         gzip -k -9 wwwroot/js/dist/browser/*
         gzip -k -9 wwwroot/css/*
