@@ -1,10 +1,8 @@
 ﻿using BuzzOff.Server.Entities;
 using Microsoft.AspNetCore.SignalR;
-using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 
 namespace BuzzOff.Server.Hubs
@@ -102,6 +100,5 @@ namespace BuzzOff.Server.Hubs
 
 			await base.OnDisconnectedAsync(exception);
         }
-
     }
 }
