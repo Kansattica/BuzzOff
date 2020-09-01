@@ -67,6 +67,7 @@ namespace BuzzOff.Server
                             if (user.IsRoomHost && room.Users.Count > 0)
                             {
                                 room.Users.First().IsRoomHost = true;
+                                room.RoomHost = room.Users.First();
                             }
 
                         }
