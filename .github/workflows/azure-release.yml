@@ -28,10 +28,6 @@ jobs:
         else
           exit 1;
         fi
-    - name: Bundle assets
-      run: |
-        cd Server
-        dotnet bundle
     - name: Publish
       run: dotnet publish --configuration Release --no-restore -o built
     - name: Azure Login
