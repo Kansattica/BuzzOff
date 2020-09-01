@@ -9,9 +9,6 @@
     @if (ViewBag.IncludeBuzz)
     {
         <script src="~/js/dist/browser/signalr.min.js"></script>
-        <script type="text/javascript">
-            @(Html.Raw(ViewBag.InitialVars))
-        </script>
         <script defer src="~/js/buzz.js" type="text/javascript"></script>
     }
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">

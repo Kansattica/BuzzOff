@@ -10,6 +10,7 @@ const newname = document.getElementById("newname");
 const updatename = document.getElementById("updatename");
 
 let userName = newname.value;
+const roomId = document.getElementById("roomname").innerText;
 
 function updateMessage (message) {
     currentmessage.textContent = message;

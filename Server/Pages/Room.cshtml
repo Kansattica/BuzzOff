@@ -4,11 +4,10 @@
     Layout = "_Layout";
     ViewData["Title"] = $"{System.Web.HttpUtility.HtmlDecode(Model.RoomId)} | Buzz Off!";
     ViewData["IncludeBuzz"] = true;
-    ViewData["InitialVars"] = $"var roomId = '{Model.RoomId}';";
 }
 
 <main class="center">
-    <h2>Welcome to @(System.Web.HttpUtility.HtmlDecode(Model.RoomId))!</h2>
+    <h2>Welcome to <span id="roomname">@(System.Web.HttpUtility.HtmlDecode(Model.RoomId))</span>!</h2>
 
     <button id="buzzbutton" class="fancy-buttons" title="You can also hit the space bar to buzz in.">Buzz!</button>
     <br />
