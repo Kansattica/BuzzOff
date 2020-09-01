@@ -66,19 +66,21 @@ connection.on("UpdateUserList", (users) => {
         }
         userlist.appendChild(li);
 
-        if (user.isRoomHost && user.signalRId === connection.connectionId)
-            amRoomHost = true;
+        if (user.signalRId === connection.connectionId) {
+            amRoomHost = user.isRoomHost;
 
-        // if our randomly generated name is the same as another's, we have to change
-        // but only if we just got here
-        if (firstTime && userName === user.name && user.signalRId !== connection.connectionId) {
-            newname.value = "";
-            updateName();
+            // if the server tells us our name changed, change it
+            if (user.name !== userName)
+                userName = newname.value = user.name;
         }
-
-        // related- if the server tells us our name changed, change it
-        if (user.signalRId === connection.connectionId && user.name !== userName) {
-            userName = newname.value = user.name;
+        else
+        {
+            // if our randomly generated name is the same as another's, we have to change
+            // but only if we just got here
+            if (firstTime && userName === user.name) {
+                newname.value = "";
+                updateName();
+            }
         }
     }
     firstTime = false;
