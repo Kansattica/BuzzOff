@@ -23,10 +23,12 @@ namespace BuzzOff.Server
 
 		private static string Sample(string[] array)
 		{
+			int idx;
 			lock (_rand)
 			{
-				return array[_rand.Next(0, array.Length)];
+				idx = _rand.Next(0, array.Length);
 			}
+			return array[idx];
 		}
 
 	}
