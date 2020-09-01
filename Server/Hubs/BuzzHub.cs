@@ -52,6 +52,9 @@ namespace BuzzOff.Server.Hubs
 
         public async Task UpdateName(string newName)
 		{
+            if (string.IsNullOrWhiteSpace(newName))
+                newName = RandomHelpers.RandomName(1);
+
             var room = _rooms.GetRoomFromUser(Context.ConnectionId);
 
             lock (room.Users)
