@@ -89,7 +89,6 @@ start();
 
 buzzbutton.onclick = function () { connection.send("BuzzIn"); };
 window.onkeydown = function (ev) {
-    console.log(ev);
     if (ev.repeat === false && ev.key === " ") {
         connection.send("BuzzIn");
 
