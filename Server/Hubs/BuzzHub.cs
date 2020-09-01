@@ -63,10 +63,13 @@ namespace BuzzOff.Server.Hubs
             lock (room.Users)
 			{
                 var toChange = room.Users.FirstOrDefault(x => x.SignalRId == Context.ConnectionId);
+
+                // if someone tries some funny business where they change their name to someone else's
+                if (room.Users.Any(x => x.Name.Trim() == newName.Trim() && x.SignalRId != Context.ConnectionId))
+                    newName = "Counterfeit " + newName;
+
                 if (toChange != null)
-				{
                     toChange.Name = newName;
-				}
 			}
 
             await Clients.Group(room.SignalRId).SendAsync("UpdateUserList", room.Users);
