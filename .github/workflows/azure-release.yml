@@ -37,7 +37,6 @@ jobs:
         gzip -k --best wwwroot/*.xml
         gzip -k --best wwwroot/*.webmanifest
         gzip -k --best wwwroot/*.svg
-        sudo apt install -y --no-install-recommends brotli
         brotli -k --best wwwroot/js/*.js
         brotli -k --best wwwroot/js/dist/browser/*.js
         brotli -k --best wwwroot/css/*.css
