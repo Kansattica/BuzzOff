@@ -88,18 +88,27 @@ updateMessage("Connecting...");
 start();
 
 buzzbutton.onclick = function () { connection.send("BuzzIn"); };
+
+function pressedKey(ev, keyCode) {
+    return ev.repeat === false && ev.code === keyCode;
+}
+
 window.onkeydown = function (ev) {
-    if (ev.repeat === false && ev.key === " ") {
+    console.log(ev);
+    if (pressedKey(ev, "Space")) {
         connection.send("BuzzIn");
 
         // avoid the weird scenario where you have the reset button selected, and hitting the space bar buzzes and resets.
         buzzbutton.focus();
+    }
+    else if (pressedKey(ev, "KeyR")) {
+        connection.send("Reset");
     }
 }
 
 resetbutton.onclick = function () { connection.send("Reset"); };
 
 newname.onkeydown = function (ev) {
-    if (ev.repeat === false && ev.code === "Enter")
+    if (pressedKey(ev, "Enter"))
         updateName();
 }
