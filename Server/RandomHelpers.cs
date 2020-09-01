@@ -28,10 +28,7 @@ namespace BuzzOff.Server
 			private readonly ImmutableArray<T> _data;
 			private int idx = 0;
 
-			public SyncSamplingArray(params T[] Data)
-			{
-				_data = ImmutableArray.Create(Data);
-			}
+			public SyncSamplingArray(params T[] Data) => _data = ImmutableArray.Create(Data);
 
 			public T Next()
 			{
