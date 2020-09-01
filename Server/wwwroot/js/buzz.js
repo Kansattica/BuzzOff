@@ -55,8 +55,12 @@ buzzbutton.onclick = function () { connection.send("BuzzIn"); };
 resetbutton.onclick = function () { connection.send("Reset"); };
 
 function updateName() {
-    userName = document.getElementById("newname").value;
-    connection.send("UpdateName", userName);
+    const newName = document.getElementById("newname").value;
+
+    if (newName !== userName) {
+        userName = newName;
+        connection.send("UpdateName", userName);
+    }
 }
 
 const updatename = document.getElementById("updatename");
