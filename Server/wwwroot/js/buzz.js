@@ -6,12 +6,17 @@ const currentmessage = document.getElementById("currentmessage");
 const hideifnomessage = document.getElementById("hideifnomessage");
 const userlist = document.getElementById("userlist");
 
+function updateMessage (message) {
+    currentmessage.textContent = message;
+    hideifnomessage.hidden = currentmessage.textContent === "";
+}
+
 var connection = new signalR.HubConnectionBuilder().withUrl("/buzz").build();
 
 async function start() {
     try {
         await connection.start();
-        console.log("connected");
+        updateMessage("Connected!");
         connection.send("JoinRoom", roomId, userName);
     } catch (err) {
         console.log(err);
@@ -20,13 +25,9 @@ async function start() {
 };
 
 connection.onclose(async () => {
+    updateMessage("Whoops, got disconnected. Hang on.")
     await start();
 });
-
-function updateMessage (message) {
-    currentmessage.textContent = message;
-    hideifnomessage.hidden = currentmessage.textContent === "";
-}
 
 connection.on("UpdateUserList", (users) => {
     userlist.innerHTML = "";
@@ -52,6 +53,7 @@ connection.on("SetButton", (shouldEnable) => {
 
 connection.on("SendMessage", updateMessage);
 
+updateMessage("Connecting...");
 // Start the connection.
 start();
 
