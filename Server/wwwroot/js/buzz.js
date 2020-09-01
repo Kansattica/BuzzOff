@@ -32,8 +32,8 @@ connection.onclose(async () => {
     await start();
 });
 
-function starify(name, isHost) {
-    return isHost ? `🌟 ${name} 🌟` : name;
+function surround(name, isHost, emoji) {
+    return isHost ? `${emoji} ${name} ${emoji}` : name;
 }
 
 function updateName() {
@@ -54,7 +54,8 @@ connection.on("UpdateUserList", (users) => {
     let amRoomHost = false;
     for (const user of users) {
         const li = document.createElement("li");
-        li.textContent = starify(user.name, user.isRoomHost);
+        li.textContent = surround(user.name, user.isRoomHost, '🌟');
+        
         if (user.buzzedIn) {
             li.className = "buzzed-in";
             updateMessage(user.name + " buzzed in!");
