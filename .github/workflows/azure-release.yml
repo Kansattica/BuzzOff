@@ -28,6 +28,11 @@ jobs:
         else
           exit 1;
         fi
+    - name: Ahead-of-time compress static assets
+      run: |
+        gzip -k -9 wwwroot/js/*
+        gzip -k -9 wwwroot/js/dist/browser/*
+        gzip -k -9 wwwroot/css/*
     - name: Publish
       run: dotnet publish --configuration Release --no-restore -o built
     - name: Azure Login
