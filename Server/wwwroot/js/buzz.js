@@ -100,7 +100,6 @@ window.onkeydown = function (ev) {
 
 resetbutton.onclick = function () { connection.send("Reset"); };
 
-
 newname.onkeydown = function (ev) {
     if (ev.repeat === false && ev.code === "Enter")
         updateName();
