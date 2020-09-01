@@ -29,13 +29,16 @@ connection.onclose(async () => {
     await start();
 });
 
+function starify(name, isHost) {
+    return isHost ? `🌟 ${name} 🌟` : name;
+}
+
 connection.on("UpdateUserList", (users) => {
     userlist.innerHTML = "";
     let amRoomHost = false;
     for (const user of users) {
-        const roomHostStar = user.isRoomHost ? '🌟 ' : '';
         const li = document.createElement("li");
-        li.textContent = roomHostStar + user.name;
+        li.textContent = starify(user.name, user.isRoomHost);
         if (user.buzzedIn) {
             li.className = "buzzed-in";
             updateMessage(user.name + " buzzed in!");

@@ -7,17 +7,19 @@
     ViewData["InitialVars"] = $"var roomId = '{Model.RoomId}', userName = '{Model.UserName}';";
 }
 
-<h2 class="center">Welcome to @(System.Web.HttpUtility.HtmlDecode(Model.RoomId))!</h2>
+<main class="center">
+    <h2 class="">Welcome to @(System.Web.HttpUtility.HtmlDecode(Model.RoomId))!</h2>
 
-<button id="buzzbutton" class="fancy-buttons center" title="You can also hit the space bar to buzz in.">Buzz!</button>
-<br />
-<button id="resetbutton" class="fancy-buttons center" title="Only the room owner can reset.">Reset</button>
-<hr />
-<span id="currentmessage"></span>
-<hr id="hideifnomessage" hidden/>
-Users:
-<ul id="userlist">
-</ul>
-<hr />
-<label for="newname">Username:</label><br />
-<input type="text" id="newname" value="@Model.UserName"> <button id="updatename">Update</button>
+    <button id="buzzbutton" class="fancy-buttons" title="You can also hit the space bar to buzz in.">Buzz!</button>
+    <br />
+    <button id="resetbutton" class="fancy-buttons" title="Only the room owner can reset.">Reset</button>
+    <hr />
+    <span id="currentmessage"></span>
+    <hr id="hideifnomessage" hidden />
+    <span id="listheader">Users:</span>
+    <ul id="userlist">
+    </ul>
+    <hr />
+    <label for="newname">Username:</label><br />
+    <input type="text" id="newname" value="@Model.UserName"> <button id="updatename">Update</button>
+</main>
