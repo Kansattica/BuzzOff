@@ -51,3 +51,8 @@ ul {
 #currentmessage {
     font-size: xx-large;
 }
+
+.license {
+    display: block;
+    margin-top: 5em;
+}
