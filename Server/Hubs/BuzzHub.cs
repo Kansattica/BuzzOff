@@ -49,11 +49,7 @@ namespace BuzzOff.Server.Hubs
 			}
 
 			if (buzzedIn != null)
-            {
-                await Task.WhenAll(
-                    Clients.Group(room.SignalRId).SendAsync("SendMessage", $"{buzzedIn.Name} buzzed in!"),
-                    Clients.Group(room.SignalRId).SendAsync("UpdateUserList", room.Users));
-            }
+                await Clients.Group(room.SignalRId).SendAsync("UpdateUserList", room.Users);
         }
 
         public async Task UpdateName(string newName)

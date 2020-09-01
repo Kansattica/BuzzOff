@@ -23,6 +23,11 @@ connection.onclose(async () => {
     await start();
 });
 
+function updateMessage (message) {
+    currentmessage.textContent = message;
+    hideifnomessage.hidden = currentmessage.textContent === "";
+}
+
 connection.on("UpdateUserList", (users) => {
     userlist.innerHTML = "";
     for (const user of users) {
@@ -31,6 +36,8 @@ connection.on("UpdateUserList", (users) => {
         li.textContent = roomHostStar + user.name;
         if (user.buzzedIn) {
             li.className = "buzzed-in";
+            updateMessage(user.name + " buzzed in!");
+            buzzbutton.disabled = true;
         }
         userlist.appendChild(li);
 
@@ -43,15 +50,18 @@ connection.on("SetButton", (shouldEnable) => {
     buzzbutton.disabled = !shouldEnable;
 });
 
-connection.on("SendMessage", (message) => {
-    currentmessage.textContent = message;
-    hideifnomessage.hidden = currentmessage.textContent === "";
-});
+connection.on("SendMessage", updateMessage);
 
 // Start the connection.
 start();
 
 buzzbutton.onclick = function () { connection.send("BuzzIn"); };
+window.onkeydown = function (ev) {
+    console.log(ev);
+    if (ev.repeat === false && ev.key === " ")
+        connection.send("BuzzIn");
+}
+
 resetbutton.onclick = function () { connection.send("Reset"); };
 
 function updateName() {
