@@ -7,8 +7,12 @@ const baseUrl = function () {
     return base;
 }();
 
+roomname.onfocus = function() {
+    roomname.className = "";
+};
+
 roomname.oninput = function() {
-    roomname.size = Math.max(roomname.value.length, 30);
+    roomname.size = Math.max(roomname.value.length, 44);
     output.innerText = output.href = roomname.value.length === 0 ? "" : encodeURI(baseUrl + "Room/" + roomname.value);
 };
 
