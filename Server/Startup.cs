@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Linq;
 using BuzzOff.Server.Hubs;
+using Microsoft.AspNetCore.StaticFiles;
 
 namespace BuzzOff.Server
 {
@@ -54,7 +55,13 @@ namespace BuzzOff.Server
             }
 
             app.UseHttpsRedirection();
-            app.UseStaticFiles();
+
+            var provider = new FileExtensionContentTypeProvider();
+            provider.Mappings[".webmanifest"] = "application/manifest+json";
+            
+            app.UseStaticFiles(new StaticFileOptions() {
+                ContentTypeProvider = provider
+            });
 
             app.UseRouting();
 
