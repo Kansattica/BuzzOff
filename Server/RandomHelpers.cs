@@ -23,7 +23,7 @@ namespace BuzzOff.Server
 
 		public static string RandomEmoji() => _emojis.Next();
 
-		class SyncSamplingArray<T>
+		private class SyncSamplingArray<T>
 		{
 			private readonly ImmutableArray<T> _data;
 			private int idx = 0;
