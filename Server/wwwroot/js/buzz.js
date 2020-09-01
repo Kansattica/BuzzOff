@@ -65,8 +65,12 @@ start();
 buzzbutton.onclick = function () { connection.send("BuzzIn"); };
 window.onkeydown = function (ev) {
     console.log(ev);
-    if (ev.repeat === false && ev.key === " ")
+    if (ev.repeat === false && ev.key === " ") {
         connection.send("BuzzIn");
+
+        // avoid the weird scenario where you have the reset button selected, and hitting the space bar buzzes and resets.
+        buzzbutton.focus();
+    }
 }
 
 resetbutton.onclick = function () { connection.send("Reset"); };
