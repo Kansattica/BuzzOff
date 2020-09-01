@@ -31,9 +31,9 @@ jobs:
     - name: Ahead-of-time compress static assets
       run: |
         cd Server
-        gzip -k -9 wwwroot/js/*
-        gzip -k -9 wwwroot/js/dist/browser/*
-        gzip -k -9 wwwroot/css/*
+        gzip -k -9 wwwroot/js/*.js
+        gzip -k -9 wwwroot/js/dist/browser/*.js
+        gzip -k -9 wwwroot/css/*.css
         gzip -k -9 wwwroot/*.xml
         gzip -k -9 wwwroot/*.webmanifest
         gzip -k -9 wwwroot/*.svg
