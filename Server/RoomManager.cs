@@ -103,7 +103,6 @@ namespace BuzzOff.Server
 
         private void CollectMetrics()
         {
-            if (_telemetry == null) { return; }
             _telemetry.GetMetric("TotalUsers").TrackValue(_userConnectionToRoom.Count);
             _telemetry.GetMetric("TotalRooms").TrackValue(_activeRooms.Count);
         }

@@ -47,11 +47,7 @@ namespace BuzzOff.Server
                 options.MaxAge = TimeSpan.FromDays(365 * 10);
             });
 
-            var appInsightsKey = Configuration.GetValue("APPINSIGHTS_INSTRUMENTATIONKEY", "");
-            if (!string.IsNullOrWhiteSpace(appInsightsKey))
-                services.AddApplicationInsightsTelemetry();
-            else
-                services.AddSingleton<TelemetryClient>(_ => null);
+            services.AddApplicationInsightsTelemetry(Configuration.GetValue("APPINSIGHTS_INSTRUMENTATIONKEY", ""));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
