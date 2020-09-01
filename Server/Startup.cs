@@ -45,6 +45,10 @@ namespace BuzzOff.Server
                 options.IncludeSubDomains = true;
                 options.MaxAge = TimeSpan.FromDays(365 * 10);
             });
+
+            var appInsightsKey = Configuration.GetValue("APPINSIGHTS_INSTRUMENTATIONKEY", "");
+            if (!string.IsNullOrWhiteSpace(appInsightsKey))
+                services.AddApplicationInsightsTelemetry();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
