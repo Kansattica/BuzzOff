@@ -8,6 +8,14 @@ namespace BuzzOff.Server
 	public static class BuildInfo
 	{
 		public const string GitHash = "@@GIT_HASH@@";
-		public const string BuildTimestamp = "@@BUILD_TIME@@";
+		public static string ShortGitHash = GitHash.Substring(0, 8);
+		public static DateTimeOffset BuildTimestamp = GetTimestamp();
+		
+		private static DateTimeOffset GetTimestamp()
+		{
+			if (long.TryParse("@@BUILD_TIME@@", out var timestamp))
+				return DateTimeOffset.FromUnixTimeSeconds(timestamp);
+			return DateTimeOffset.MinValue;
+		}
 	}
 }
