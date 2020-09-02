@@ -9,6 +9,7 @@ const ownerbuttons = document.getElementById("ownerbuttons");
 const newname = document.getElementById("newname");
 const updatename = document.getElementById("updatename");
 const randomname = document.getElementById("randomname");
+const listheader = document.getElementById("listheader");
 
 let userName = newname.value;
 const roomId = document.getElementById("roomname").innerText;
@@ -60,6 +61,12 @@ var firstTime = true;
 
 connection.on("UpdateUserList", (users) => {
     userlist.innerHTML = "";
+    if (users.length === 1) {
+        listheader.innerText = "User:";
+    } else {
+        listheader.innerText = users.length + " Users:";
+    }
+
     let amRoomHost = false;
     for (const user of users) {
         const li = document.createElement("li");
