@@ -52,16 +52,11 @@ namespace BuzzOff.Server.Hubs
 
             var room = _rooms.GetRoomFromUser(Context.ConnectionId);
 
-            var toChange = room.User;
-            lock (room.Room.Users)
-			{
-                // if someone tries some funny business where they change their name to someone else's
-                if (room.Room.Users.Any(x => x.SignalRId != Context.ConnectionId && x.Name.Trim() == newName.Trim()))
-                    newName = "Counterfeit " + newName;
+            // if someone tries some funny business where they change their name to someone else's
+            if (room.Room.Users.Any(x => x.SignalRId != Context.ConnectionId && x.Name.Trim() == newName.Trim()))
+                newName = "Counterfeit " + newName;
 
-                if (toChange != null)
-                    toChange.Name = newName;
-			}
+            room.User.Name = newName;
 
             await Clients.Group(room.Room.SignalRId).SendAsync("UpdateUserList", room.Room.Users);
 		}
