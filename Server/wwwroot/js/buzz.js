@@ -57,7 +57,7 @@ connection.on("UpdateUserList", (users) => {
     let amRoomHost = false;
     for (const user of users) {
         const li = document.createElement("li");
-        li.textContent = surround(user.name, user.isRoomHost, '🌟');
+        li.textContent = surround(surround(user.name, user.buzzedIn, '🐝'), user.isRoomHost, '🌟');
         
         if (user.buzzedIn) {
             li.className = "buzzed-in";
