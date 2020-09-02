@@ -27,6 +27,8 @@ Try it out at [buzzoff.hypnovir.us](https://buzzoff.hypnovir.us)!
 
 5. Hit F5 and watch it go.
 
-### Running in Azure
+### Notes
 
-If you want to run this in an Azure app service, you can enable Application Insights by giving it an application setting named `APPINSIGHTS_INSTRUMENTATIONKEY` with your App Insights instrumentation key as the value.
+- If you want the git hash and build date on the landing page to be accurate, have your CI system replace the strings `@@GIT_HASH@@` and `@@BUILD_TIME@@` in BuildHash.cs. I use two `sed` commands.
+
+- If you want to run this in an Azure app service, you can enable Application Insights by giving it an application setting named `APPINSIGHTS_INSTRUMENTATIONKEY` with your App Insights instrumentation key as the value.
