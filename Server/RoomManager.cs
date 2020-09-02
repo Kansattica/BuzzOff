@@ -55,12 +55,6 @@ namespace BuzzOff.Server
 
         public Room LeaveRoom(string userId)
         {
-            if (userId == null)
-            {
-                _telemetry.TrackEvent("NullUserId");
-                return null;
-            }
-
             if (_userConnectionToRoom.TryRemove(userId, out var roomuser))
             {
                 if (_activeRooms.ContainsKey(roomuser.Room.SignalRId))
@@ -86,11 +80,14 @@ namespace BuzzOff.Server
                         }
                     }
                 }
-            }
 
-            _telemetry.TrackEvent("LeaveRoom", new Dictionary<string, string> { { "UserId", userId }, { "RoomId", roomuser.Room.SignalRId } });
-            CollectMetrics();
-            return roomuser.Room;
+                // only track that they left if it's someone that entered in the first place.
+                // this can happen if the signalr connection is established, but the client doesn't call JoinRoom for some reason.
+				_telemetry.TrackEvent("LeaveRoom", new Dictionary<string, string> { { "UserId", userId }, { "RoomId", roomuser.Room.SignalRId } });
+			}
+
+			CollectMetrics();
+            return roomuser?.Room;
         }
 
         private void CollectMetrics()
