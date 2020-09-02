@@ -13,12 +13,9 @@ namespace BuzzOff.Server.Pages
         public string SuggestedName { get; set; }
         public string FlankEmoji { get; set; }
 
-        public IndexModel(RoomManager roomManager)
-        {
-            _roomManager = roomManager;
-        }
+		public IndexModel(RoomManager roomManager) => _roomManager = roomManager;
 
-        public void OnGet()
+		public void OnGet()
         {
 			FlankEmoji = RandomHelpers.RandomEmoji();
 
