@@ -42,6 +42,7 @@ hr {
 
 ul {
     display: inline;
+    list-style: none;
 }
 
 #roomname {
