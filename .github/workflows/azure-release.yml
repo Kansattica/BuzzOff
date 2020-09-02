@@ -28,9 +28,16 @@ jobs:
         else
           exit 1;
         fi
-    - name: Ahead-of-time compress static assets
+    - name: Update build info
       run: |
         cd Server
+        sed -i "s/@@GIT_HASH@@/$GITHUB_SHA/" BuildInfo.cs 
+        sed -i "s/@@BUILD_TIME@@/$(date +%s)/" BuildInfo.cs 
+    - name: Publish
+      run: dotnet publish --configuration Release --no-restore -o built
+    - name: Ahead-of-time compress static assets
+      run: |
+        cd built
         gzip -k --best wwwroot/js/*.js
         gzip -k --best wwwroot/js/dist/browser/*.js
         gzip -k --best wwwroot/css/*.css
@@ -43,13 +50,6 @@ jobs:
         brotli -k --best wwwroot/*.xml
         brotli -k --best wwwroot/*.webmanifest
         brotli -k --best wwwroot/*.svg
-    - name: Update build info
-      run: |
-        cd Server
-        sed -i "s/@@GIT_HASH@@/$GITHUB_SHA/" BuildInfo.cs 
-        sed -i "s/@@BUILD_TIME@@/$(date +%s)/" BuildInfo.cs 
-    - name: Publish
-      run: dotnet publish --configuration Release --no-restore -o built
     - name: Azure Login
       uses: Azure/login@v1
       with:
