@@ -7,8 +7,8 @@ namespace BuzzOff.Server.Entities
     {
         public string Name { get; set; }
         public string SignalRId { get; set; }
-        public bool IsRoomHost { get; set; }
-        public bool BuzzedIn { get; set; }
+        public bool IsRoomHost { get; set; } = false;
+        public bool BuzzedIn { get; set; } = false;
 
         public override bool Equals(object obj)
         {
