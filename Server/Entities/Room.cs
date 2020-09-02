@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace BuzzOff.Server.Entities
 {
@@ -8,6 +9,8 @@ namespace BuzzOff.Server.Entities
         public string Name { get; set; }
         public string SignalRId { get; set; }
         public User RoomHost { get; set; }
+
+		public ReaderWriterLockSlim Lock { get; } = new ReaderWriterLockSlim();
         public List<User> Users { get; set; }
 
 		public override bool Equals(object obj) => Equals(obj as Room);

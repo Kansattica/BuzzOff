@@ -34,10 +34,15 @@ namespace BuzzOff.Server
                 };
             }, (existingRoomId, existingRoom) =>
             {
-                lock (existingRoom.Users)
+                existingRoom.Lock.EnterWriteLock();
+                try
                 {
                     existingRoom.Users.Add(user);
                 }
+				finally
+				{
+                    existingRoom.Lock.ExitWriteLock();
+				}
                 return existingRoom;
             });
 
@@ -59,7 +64,8 @@ namespace BuzzOff.Server
             {
                 if (_activeRooms.ContainsKey(roomuser.Room.SignalRId))
                 {
-                    lock (roomuser.Room.Users)
+                    roomuser.Room.Lock.EnterWriteLock();
+                    try
                     {
                         if (roomuser.Room.Users.RemoveAll(x => x.SignalRId == userId) > 0)
                         {
@@ -79,6 +85,10 @@ namespace BuzzOff.Server
                             _activeRooms.TryRemove(roomuser.Room.SignalRId, out var _);
                         }
                     }
+					finally
+					{
+                        roomuser.Room.Lock.ExitWriteLock();
+					}
                 }
 
                 // only track that they left if it's someone that entered in the first place.
