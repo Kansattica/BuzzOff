@@ -32,8 +32,8 @@ namespace BuzzOff.Server
             services.AddResponseCompression(opts =>
             {
                 opts.EnableForHttps = true;
-                opts.Providers.Add<GzipCompressionProvider>();
                 opts.Providers.Add<BrotliCompressionProvider>();
+                opts.Providers.Add<GzipCompressionProvider>();
                 opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
                     new[] { "application/octet-stream" });
             });
