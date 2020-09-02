@@ -57,7 +57,7 @@ namespace BuzzOff.Server
         {
             if (_userConnectionToRoom.TryRemove(userId, out var roomuser))
             {
-                if (_activeRooms.TryGetValue(roomuser.Room.SignalRId, out _))
+                if (_activeRooms.ContainsKey(roomuser.Room.SignalRId))
                 {
                     lock (roomuser.Room.Users)
                     {
