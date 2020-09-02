@@ -67,7 +67,7 @@ namespace BuzzOff.Server
             var provider = new FileExtensionContentTypeProvider();
             provider.Mappings[".webmanifest"] = "application/manifest+json";
             
-            // Try serving .gz'd static files if they exist
+            // Try serving .gz'd and .br'd static files if they exist
             // https://github.com/AnderssonPeter/CompressedStaticFiles
             app.UseCompressedStaticFiles(new StaticFileOptions() {
                 ContentTypeProvider = provider

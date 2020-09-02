@@ -44,11 +44,14 @@ namespace BuzzOff.Server.Hubs
 
             var roomUser = _rooms.GetRoomFromUser(Context.ConnectionId);
 
-            // if someone tries some funny business where they change their name to someone else's
-            if (roomUser.Room.Users.Any(x => x.SignalRId != Context.ConnectionId && x.Name.Trim() == newName.Trim()))
-                newName = "Counterfeit " + newName;
+            lock (roomUser.Room.Users)
+			{
+				// if someone tries some funny business where they change their name to someone else's
+				if (roomUser.Room.Users.Any(x => x.SignalRId != Context.ConnectionId && x.Name.Trim() == newName.Trim()))
+					newName = "Counterfeit " + newName;
+			}
 
-            roomUser.User.Name = newName;
+			roomUser.User.Name = newName;
 
             return Clients.Group(roomUser.Room.SignalRId).SendAsync("UpdateUserList", roomUser.Room.Users);
         }
