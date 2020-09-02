@@ -3,25 +3,26 @@
 @{
     Layout = "_Layout";
     ViewData["Title"] = $"{System.Web.HttpUtility.HtmlDecode(Model.RoomId)} | Buzz Off!";
-    ViewData["IncludeBuzz"] = true;
+    ViewData["JSPaths"] = Model.JavascriptPaths;
 }
 
-<main class="center">
-    <h2>Welcome to <span id="roomname">@(System.Web.HttpUtility.HtmlDecode(Model.RoomId))</span>!</h2>
+<h2>Welcome to <span id="roomname">@(System.Web.HttpUtility.HtmlDecode(Model.RoomId))</span>!</h2>
 
-    <button id="buzzbutton" class="fancy-buttons" title="You can also hit the space bar to buzz in.">Buzz!</button>
-    <br />
-    <div id="ownerbuttons" hidden>
-        <button id="resetbutton" class="fancy-buttons" title="Only the room owner can reset. Hotkey: R">Reset</button>
-    </div>
-    <hr />
-    <span id="currentmessage"></span>
-    <hr id="hideifnomessage" hidden />
-    <span id="listheader">Users:</span>
-    <ul id="userlist">
-    </ul>
-    <hr />
-    <label for="newname">Username:</label><br />
-    <input type="text" id="newname" value="@Model.UserName"><button id="updatename">Update</button><br />
-    <button id="randomname">Randomize Name</button>
-</main>
+<button id="buzzbutton" class="fancy-buttons" title="You can also hit the space bar to buzz in.">Buzz!</button>
+<br />
+<div id="ownerbuttons" hidden>
+    <button id="resetbutton" class="fancy-buttons" title="Only the room owner can reset. Hotkey: R">Reset</button>
+</div>
+<hr />
+<span id="currentmessage"></span>
+<hr id="hideifnomessage" hidden />
+<span id="listheader">Users:</span>
+<ul id="userlist">
+</ul>
+<hr />
+<label for="newname">Username:</label>
+<br />
+<input type="text" id="newname" value="@Model.UserName">
+<button id="updatename">Update</button>
+<br />
+<button id="randomname">Randomize Name</button>
