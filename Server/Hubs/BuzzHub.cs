@@ -13,32 +13,31 @@ namespace BuzzOff.Server.Hubs
 
         public BuzzHub(RoomManager rooms) => _rooms = rooms;
 
-        public async Task JoinRoom(string roomId, string userName)
+        public Task JoinRoom(string roomId, string userName)
         {
             var entered = _rooms.EnterRoom(userName, Context.ConnectionId, roomId);
 
-            await Groups.AddToGroupAsync(Context.ConnectionId, roomId);
-            await Clients.Group(roomId).SendAsync("UpdateUserList", entered.Room.Users);
+            return Task.WhenAll(Groups.AddToGroupAsync(Context.ConnectionId, roomId),
+              Clients.Group(roomId).SendAsync("UpdateUserList", entered.Room.Users));
         }
 
-        public async Task BuzzIn()
+        public Task BuzzIn()
         {
             var room = _rooms.GetRoomFromUser(Context.ConnectionId);
-
-            await Clients.Group(room.Room.SignalRId).SendAsync("SetButton", false);
 
             // this lock should ensure that the first one in (from the server's perspective) wins.
             lock (room.Room.Users)
             { 
-                if (room.Room.Users.Any(x => x.BuzzedIn)) { return; } // if someone's already buzzed in, no prize
+                if (room.Room.Users.Any(x => x.BuzzedIn)) { return Task.CompletedTask; } // if someone's already buzzed in, no prize
             }
 
             room.User.BuzzedIn = true;
 
-            await Clients.Group(room.Room.SignalRId).SendAsync("UpdateUserList", room.Room.Users);
+            return Task.WhenAll(Clients.Group(room.Room.SignalRId).SendAsync("SetButton", false),
+                 Clients.Group(room.Room.SignalRId).SendAsync("UpdateUserList", room.Room.Users));
         }
 
-        public async Task UpdateName(string newName)
+        public Task UpdateName(string newName)
 		{
             if (string.IsNullOrWhiteSpace(newName))
                 newName = RandomHelpers.RandomUserName();
@@ -51,17 +50,17 @@ namespace BuzzOff.Server.Hubs
 
             room.User.Name = newName;
 
-            await Clients.Group(room.Room.SignalRId).SendAsync("UpdateUserList", room.Room.Users);
+            return Clients.Group(room.Room.SignalRId).SendAsync("UpdateUserList", room.Room.Users);
 		}
 
-		public async Task Reset()
+		public Task Reset()
         {
             var room = _rooms.GetRoomFromUser(Context.ConnectionId);
 
             // only the room owner can clear
             if (room.Room.RoomHost.SignalRId != Context.ConnectionId)
             {
-                return;
+                return Task.CompletedTask;
             }
 
             lock (room.Room.Users)
@@ -69,7 +68,7 @@ namespace BuzzOff.Server.Hubs
 				room.Room.Users.ForEach(x => x.BuzzedIn = false);
 			}
 
-			await Task.WhenAll(
+			return Task.WhenAll(
                 Clients.Group(room.Room.SignalRId).SendAsync("SetButton", true),
                 Clients.Group(room.Room.SignalRId).SendAsync("UpdateUserList", room.Room.Users),
                 Clients.Group(room.Room.SignalRId).SendAsync("SendMessage", ""));
