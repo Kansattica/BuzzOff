@@ -25,18 +25,20 @@ namespace BuzzOff.Server.Hubs
         {
             var roomUser = _rooms.GetRoomFromUser(Context.ConnectionId);
 
-            // this lock should ensure that the first one in (from the server's perspective) wins.
-            roomUser.Room.Lock.EnterReadLock();
+            // this lock ensures that the first one in (from the server's perspective) wins.
+			// this is an exclusive lock to make sure only one person can have buzzed in.
+            roomUser.Room.Lock.EnterWriteLock();
             try
             {
-                if (roomUser.Room.Users.Any(x => x.BuzzedIn)) { return Task.CompletedTask; } // if someone's already buzzed in, no prize
+				// if someone's already buzzed in, no prize
+                if (roomUser.Room.Users.Any(x => x.BuzzedIn)) { return Task.CompletedTask; } 
+				roomUser.User.BuzzedIn = true;
             }
 			finally
 			{
-                roomUser.Room.Lock.ExitReadLock();
+                roomUser.Room.Lock.ExitWriteLock();
 			}
 
-			roomUser.User.BuzzedIn = true;
 
             return Task.WhenAll(Clients.Group(roomUser.Room.SignalRId).SendAsync("SetButton", false),
                  Clients.Group(roomUser.Room.SignalRId).SendAsync("UpdateUserList", roomUser.Room.Users));
