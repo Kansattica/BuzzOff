@@ -8,6 +8,7 @@ const userlist = document.getElementById("userlist");
 const ownerbuttons = document.getElementById("ownerbuttons");
 const newname = document.getElementById("newname");
 const updatename = document.getElementById("updatename");
+const randomname = document.getElementById("randomname");
 
 let userName = newname.value;
 const roomId = document.getElementById("roomname").innerText;
@@ -48,6 +49,11 @@ function updateName() {
     }
 }
 
+function randomName() {
+    newname.value = "";
+    updateName();
+}
+
 updatename.onclick = updateName;
 
 var firstTime = true;
@@ -78,8 +84,7 @@ connection.on("UpdateUserList", (users) => {
             // if our randomly generated name is the same as another's, we have to change
             // but only if we just got here
             if (firstTime && userName === user.name) {
-                newname.value = "";
-                updateName();
+                randomName();
             }
         }
     }
@@ -121,3 +126,5 @@ newname.onkeydown = function (ev) {
     if (pressedKey(ev, "Enter"))
         updateName();
 }
+
+randomname.onclick = randomName;
