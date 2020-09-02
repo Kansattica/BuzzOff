@@ -12,7 +12,6 @@ namespace BuzzOff.Server
         private readonly ConcurrentDictionary<string, Room> _activeRooms = new ConcurrentDictionary<string, Room>();
 		private readonly ConcurrentDictionary<string, RoomUser> _userConnectionToRoom = new ConcurrentDictionary<string, RoomUser>();
 
-        // note that this guy is null if there's no app insights!
         private readonly TelemetryClient _telemetry;
 
         public RoomManager(TelemetryClient telemetryClient) => _telemetry = telemetryClient;
