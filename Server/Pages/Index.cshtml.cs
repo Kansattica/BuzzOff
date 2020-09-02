@@ -11,18 +11,18 @@ namespace BuzzOff.Server.Pages
         private readonly RoomManager _roomManager;
 
         public string SuggestedName { get; set; }
+        public string FlankEmoji { get; set; }
 
-        public IndexModel(RoomManager roomManager)
+		public IndexModel(RoomManager roomManager) => _roomManager = roomManager;
+
+		public void OnGet()
         {
-            _roomManager = roomManager;
-        }
+			FlankEmoji = RandomHelpers.RandomEmoji();
 
-        public void OnGet()
-        {
-           SuggestedName = RandomName.RandomString(3);
-
-            while (_roomManager.RoomExists(SuggestedName))
-                SuggestedName = RandomName.RandomString(3);
-        }
-    }
+            do
+            {
+                SuggestedName = RandomHelpers.RandomName(3);
+			} while (_roomManager.RoomExists(SuggestedName));
+		}
+	}
 }

@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using BuzzOff.Server.Entities;
+using Microsoft.ApplicationInsights;
 
 namespace BuzzOff.Server
 {
@@ -10,6 +11,14 @@ namespace BuzzOff.Server
     {
         private readonly ConcurrentDictionary<string, Room> _activeRooms = new ConcurrentDictionary<string, Room>();
 		private readonly ConcurrentDictionary<string, RoomUser> _userConnectionToRoom = new ConcurrentDictionary<string, RoomUser>();
+
+        // note that this guy is null if there's no app insights!
+        private readonly TelemetryClient _telemetry;
+
+        public RoomManager(TelemetryClient telemetryClient)
+        {
+            _telemetry = telemetryClient;
+        }
 
         public RoomUser EnterRoom(string userName, string userId, string roomId)
         {
@@ -41,6 +50,8 @@ namespace BuzzOff.Server
             var roomuser = new RoomUser { User = user, Room = updated };
             _userConnectionToRoom.TryAdd(userId, roomuser);
 
+            _telemetry.TrackEvent("JoinRoom", new Dictionary<string, string> { { "UserId", userId }, { "RoomId", roomId } });
+            CollectMetrics();
             return roomuser;
         }
 
@@ -88,9 +99,16 @@ namespace BuzzOff.Server
                 }
             }
 
+            _telemetry.TrackEvent("LeaveRoom", new Dictionary<string, string> { { "UserId", userId }, { "RoomId", roomuser.Room.SignalRId } });
+            CollectMetrics();
             return roomuser.Room;
         }
 
+        private void CollectMetrics()
+        {
+            _telemetry.GetMetric("TotalUsers").TrackValue(_userConnectionToRoom.Count);
+            _telemetry.GetMetric("TotalRooms").TrackValue(_activeRooms.Count);
+        }
 
     }
 }

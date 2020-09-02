@@ -9,6 +9,9 @@ const ownerbuttons = document.getElementById("ownerbuttons");
 const newname = document.getElementById("newname");
 const updatename = document.getElementById("updatename");
 
+let userName = newname.value;
+const roomId = document.getElementById("roomname").innerText;
+
 function updateMessage (message) {
     currentmessage.textContent = message;
     hideifnomessage.hidden = currentmessage.textContent === "";
@@ -28,7 +31,7 @@ async function start() {
 };
 
 connection.onclose(async () => {
-    updateMessage("Whoops, got disconnected. Hang on.")
+    updateMessage("Disconnected. If it doesn't come back in a few seconds, try refreshing.")
     await start();
 });
 
@@ -63,14 +66,21 @@ connection.on("UpdateUserList", (users) => {
         }
         userlist.appendChild(li);
 
-        if (user.isRoomHost && user.signalRId === connection.connectionId)
-            amRoomHost = true;
+        if (user.signalRId === connection.connectionId) {
+            amRoomHost = user.isRoomHost;
 
-        // if our randomly generated name is the same as another's, we have to change
-        // but only if we just got here
-        if (firstTime && userName === user.name && user.signalRId !== connection.connectionId) {
-            newname.value = "The other " + user.name;
-            updateName();
+            // if the server tells us our name changed, change it
+            if (user.name !== userName)
+                userName = newname.value = user.name;
+        }
+        else
+        {
+            // if our randomly generated name is the same as another's, we have to change
+            // but only if we just got here
+            if (firstTime && userName === user.name) {
+                newname.value = "";
+                updateName();
+            }
         }
     }
     firstTime = false;
@@ -88,19 +98,26 @@ updateMessage("Connecting...");
 start();
 
 buzzbutton.onclick = function () { connection.send("BuzzIn"); };
+
+function pressedKey(ev, keyCode) {
+    return ev.repeat === false && ev.code === keyCode;
+}
+
 window.onkeydown = function (ev) {
-    console.log(ev);
-    if (ev.repeat === false && ev.key === " ") {
+    if (pressedKey(ev, "Space")) {
         connection.send("BuzzIn");
 
         // avoid the weird scenario where you have the reset button selected, and hitting the space bar buzzes and resets.
         buzzbutton.focus();
+    }
+    else if (pressedKey(ev, "KeyR")) {
+        connection.send("Reset");
     }
 }
 
 resetbutton.onclick = function () { connection.send("Reset"); };
 
 newname.onkeydown = function (ev) {
-    if (ev.repeat === false && ev.code === "Enter")
+    if (pressedKey(ev, "Enter"))
         updateName();
 }

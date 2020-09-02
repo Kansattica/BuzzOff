@@ -9,6 +9,8 @@ using System.Linq;
 using BuzzOff.Server.Hubs;
 using Microsoft.AspNetCore.StaticFiles;
 using System;
+using Microsoft.ApplicationInsights;
+using CompressedStaticFiles;
 
 namespace BuzzOff.Server
 {
@@ -45,6 +47,8 @@ namespace BuzzOff.Server
                 options.IncludeSubDomains = true;
                 options.MaxAge = TimeSpan.FromDays(365 * 10);
             });
+
+            services.AddApplicationInsightsTelemetry(Configuration.GetValue("APPINSIGHTS_INSTRUMENTATIONKEY", ""));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -55,7 +59,6 @@ namespace BuzzOff.Server
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseWebAssemblyDebugging();
             }
             else
             {
@@ -69,7 +72,9 @@ namespace BuzzOff.Server
             var provider = new FileExtensionContentTypeProvider();
             provider.Mappings[".webmanifest"] = "application/manifest+json";
             
-            app.UseStaticFiles(new StaticFileOptions() {
+            // Try serving .gz'd static files if they exist
+            // https://github.com/AnderssonPeter/CompressedStaticFiles
+            app.UseCompressedStaticFiles(new StaticFileOptions() {
                 ContentTypeProvider = provider
             });
 
