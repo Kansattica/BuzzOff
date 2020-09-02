@@ -61,11 +61,8 @@ namespace BuzzOff.Server
                 {
                     lock (roomuser.Room.Users)
                     {
-                        var userIdx = roomuser.Room.Users.FindIndex(x => x.SignalRId == userId);
-
-                        if (userIdx != -1)
+                        if (roomuser.Room.Users.RemoveAll(x => x.SignalRId == userId) > 0)
                         {
-                            roomuser.Room.Users.RemoveAt(userIdx);
                             _userConnectionToRoom.TryRemove(roomuser.User.SignalRId, out var _);
 
                             if (roomuser.User.IsRoomHost && roomuser.Room.Users.Count > 0)
