@@ -19,7 +19,7 @@ function updateMessage (message) {
     hideifnomessage.hidden = currentmessage.textContent === "";
 }
 
-var connection = new signalR.HubConnectionBuilder().withUrl("/buzz").build();
+var connection = new signalR.HubConnectionBuilder().withUrl("/buzz").withAutomaticReconnect().build();
 
 async function start() {
     try {
