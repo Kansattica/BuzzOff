@@ -28,45 +28,39 @@ namespace BuzzOff.Server.Hubs
         {
             var room = _rooms.GetRoomFromUser(Context.ConnectionId);
 
-            await Clients.Group(room.SignalRId).SendAsync("SetButton", false);
+            await Clients.Group(room.Room.SignalRId).SendAsync("SetButton", false);
 
             User buzzedIn = null;
 
             // this lock should ensure that the first one in (from the server's perspective) wins.
-            lock (room.Users)
+            lock (room.Room.Users)
             { 
-                if (room.Users.Any(x => x.BuzzedIn)) { return; } // if someone's already buzzed in, no prize
+                if (room.Room.Users.Any(x => x.BuzzedIn)) { return; } // if someone's already buzzed in, no prize
 
-                var foundUser = room.Users.FirstOrDefault(x => x.SignalRId == Context.ConnectionId);
+                room.User.BuzzedIn = true;
+                buzzedIn = room.User;
+            }
 
-                if (foundUser != null)
-				{
-					foundUser.BuzzedIn = true;
-                    buzzedIn = foundUser;
-				}
-			}
-
-			if (buzzedIn != null)
-                await Clients.Group(room.SignalRId).SendAsync("UpdateUserList", room.Users);
+            if (buzzedIn != null)
+                await Clients.Group(room.Room.SignalRId).SendAsync("UpdateUserList", room.Room.Users);
         }
 
         public async Task UpdateName(string newName)
 		{
             var room = _rooms.GetRoomFromUser(Context.ConnectionId);
 
-            lock (room.Users)
+            var toChange = room.User;
+            lock (room.Room.Users)
 			{
-                var toChange = room.Users.FirstOrDefault(x => x.SignalRId == Context.ConnectionId);
-
                 // if someone tries some funny business where they change their name to someone else's
-                if (room.Users.Any(x => x.SignalRId != Context.ConnectionId && x.Name.Trim() == newName.Trim()))
+                if (room.Room.Users.Any(x => x.SignalRId != Context.ConnectionId && x.Name.Trim() == newName.Trim()))
                     newName = "Counterfeit " + newName;
 
                 if (toChange != null)
                     toChange.Name = newName;
 			}
 
-            await Clients.Group(room.SignalRId).SendAsync("UpdateUserList", room.Users);
+            await Clients.Group(room.Room.SignalRId).SendAsync("UpdateUserList", room.Room.Users);
 		}
 
 		public async Task Reset()
@@ -74,27 +68,27 @@ namespace BuzzOff.Server.Hubs
             var room = _rooms.GetRoomFromUser(Context.ConnectionId);
 
             // only the room owner can clear
-            if (room.RoomHost.SignalRId != Context.ConnectionId)
+            if (room.Room.RoomHost.SignalRId != Context.ConnectionId)
             {
                 return;
             }
 
-            lock (room.Users)
+            lock (room.Room.Users)
 			{
-				room.Users.ForEach(x => x.BuzzedIn = false);
+				room.Room.Users.ForEach(x => x.BuzzedIn = false);
 			}
 
 			await Task.WhenAll(
-                Clients.Group(room.SignalRId).SendAsync("SetButton", true),
-                Clients.Group(room.SignalRId).SendAsync("UpdateUserList", room.Users),
-                Clients.Group(room.SignalRId).SendAsync("SendMessage", ""));
+                Clients.Group(room.Room.SignalRId).SendAsync("SetButton", true),
+                Clients.Group(room.Room.SignalRId).SendAsync("UpdateUserList", room.Room.Users),
+                Clients.Group(room.Room.SignalRId).SendAsync("SendMessage", ""));
         }
 
         public override async Task OnDisconnectedAsync(Exception exception)
         {
             var room = _rooms.LeaveRoom(Context.ConnectionId);
 
-            // shouldn't happen, but it's possible with a misbehaving client and cheap to guard against
+            // shouldn't happen, but it's possible with a misbehaving client and it's cheap to guard against
             if (room != null)
 				await Clients.Group(room.SignalRId).SendAsync("UpdateUserList", room.Users);
 

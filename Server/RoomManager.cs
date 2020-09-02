@@ -9,7 +9,7 @@ namespace BuzzOff.Server
     public class RoomManager
     {
         private readonly ConcurrentDictionary<string, Room> _activeRooms = new ConcurrentDictionary<string, Room>();
-		private readonly ConcurrentDictionary<string, Room> _userConnectionToRoom = new ConcurrentDictionary<string, Room>();
+		private readonly ConcurrentDictionary<string, RoomUser> _userConnectionToRoom = new ConcurrentDictionary<string, RoomUser>();
 
         public RoomUser EnterRoom(string userName, string userId, string roomId)
         {
@@ -38,12 +38,13 @@ namespace BuzzOff.Server
                 return existingRoom;
             });
 
-            _userConnectionToRoom.TryAdd(userId, updated);
+            var roomuser = new RoomUser { User = user, Room = updated };
+            _userConnectionToRoom.TryAdd(userId, roomuser);
 
-            return new RoomUser { User = user, Room = updated };
+            return roomuser;
         }
 
-        public Room GetRoomFromUser(string userId)
+        public RoomUser GetRoomFromUser(string userId)
         {
             return _userConnectionToRoom.GetValueOrDefault(userId);
         }
@@ -55,39 +56,39 @@ namespace BuzzOff.Server
 
         public Room LeaveRoom(string userId)
         {
-            if (_userConnectionToRoom.TryRemove(userId, out var room))
+            if (_userConnectionToRoom.TryRemove(userId, out var roomuser))
             {
-                if (_activeRooms.TryGetValue(room.SignalRId, out room))
+                if (_activeRooms.TryGetValue(roomuser.Room.SignalRId, out _))
                 {
-                    lock(room.Users)
+                    lock(roomuser.Room.Users)
                     {
-                        var userIdx = room.Users.FindIndex(x => x.SignalRId == userId);
+                        var userIdx = roomuser.Room.Users.FindIndex(x => x.SignalRId == userId);
 
                         if (userIdx != -1)
                         {
-                            var user = room.Users[userIdx];
-                            room.Users.RemoveAt(userIdx);
+                            var user = roomuser.Room.Users[userIdx];
+                            roomuser.Room.Users.RemoveAt(userIdx);
                             _userConnectionToRoom.TryRemove(user.SignalRId, out var _);
 
-                            if (user.IsRoomHost && room.Users.Count > 0)
+                            if (user.IsRoomHost && roomuser.Room.Users.Count > 0)
                             {
-                                room.Users.First().IsRoomHost = true;
-                                room.RoomHost = room.Users.First();
+                                roomuser.Room.Users.First().IsRoomHost = true;
+                                roomuser.Room.RoomHost = roomuser.Room.Users.First();
                             }
 
                         }
 
-                        if (room.Users.Count == 0)
+                        if (roomuser.Room.Users.Count == 0)
                         {
                             // I don't think this leads to a race condition if the last person leaves while someone new comes in
                             // worst case scenario, new person just has to refresh the page
-                            _activeRooms.TryRemove(room.SignalRId, out var _);
+                            _activeRooms.TryRemove(roomuser.Room.SignalRId, out var _);
                         }
                     }
                 }
             }
 
-            return room;
+            return roomuser.Room;
         }
 
 
