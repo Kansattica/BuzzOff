@@ -4,3 +4,4 @@ obj
 /Server/wwwroot/js/dist/browser
 *.min.js
 *.min.css
+/Server/wwwroot/js/index.min.js.map

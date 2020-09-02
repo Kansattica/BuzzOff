@@ -39,12 +39,14 @@ jobs:
       run: |
         cd built
         gzip -k --best wwwroot/js/*.js
+        gzip -k --best wwwroot/js/*.js.map
         gzip -k --best wwwroot/js/dist/browser/*.js
         gzip -k --best wwwroot/css/*.css
         gzip -k --best wwwroot/*.xml
         gzip -k --best wwwroot/*.webmanifest
         gzip -k --best wwwroot/*.svg
         brotli -k --best wwwroot/js/*.js
+        brotli -k --best wwwroot/js/*.js.map
         brotli -k --best wwwroot/js/dist/browser/*.js
         brotli -k --best wwwroot/css/*.css
         brotli -k --best wwwroot/*.xml
