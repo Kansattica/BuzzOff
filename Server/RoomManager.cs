@@ -55,6 +55,12 @@ namespace BuzzOff.Server
 
         public Room LeaveRoom(string userId)
         {
+            if (userId == null)
+            {
+                _telemetry.TrackEvent("NullUserId");
+                return null;
+            }
+
             if (_userConnectionToRoom.TryRemove(userId, out var roomuser))
             {
                 if (_activeRooms.ContainsKey(roomuser.Room.SignalRId))
