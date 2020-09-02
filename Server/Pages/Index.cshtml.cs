@@ -13,9 +13,6 @@ namespace BuzzOff.Server.Pages
         public string SuggestedName { get; set; }
         public string FlankEmoji { get; set; }
 
-		private static readonly string[] _javascriptPaths = new string[] { "~/js/index.js" };
-		public string[] JavascriptPaths => _javascriptPaths;
-
 		public IndexModel(RoomManager roomManager) => _roomManager = roomManager;
 
 		public void OnGet()

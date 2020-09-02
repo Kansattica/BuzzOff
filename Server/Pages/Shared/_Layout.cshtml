@@ -1,15 +1,11 @@
-﻿@addTagHelper "*, Microsoft.AspNetCore.Mvc.TagHelpers"
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
     <title>@ViewBag.Title</title>
     <link href="~/css/buzzoff.min.css" asp-append-version="true" rel="stylesheet" />
-    @foreach (string javascriptPath in ViewBag.JSPaths)
-    {
-        <script defer type="text/javascript" asp-append-version="true" src="@javascriptPath"></script>
-    }
+    @RenderSection("PageJS", required: false)
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -30,5 +26,4 @@
 <body class="center">
     @RenderBody()
 </body>
-
 </html>

@@ -1,9 +1,9 @@
 ﻿@page "/"
 @model BuzzOff.Server.Pages.IndexModel
+@addTagHelper "*, Microsoft.AspNetCore.Mvc.TagHelpers"
 @{
     Layout = "_Layout";
     ViewData["Title"] = "Buzz Off!";
-    ViewData["JSPaths"] = Model.JavascriptPaths;
 }
 <h2>Welcome to Buzz Off!</h2>
 <h3>A simple website for running quiz shows, classes, and anything else that needs to know who "buzzed in" first.</h3>
@@ -17,3 +17,8 @@
 <p class="top">@Model.FlankEmoji By Grace Danger Lovelace @Model.FlankEmoji</p>
 <p><a href="https://github.com/Kansattica/BuzzOff">https://github.com/Kansattica/BuzzOff</a></p>
 <p>Built from commit <a href="https://github.com/Kansattica/BuzzOff/commit/@(BuzzOff.Server.BuildInfo.GitHash)">@BuzzOff.Server.BuildInfo.ShortGitHash</a> at @BuzzOff.Server.BuildInfo.BuildTimestamp.</p>
+
+@section PageJS
+{
+<script defer type="text/javascript" asp-append-version="true" src="~/js/index.min.js"></script>
+}
