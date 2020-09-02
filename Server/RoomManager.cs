@@ -77,16 +77,14 @@ namespace BuzzOff.Server
 
                         if (userIdx != -1)
                         {
-                            var user = roomuser.Room.Users[userIdx];
                             roomuser.Room.Users.RemoveAt(userIdx);
-                            _userConnectionToRoom.TryRemove(user.SignalRId, out var _);
+                            _userConnectionToRoom.TryRemove(roomuser.User.SignalRId, out var _);
 
-                            if (user.IsRoomHost && roomuser.Room.Users.Count > 0)
+                            if (roomuser.User.IsRoomHost && roomuser.Room.Users.Count > 0)
                             {
                                 roomuser.Room.Users.First().IsRoomHost = true;
                                 roomuser.Room.RoomHost = roomuser.Room.Users.First();
                             }
-
                         }
 
                         if (roomuser.Room.Users.Count == 0)
