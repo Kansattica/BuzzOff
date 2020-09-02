@@ -52,7 +52,6 @@ ul {
     font-size: xx-large;
 }
 
-.license {
-    display: block;
-    margin-top: 5em;
+.top {
+    margin-top: 3em;
 }
