@@ -21,7 +21,7 @@ namespace BuzzOff.Server.Pages
 
             do
             {
-                SuggestedName = RandomHelpers.RandomName(3);
+                SuggestedName = RandomHelpers.RandomRoomName();
 			} while (_roomManager.RoomExists(SuggestedName));
 		}
 	}

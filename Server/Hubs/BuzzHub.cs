@@ -11,10 +11,7 @@ namespace BuzzOff.Server.Hubs
     {
         private readonly RoomManager _rooms;
 
-        public BuzzHub(RoomManager rooms)
-        {
-            _rooms = rooms;
-        }
+        public BuzzHub(RoomManager rooms) => _rooms = rooms;
 
         public async Task JoinRoom(string roomId, string userName)
         {
@@ -44,7 +41,7 @@ namespace BuzzOff.Server.Hubs
         public async Task UpdateName(string newName)
 		{
             if (string.IsNullOrWhiteSpace(newName))
-                newName = RandomHelpers.RandomName(1);
+                newName = RandomHelpers.RandomUserName();
 
             var room = _rooms.GetRoomFromUser(Context.ConnectionId);
 

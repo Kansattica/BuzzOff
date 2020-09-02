@@ -24,7 +24,7 @@ namespace BuzzOff.Server.Pages
 
 			if (string.IsNullOrWhiteSpace(UserName))
 			{
-				UserName = RandomHelpers.RandomName(1);
+				UserName = RandomHelpers.RandomUserName();
 			}
 
 			UserName = HttpUtility.HtmlEncode(UserName);

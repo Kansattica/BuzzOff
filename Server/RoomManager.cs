@@ -15,10 +15,7 @@ namespace BuzzOff.Server
         // note that this guy is null if there's no app insights!
         private readonly TelemetryClient _telemetry;
 
-        public RoomManager(TelemetryClient telemetryClient)
-        {
-            _telemetry = telemetryClient;
-        }
+        public RoomManager(TelemetryClient telemetryClient) => _telemetry = telemetryClient;
 
         public RoomUser EnterRoom(string userName, string userId, string roomId)
         {
@@ -55,15 +52,9 @@ namespace BuzzOff.Server
             return roomuser;
         }
 
-        public RoomUser GetRoomFromUser(string userId)
-        {
-            return _userConnectionToRoom.GetValueOrDefault(userId);
-        }
+        public RoomUser GetRoomFromUser(string userId) => _userConnectionToRoom.GetValueOrDefault(userId);
 
-        public bool RoomExists(string roomId)
-        {
-            return _activeRooms.ContainsKey(roomId);
-        }
+        public bool RoomExists(string roomId) => _activeRooms.ContainsKey(roomId);
 
         public Room LeaveRoom(string userId)
         {
