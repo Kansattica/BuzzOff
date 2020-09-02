@@ -10,30 +10,14 @@ namespace BuzzOff.Server.Entities
         public bool IsRoomHost { get; set; } = false;
         public bool BuzzedIn { get; set; } = false;
 
-        public override bool Equals(object obj)
-        {
-            return Equals(obj as User);
-        }
+		public override bool Equals(object obj) => Equals(obj as User);
 
-        public bool Equals(User other)
-        {
-            return other != null &&
-                   SignalRId == other.SignalRId;
-        }
+		public bool Equals(User other) => other != null && SignalRId == other.SignalRId;
 
-        public override int GetHashCode()
-        {
-            return HashCode.Combine(SignalRId);
-        }
+		public override int GetHashCode() => HashCode.Combine(SignalRId);
 
-        public static bool operator ==(User left, User right)
-        {
-            return EqualityComparer<User>.Default.Equals(left, right);
-        }
+		public static bool operator ==(User left, User right) => EqualityComparer<User>.Default.Equals(left, right);
 
-        public static bool operator !=(User left, User right)
-        {
-            return !(left == right);
-        }
-    }
+		public static bool operator !=(User left, User right) => !(left == right);
+	}
 }
