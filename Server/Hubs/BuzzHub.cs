@@ -27,7 +27,7 @@ namespace BuzzOff.Server.Hubs
 
             // this lock should ensure that the first one in (from the server's perspective) wins.
             lock (roomUser.Room.Users)
-            { 
+            {
                 if (roomUser.Room.Users.Any(x => x.BuzzedIn)) { return Task.CompletedTask; } // if someone's already buzzed in, no prize
             }
 
@@ -38,7 +38,7 @@ namespace BuzzOff.Server.Hubs
         }
 
         public Task UpdateName(string newName)
-		{
+        {
             if (string.IsNullOrWhiteSpace(newName))
                 newName = RandomHelpers.RandomUserName();
 
@@ -51,9 +51,9 @@ namespace BuzzOff.Server.Hubs
             roomUser.User.Name = newName;
 
             return Clients.Group(roomUser.Room.SignalRId).SendAsync("UpdateUserList", roomUser.Room.Users);
-		}
+        }
 
-		public Task Reset()
+        public Task Reset()
         {
             var roomUser = _rooms.GetRoomFromUser(Context.ConnectionId);
 
@@ -64,11 +64,11 @@ namespace BuzzOff.Server.Hubs
             }
 
             lock (roomUser.Room.Users)
-			{
-				roomUser.Room.Users.ForEach(x => x.BuzzedIn = false);
-			}
+            {
+                roomUser.Room.Users.ForEach(x => x.BuzzedIn = false);
+            }
 
-			return Task.WhenAll(
+            return Task.WhenAll(
                 Clients.Group(roomUser.Room.SignalRId).SendAsync("SetButton", true),
                 Clients.Group(roomUser.Room.SignalRId).SendAsync("UpdateUserList", roomUser.Room.Users),
                 Clients.Group(roomUser.Room.SignalRId).SendAsync("SendMessage", ""));
@@ -80,9 +80,9 @@ namespace BuzzOff.Server.Hubs
 
             // shouldn't happen, but it's possible with a misbehaving client and it's cheap to guard against
             if (roomUser != null)
-				await Clients.Group(roomUser.SignalRId).SendAsync("UpdateUserList", roomUser.Users);
+                await Clients.Group(roomUser.SignalRId).SendAsync("UpdateUserList", roomUser.Users);
 
-			await base.OnDisconnectedAsync(exception);
+            await base.OnDisconnectedAsync(exception);
         }
     }
 }

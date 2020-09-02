@@ -10,7 +10,7 @@ namespace BuzzOff.Server
     public class RoomManager
     {
         private readonly ConcurrentDictionary<string, Room> _activeRooms = new ConcurrentDictionary<string, Room>();
-		private readonly ConcurrentDictionary<string, RoomUser> _userConnectionToRoom = new ConcurrentDictionary<string, RoomUser>();
+        private readonly ConcurrentDictionary<string, RoomUser> _userConnectionToRoom = new ConcurrentDictionary<string, RoomUser>();
 
         private readonly TelemetryClient _telemetry;
 
@@ -18,8 +18,7 @@ namespace BuzzOff.Server
 
         public RoomUser EnterRoom(string userName, string userId, string roomId)
         {
-            var user = new User
-            {
+            var user = new User {
                 Name = userName,
                 SignalRId = userId,
             };
@@ -27,8 +26,7 @@ namespace BuzzOff.Server
             var updated = _activeRooms.AddOrUpdate(roomId, newRoomId =>
             {
                 user.IsRoomHost = true;
-                return new Room
-                {
+                return new Room {
                     Name = newRoomId,
                     SignalRId = newRoomId,
                     RoomHost = user,
@@ -36,7 +34,7 @@ namespace BuzzOff.Server
                 };
             }, (existingRoomId, existingRoom) =>
             {
-                lock(existingRoom.Users)
+                lock (existingRoom.Users)
                 {
                     existingRoom.Users.Add(user);
                 }
@@ -61,7 +59,7 @@ namespace BuzzOff.Server
             {
                 if (_activeRooms.TryGetValue(roomuser.Room.SignalRId, out _))
                 {
-                    lock(roomuser.Room.Users)
+                    lock (roomuser.Room.Users)
                     {
                         var userIdx = roomuser.Room.Users.FindIndex(x => x.SignalRId == userId);
 
