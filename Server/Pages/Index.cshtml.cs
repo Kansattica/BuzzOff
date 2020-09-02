@@ -19,10 +19,10 @@ namespace BuzzOff.Server.Pages
         {
 			FlankEmoji = RandomHelpers.RandomEmoji();
 
-			SuggestedName = RandomHelpers.RandomName(3);
-
-            while (_roomManager.RoomExists(SuggestedName))
+            do
+            {
                 SuggestedName = RandomHelpers.RandomName(3);
-        }
-    }
+			} while (_roomManager.RoomExists(SuggestedName));
+		}
+	}
 }
