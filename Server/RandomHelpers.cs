@@ -17,8 +17,13 @@ namespace BuzzOff.Server
 
 		public static string RandomName(int adjectiveCount)
 		{
-			return string.Join(string.Empty, Enumerable.Range(0, adjectiveCount).Select(_ => _adjectives.Next())) 
-				+ _nouns.Next();
+			if (adjectiveCount == 1) { return _adjectives.Next() + _nouns.Next(); }
+
+			var sb = new StringBuilder(44);
+			for (int i = 0; i < adjectiveCount; i++)
+				sb.Append(_adjectives.Next());
+			sb.Append(_nouns.Next());
+			return sb.ToString();
 		}
 
 		public static string RandomEmoji() => _emojis.Next();
