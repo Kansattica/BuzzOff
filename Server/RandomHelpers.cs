@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Routing.Tree;
 
 namespace BuzzOff.Server
 {
-	// Not technically random any more, but close enough.
+	// Not super random, but close enough.
 	public static class RandomHelpers
 	{
 		private static readonly SyncSamplingArray<string> _adjectives = new SyncSamplingArray<string>("Gay", "Illegal", "Criminal", "Unusual", "Vague", "Gruesome", "Marvelous", "Available", "Near", "Anxious", "Icy", "Glamorous", "Godly", "Great", "Furtive", "Late", "Neat", "Absorbed", "Clammy", "Frightening", "Exotic", "Wiggly", "Thundering", "Colorful", "Stale", "Subdued", "Abrupt", "Ancient", "Smoggy", "Enthusiastic", "Good", "Normal", "Fertile", "Damp", "Weary", "Many", "Chief", "Raspy", "Broad", "Heady", "Gentle", "Caring", "Gullible", "Lethal", "Royal", "Receptive", "Steep", "Defiant", "Fretful", "Spiteful", "Offbeat", "Bent", "Mushy", "Burly", "Bumpy", "Roasted", "Possible", "Halting", "Scandalous", "Gray", "Brief", "Futuristic", "Tangible", "Awake", "Puzzling", "Relieved", "Economic", "Frightened", "Thin", "Flaky", "Elegant", "Evanescent", "Impossible", "Embarrassed", "Functional", "Modern", "Judicious", "Gigantic", "Familiar", "Best", "Festive", "Common", "Tart", "Supreme", "Nonchalant", "Normal", "Wealthy", "Furtive", "Charming", "Cool");
@@ -25,12 +25,23 @@ namespace BuzzOff.Server
 
 		private class SyncSamplingArray<T>
 		{
+			private static Random _rand = new Random();
 			private readonly ImmutableArray<T> _data;
-			private int idx = 0;
+			private int idx;
 
-			public SyncSamplingArray(params T[] Data) => _data = ImmutableArray.Create(Data);
+            public SyncSamplingArray(params T[] Data)
+            {
+                _data = ImmutableArray.Create(Data);
 
-			public T Next()
+				// without this, the server always starts on the same thing, which will lead to problems if the server restarts while
+				// people are using it.
+				lock(_rand)
+                {
+					idx = _rand.Next(0, _data.Length);
+                }
+            }
+
+            public T Next()
 			{
 				var localIdx = Interlocked.Increment(ref idx);
 
