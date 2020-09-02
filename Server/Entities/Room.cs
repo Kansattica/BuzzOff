@@ -6,7 +6,6 @@ namespace BuzzOff.Server.Entities
 {
     public class Room : IEquatable<Room>
     {
-        public string Name { get; set; }
         public string SignalRId { get; set; }
         public User RoomHost { get; set; }
 

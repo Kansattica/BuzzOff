@@ -27,7 +27,6 @@ namespace BuzzOff.Server
             {
                 user.IsRoomHost = true;
                 return new Room {
-                    Name = newRoomId,
                     SignalRId = newRoomId,
                     RoomHost = user,
                     Users = new List<User> { user }
