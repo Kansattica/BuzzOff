@@ -37,6 +37,16 @@ connection.onclose(async () => {
     await start();
 });
 
+connection.onreconnecting((err) => {
+    updateMessage("Reconnecting...");
+    console.log(err);
+});
+
+connection.onreconnected(() => {
+    updateMessage("Reconnected!");
+    connection.send("JoinRoom", roomId, userName);
+});
+
 function surround(name, shouldSurround, emoji) {
     return shouldSurround ? `${emoji} ${name} ${emoji}` : name;
 }
