@@ -86,13 +86,10 @@ connection.on("UpdateUserList", (users) => {
             if (user.name !== userName)
                 userName = newname.value = user.name;
         }
-        else
-        {
+        else if (firstTime && userName === user.name) {
             // if our randomly generated name is the same as another's, we have to change
             // but only if we just got here
-            if (firstTime && userName === user.name) {
                 randomName();
-            }
         }
     }
     firstTime = false;
