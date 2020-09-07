@@ -15,54 +15,54 @@ let userName = newname.value;
 const roomId = document.getElementById("roomname").innerText;
 
 function updateMessage (message) {
-    currentmessage.textContent = message;
-    hideifnomessage.hidden = currentmessage.textContent === "";
+	currentmessage.textContent = message;
+	hideifnomessage.hidden = currentmessage.textContent === "";
 }
 
 var connection = new signalR.HubConnectionBuilder().withUrl("/buzz").withAutomaticReconnect().build();
 
 async function start() {
-    try {
-        await connection.start();
-        updateMessage("Connected!");
-        connection.send("JoinRoom", roomId, userName);
-    } catch (err) {
-        console.log(err);
-        setTimeout(() => start(), 5000);
-    }
+	try {
+		await connection.start();
+		updateMessage("Connected!");
+		connection.send("JoinRoom", roomId, userName);
+	} catch (err) {
+		console.log(err);
+		setTimeout(() => start(), 5000);
+	}
 };
 
 connection.onclose(async () => {
-    updateMessage("Disconnected. If it doesn't come back in a few seconds, try refreshing.")
-    await start();
+	updateMessage("Disconnected. If it doesn't come back in a few seconds, try refreshing.")
+	await start();
 });
 
 connection.onreconnecting((err) => {
-    updateMessage("Reconnecting...");
-    console.log(err);
+	updateMessage("Reconnecting...");
+	console.log(err);
 });
 
 connection.onreconnected(() => {
-    updateMessage("Reconnected!");
-    connection.send("JoinRoom", roomId, userName);
+	updateMessage("Reconnected!");
+	connection.send("JoinRoom", roomId, userName);
 });
 
 function surround(name, shouldSurround, emoji) {
-    return shouldSurround ? `${emoji} ${name} ${emoji}` : name;
+	return shouldSurround ? `${emoji} ${name} ${emoji}` : name;
 }
 
 function updateName() {
-    const newName = newname.value;
+	const newName = newname.value;
 
-    if (newName !== userName) {
-        userName = newName;
-        connection.send("UpdateName", userName);
-    }
+	if (newName !== userName) {
+		userName = newName;
+		connection.send("UpdateName", userName);
+	}
 }
 
 function randomName() {
-    newname.value = "";
-    updateName();
+	newname.value = "";
+	updateName();
 }
 
 updatename.onclick = updateName;
@@ -70,44 +70,44 @@ updatename.onclick = updateName;
 var firstTime = true;
 
 connection.on("UpdateUserList", (users) => {
-    userlist.innerHTML = "";
-    if (users.length === 1) {
-        listheader.innerText = "User:";
-    } else {
-        listheader.innerText = users.length + " Users:";
-    }
+	userlist.innerHTML = "";
+	if (users.length === 1) {
+		listheader.innerText = "User:";
+	} else {
+		listheader.innerText = users.length + " Users:";
+	}
 
-    let amRoomHost = false;
-    for (const user of users) {
-        const li = document.createElement("li");
-        li.textContent = surround(surround(user.name, user.buzzedIn, '🐝'), user.isRoomHost, '🌟');
-        
-        if (user.buzzedIn) {
-            li.className = "buzzed-in";
-            updateMessage(user.name + " buzzed in!");
-            buzzbutton.disabled = true;
-        }
-        userlist.appendChild(li);
+	let amRoomHost = false;
+	for (const user of users) {
+		const li = document.createElement("li");
+		li.textContent = surround(surround(user.name, user.buzzedIn, '🐝'), user.isRoomHost, '🌟');
+		
+		if (user.buzzedIn) {
+			li.className = "buzzed-in";
+			updateMessage(user.name + " buzzed in!");
+			buzzbutton.disabled = true;
+		}
+		userlist.appendChild(li);
 
-        if (user.signalRId === connection.connectionId) {
-            amRoomHost = user.isRoomHost;
+		if (user.signalRId === connection.connectionId) {
+			amRoomHost = user.isRoomHost;
 
-            // if the server tells us our name changed, change it
-            if (user.name !== userName)
-                userName = newname.value = user.name;
-        }
-        else if (firstTime && userName === user.name) {
-            // if our randomly generated name is the same as another's, we have to change
-            // but only if we just got here
-                randomName();
-        }
-    }
-    firstTime = false;
-    ownerbuttons.hidden = !amRoomHost;
+			// if the server tells us our name changed, change it
+			if (user.name !== userName)
+				userName = newname.value = user.name;
+		}
+		else if (firstTime && userName === user.name) {
+			// if our randomly generated name is the same as another's, we have to change
+			// but only if we just got here
+				randomName();
+		}
+	}
+	firstTime = false;
+	ownerbuttons.hidden = !amRoomHost;
 });
 
 connection.on("SetButton", (shouldEnable) => {
-    buzzbutton.disabled = !shouldEnable;
+	buzzbutton.disabled = !shouldEnable;
 });
 
 connection.on("SendMessage", updateMessage);
@@ -119,26 +119,26 @@ start();
 buzzbutton.onclick = function () { connection.send("BuzzIn"); };
 
 function pressedKey(ev, keyCode) {
-    return ev.repeat === false && ev.code === keyCode;
+	return ev.repeat === false && ev.code === keyCode;
 }
 
 window.onkeydown = function (ev) {
-    if (pressedKey(ev, "Space")) {
-        connection.send("BuzzIn");
+	if (pressedKey(ev, "Space")) {
+		connection.send("BuzzIn");
 
-        // avoid the weird scenario where you have the reset button selected, and hitting the space bar buzzes and resets.
-        buzzbutton.focus();
-    }
-    else if (pressedKey(ev, "KeyR")) {
-        connection.send("Reset");
-    }
+		// avoid the weird scenario where you have the reset button selected, and hitting the space bar buzzes and resets.
+		buzzbutton.focus();
+	}
+	else if (pressedKey(ev, "KeyR")) {
+		connection.send("Reset");
+	}
 }
 
 resetbutton.onclick = function () { connection.send("Reset"); };
 
 newname.onkeydown = function (ev) {
-    if (pressedKey(ev, "Enter"))
-        updateName();
+	if (pressedKey(ev, "Enter"))
+		updateName();
 }
 
 randomname.onclick = randomName;

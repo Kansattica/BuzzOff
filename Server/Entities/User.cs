@@ -3,12 +3,12 @@ using System.Collections.Generic;
 
 namespace BuzzOff.Server.Entities
 {
-    public class User : IEquatable<User>
-    {
-        public string Name { get; set; }
-        public string SignalRId { get; set; }
-        public bool IsRoomHost { get; set; } = false;
-        public bool BuzzedIn { get; set; } = false;
+	public class User : IEquatable<User>
+	{
+		public string Name { get; set; }
+		public string SignalRId { get; set; }
+		public bool IsRoomHost { get; set; } = false;
+		public bool BuzzedIn { get; set; } = false;
 
 		public override bool Equals(object obj) => Equals(obj as User);
 
