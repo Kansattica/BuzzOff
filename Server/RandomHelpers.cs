@@ -14,12 +14,12 @@ namespace BuzzOff.Server
 		private static readonly SyncSamplingArray<string> _nouns = new SyncSamplingArray<string>("Skunk", "Skunks", "Rabbits", "Goldfish", "Stem", "Drink", "Chairs", "Finger", "Lunchroom", "Butter", "Income", "Exchange", "Show", "Event", "Top", "Oatmeal", "Neck", "Growth", "Comfort", "Goose", "Appliance", "Things", "Flower", "Birthday", "Marble", "Interest", "Crowd", "List", "Bears", "Jellyfish", "Kettle", "Letters", "Weight", "Fire", "Feet", "Library", "Distance", "Boot", "Fan", "Soda", "Chain", "Curve", "Tomatoes", "Punishment", "Opinion", "Daughter", "Support", "Thrill", "Dinosaurs", "Tendency", "Company", "Downtown", "Clock", "Airplane", "Mailbox", "Government", "Calendar", "Purpose", "Harmony", "Letter", "Cattle", "Office", "Wheel", "Cactus", "Girl", "Pain", "Thunder", "Snail", "Behavior", "Property", "Sweater", "Expert", "Sleep", "Mask", "Umbrella", "Attention", "Transport", "Quartz", "Spy", "Basin", "Fruit", "Noise", "Books", "Theory", "Bucket", "Spark", "Banana", "Dinner", "Hat", "Pants", "Shoe", "Airplanes", "Boat", "Space", "Time", "Crime");
 		private static readonly SyncSamplingArray<string> _emojis = new SyncSamplingArray<string>("💜", "🦨", "✨", "💖", "🦹‍♀️", "🎀", "👸", "💽", "⚡", "🔥");
 
-        public static string RandomUserName() => _adjectives.Next() + _nouns.Next();
+		public static string RandomUserName() => _adjectives.Next() + _nouns.Next();
 
-        public static string RandomRoomName() => 
+		public static string RandomRoomName() => 
 			string.Concat(_adjectives.Next(), _adjectives.Next(), _adjectives.Next(), _nouns.Next());
 
-        public static string RandomEmoji() => _emojis.Next();
+		public static string RandomEmoji() => _emojis.Next();
 
 		private class SyncSamplingArray<T>
 		{
@@ -27,19 +27,19 @@ namespace BuzzOff.Server
 			private readonly ImmutableArray<T> _data;
 			private int idx;
 
-            public SyncSamplingArray(params T[] Data)
-            {
-                _data = ImmutableArray.Create(Data);
+			public SyncSamplingArray(params T[] Data)
+			{
+				_data = ImmutableArray.Create(Data);
 
 				// without this, the server always starts on the same thing, which will lead to problems if the server restarts while
 				// people are using it.
 				lock(_rand)
-                {
+				{
 					idx = _rand.Next(0, _data.Length);
-                }
-            }
+				}
+			}
 
-            public T Next()
+			public T Next()
 			{
 				var localIdx = Interlocked.Increment(ref idx);
 

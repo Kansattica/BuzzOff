@@ -7,49 +7,49 @@ using System.Threading.Tasks;
 
 namespace BuzzOff.Server.Hubs
 {
-    public class BuzzHub : Hub
-    {
-        private readonly RoomManager _rooms;
+	public class BuzzHub : Hub
+	{
+		private readonly RoomManager _rooms;
 
-        public BuzzHub(RoomManager rooms) => _rooms = rooms;
+		public BuzzHub(RoomManager rooms) => _rooms = rooms;
 
-        public Task JoinRoom(string roomId, string userName)
-        {
-            var entered = _rooms.EnterRoom(userName, Context.ConnectionId, roomId);
+		public Task JoinRoom(string roomId, string userName)
+		{
+			var entered = _rooms.EnterRoom(userName, Context.ConnectionId, roomId);
 
-            return Task.WhenAll(Groups.AddToGroupAsync(Context.ConnectionId, roomId),
-              Clients.Group(roomId).SendAsync("UpdateUserList", entered.Room.Users));
-        }
+			return Task.WhenAll(Groups.AddToGroupAsync(Context.ConnectionId, roomId),
+			  Clients.Group(roomId).SendAsync("UpdateUserList", entered.Room.Users));
+		}
 
-        public Task BuzzIn()
-        {
-            var roomUser = _rooms.GetRoomFromUser(Context.ConnectionId);
+		public Task BuzzIn()
+		{
+			var roomUser = _rooms.GetRoomFromUser(Context.ConnectionId);
 
-            // this lock ensures that the first one in (from the server's perspective) wins.
+			// this lock ensures that the first one in (from the server's perspective) wins.
 			// this is an exclusive lock to make sure only one person can have buzzed in.
-            roomUser.Room.Lock.EnterWriteLock();
-            try
-            {
+			roomUser.Room.Lock.EnterWriteLock();
+			try
+			{
 				// if someone's already buzzed in, no prize
-                if (roomUser.Room.Users.Any(x => x.BuzzedIn)) { return Task.CompletedTask; } 
+				if (roomUser.Room.Users.Any(x => x.BuzzedIn)) { return Task.CompletedTask; } 
 				roomUser.User.BuzzedIn = true;
-            }
+			}
 			finally
 			{
-                roomUser.Room.Lock.ExitWriteLock();
+				roomUser.Room.Lock.ExitWriteLock();
 			}
 
 
-            return Task.WhenAll(Clients.Group(roomUser.Room.SignalRId).SendAsync("SetButton", false),
-                 Clients.Group(roomUser.Room.SignalRId).SendAsync("UpdateUserList", roomUser.Room.Users));
-        }
+			return Task.WhenAll(Clients.Group(roomUser.Room.SignalRId).SendAsync("SetButton", false),
+				 Clients.Group(roomUser.Room.SignalRId).SendAsync("UpdateUserList", roomUser.Room.Users));
+		}
 
-        public Task UpdateName(string newName)
-        {
-            if (string.IsNullOrWhiteSpace(newName))
-                newName = RandomHelpers.RandomUserName();
+		public Task UpdateName(string newName)
+		{
+			if (string.IsNullOrWhiteSpace(newName))
+				newName = RandomHelpers.RandomUserName();
 
-            var roomUser = _rooms.GetRoomFromUser(Context.ConnectionId);
+			var roomUser = _rooms.GetRoomFromUser(Context.ConnectionId);
 
 			roomUser.Room.Lock.EnterReadLock();
 			try
