@@ -1,4 +1,6 @@
-﻿const output = document.getElementById("output");
+﻿"use strict";
+
+const output = document.getElementById("output");
 const roomname = document.getElementById("roomname");
 const baseUrl = function () {
 	let base = new URL('/', location.href).href;
