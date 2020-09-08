@@ -15,6 +15,10 @@ namespace BuzzOff.Server
         private readonly ImmutableArray<T> _data;
         private int idx;
 
+        /// <summary>
+        /// Creates a new <see cref="ImmutableCircularBuffer{T}"/> with its internal buffer filled with the elements in <paramref name="data"/>. The first element returned is random.
+        /// </summary>
+        /// <param name="data"></param>
         public ImmutableCircularBuffer(params T[] data)
         {
             _data = ImmutableArray.Create(data);
@@ -28,7 +32,7 @@ namespace BuzzOff.Server
         }
 
         /// <summary>
-        /// Thread-safely returns an element that is either the least recently used or close to it.
+        /// Thread-safely returns an element that is either the least recently returned or close to it.
         /// </summary>
         /// <returns></returns>
         public T Next()
