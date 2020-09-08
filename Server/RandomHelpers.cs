@@ -31,8 +31,8 @@ namespace BuzzOff.Server
 			{
 				_data = ImmutableArray.Create(Data);
 
-				// without this, the server always starts on the same thing, which will lead to problems if the server restarts while
-				// people are using it.
+				// without this, the server always starts on the same thing, 
+				// which will lead to problems if the server restarts while people are using it.
 				lock(_rand)
 				{
 					idx = _rand.Next(0, _data.Length);
@@ -41,14 +41,25 @@ namespace BuzzOff.Server
 
 			public T Next()
 			{
+				// increment idx. because this is interlocked, every thread currently in this function for this array
+				// will have different numbers (unless you have more threads than you have elements).
 				var localIdx = Interlocked.Increment(ref idx);
 
 				if (localIdx >= _data.Length)
 				{
+					// guarantee that we have a valid index for the array
 					var inBoundsIdx = localIdx % _data.Length;
+
+					// basically, if we're the first one to set the index, set the index
+					// this ensures that if multiple threads are all trying to wrap the index around to the start
+					// of the array, only one will succeed.
+					// It doesn't much matter which one.
 					Interlocked.CompareExchange(ref idx, inBoundsIdx, localIdx);
+
+					// make sure to use the guaranteed-in-bounds index
 					localIdx = inBoundsIdx;
 				}
+
 				return _data[localIdx];
 			}
 		}
