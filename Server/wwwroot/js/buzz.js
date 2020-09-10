@@ -70,6 +70,7 @@ function randomName() {
 updatename.onclick = updateName;
 
 var firstTime = true;
+var buzzShouldBeDisabled = false;
 
 connection.on("UpdateUserList", (users) => {
 	userlist.innerHTML = "";
@@ -87,14 +88,14 @@ connection.on("UpdateUserList", (users) => {
 		if (user.buzzedIn) {
 			li.className = "buzzed-in";
 			updateMessage(user.name + " buzzed in!");
-			buzzbutton.disabled = true;
+			buzzbutton.disabled = buzzShouldBeDisabled = true;
 		}
 		userlist.appendChild(li);
 
 		if (user.signalRId === connection.connectionId) {
 			amRoomHost = user.isRoomHost;
 
-			buzzbutton.disabled = user.lockedOut;
+			buzzbutton.disabled = buzzShouldBeDisabled || user.lockedOut;
 
 			// if the server tells us our name changed, change it
 			if (user.name !== userName)
@@ -111,7 +112,7 @@ connection.on("UpdateUserList", (users) => {
 });
 
 connection.on("SetButton", (shouldEnable) => {
-	buzzbutton.disabled = !shouldEnable;
+	buzzbutton.disabled = buzzShouldBeDisabled = !shouldEnable;
 });
 
 connection.on("PrelockStatus", (isPrelocked) => {
