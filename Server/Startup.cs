@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.StaticFiles;
 using System;
 using Microsoft.ApplicationInsights;
 using CompressedStaticFiles;
+using Microsoft.AspNetCore.Http;
 
 namespace BuzzOff.Server
 {
@@ -66,11 +67,15 @@ namespace BuzzOff.Server
 
 			var provider = new FileExtensionContentTypeProvider();
 			provider.Mappings[".webmanifest"] = "application/manifest+json";
-			
+
 			// Try serving .gz'd and .br'd static files if they exist
 			// https://github.com/AnderssonPeter/CompressedStaticFiles
 			app.UseCompressedStaticFiles(new StaticFileOptions() {
-				ContentTypeProvider = provider
+				ContentTypeProvider = provider,
+				OnPrepareResponse = ctx =>
+				{
+					ctx.Context.Response.Headers.Append("Cache-Control", "public, max-age=31536000");
+				}
 			});
 
 			app.UseRouting();
