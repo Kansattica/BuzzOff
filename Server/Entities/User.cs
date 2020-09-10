@@ -9,6 +9,7 @@ namespace BuzzOff.Server.Entities
         public string SignalRId { get; set; }
         public bool IsRoomHost { get; set; } = false;
         public bool BuzzedIn { get; set; } = false;
+		public bool LockedOut { get; set; } = false;
 
 		public override bool Equals(object obj) => Equals(obj as User);
 

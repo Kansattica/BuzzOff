@@ -18,12 +18,19 @@ namespace BuzzOff.Server.Hubs
             var entered = _rooms.EnterRoom(userName, Context.ConnectionId, roomId);
 
             return Task.WhenAll(Groups.AddToGroupAsync(Context.ConnectionId, roomId),
-              Clients.Group(roomId).SendAsync("UpdateUserList", entered.Room.Users));
+              Clients.Group(roomId).SendAsync("UpdateUserList", entered.Room.Users),
+			  Clients.Group(roomId).SendAsync("PrelockStatus", entered.Room.IsPrelocked));
         }
 
         public Task BuzzIn()
         {
             var roomUser = _rooms.GetRoomFromUser(Context.ConnectionId);
+
+			if (roomUser.Room.IsPrelocked)
+			{
+				roomUser.User.LockedOut = true;
+				return Clients.Group(roomUser.Room.SignalRId).SendAsync("UpdateUserList", roomUser.Room.Users);
+			}
 
             // this lock ensures that the first one in (from the server's perspective) wins.
 			// this is an exclusive lock to make sure only one person can have buzzed in.
@@ -81,7 +88,8 @@ namespace BuzzOff.Server.Hubs
 			roomUser.Room.Lock.EnterWriteLock();
 			try
 			{
-				roomUser.Room.Users.ForEach(x => x.BuzzedIn = false);
+				roomUser.Room.Users.ForEach(x => { x.BuzzedIn = false; x.LockedOut = false; });
+				roomUser.Room.IsPrelocked = false;
 			}
 			finally
 			{
@@ -91,7 +99,28 @@ namespace BuzzOff.Server.Hubs
 			return Task.WhenAll(
 				Clients.Group(roomUser.Room.SignalRId).SendAsync("SetButton", true),
 				Clients.Group(roomUser.Room.SignalRId).SendAsync("UpdateUserList", roomUser.Room.Users),
-				Clients.Group(roomUser.Room.SignalRId).SendAsync("SendMessage", ""));
+				Clients.Group(roomUser.Room.SignalRId).SendAsync("SendMessage", ""),
+				Clients.Group(roomUser.Room.SignalRId).SendAsync("PrelockStatus", roomUser.Room.IsPrelocked));
+		}
+
+		public Task SetPrelock(bool isLocked)
+		{
+			var roomUser = _rooms.GetRoomFromUser(Context.ConnectionId);
+
+			// only the room owner can prelock and unlock
+			if (roomUser.Room.RoomHost.SignalRId != Context.ConnectionId)
+			{
+				return Task.CompletedTask;
+			}
+
+			roomUser.Room.IsPrelocked = isLocked;
+
+			// disable the button when prelocked, maybe?
+			// if the room host wants to disable the button while they're talking, they can just buzz in and reset when ready.
+			return Task.WhenAll(
+				Clients.Group(roomUser.Room.SignalRId).SendAsync("UpdateUserList", roomUser.Room.Users),
+				Clients.Group(roomUser.Room.SignalRId).SendAsync("SendMessage", isLocked ? "🔒 Please wait to buzz in. 🔒" : "🔓 Go! 🔓"),
+				Clients.Group(roomUser.Room.SignalRId).SendAsync("PrelockStatus", isLocked));
 		}
 
 		public override async Task OnDisconnectedAsync(Exception exception)
