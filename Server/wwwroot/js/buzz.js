@@ -153,7 +153,6 @@ newname.onkeydown = function (ev) {
 		updateName();
 }
 
-
 randomname.onclick = randomName;
 
 prelock.onclick = function () { connection.send("SetPrelock", true); }
