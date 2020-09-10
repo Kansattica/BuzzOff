@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@addTagHelper "*, Microsoft.AspNetCore.Mvc.TagHelpers"
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -26,6 +27,6 @@
 <body class="center">
     @RenderBody()
     <hr />
-    <a href="/help.min.html" target="_blank">Help and FAQ</a>
+    <a href="~/help.min.html" target="_blank" asp-append-version="true">Help and FAQ</a>
 </body>
 </html>
