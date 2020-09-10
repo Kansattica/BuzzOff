@@ -5,7 +5,7 @@ const resetbutton = document.getElementById("resetbutton");
 const currentmessage = document.getElementById("currentmessage");
 const hideifnomessage = document.getElementById("hideifnomessage");
 const userlist = document.getElementById("userlist");
-const ownerbuttons = document.getElementById("ownerbuttons");
+const hostbuttons = document.getElementById("ownerbuttons");
 const newname = document.getElementById("newname");
 const updatename = document.getElementById("updatename");
 const randomname = document.getElementById("randomname");
@@ -107,7 +107,7 @@ connection.on("UpdateUserList", (users) => {
 		}
 	}
 	firstTime = false;
-	ownerbuttons.hidden = !amRoomHost;
+	hostbuttons.hidden = !amRoomHost;
 });
 
 connection.on("SetButton", (shouldEnable) => {
