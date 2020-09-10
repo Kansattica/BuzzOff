@@ -139,7 +139,7 @@ window.onkeydown = function (ev) {
 	}
 	else if (pressedKey(ev, "KeyR")) {
 		connection.send("Reset");
-	} else if (pressedKey(ev, "KeyP")) {
+	} else if (pressedKey(ev, "KeyP") || pressedKey(ev, "KeyL")) {
 		connection.send("SetPrelock", true);
 	}  else if (pressedKey(ev, "KeyU")) {
 		connection.send("SetPrelock", false);
