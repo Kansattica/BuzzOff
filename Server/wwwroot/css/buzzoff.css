@@ -40,7 +40,7 @@ hr {
 	display: block;
 }
 
-ul {
+#userlist {
 	display: inline;
 	list-style: none;
 }
@@ -69,4 +69,5 @@ table {
 
 td {
 	border: 1px solid #00AA00;
+	padding: 1em;
 }

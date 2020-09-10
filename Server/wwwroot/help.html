@@ -23,6 +23,96 @@
 </head>
 <body class="center">
     <h2>What Is Buzz Off!?</h2>
-    Buzz Off! is a tool for 
+    Buzz Off! is a tool for determining who hit the button first. Originally for game show-style quizzes, Buzz Off! can also be used for classes, other games, and anything where the first one in matters.
+
+    <h2>How do I use Buzz Off!?</h2>
+    <p>Go to the <a href="/" target="_blank">main page</a>. There, you'll see a room name automatically generated for you. If you like that name, click it to enter the room. If you don't, you can refresh the page (F5) for a new one or type one into the text box yourself.</p>
+    <p>Once you're in a room, share the link with everyone you want to play with. They'll show up in the list of users. When everyone's in, you're ready to play!</p>
+    <p>Buzz Off! assumes you already have a communication channel. Voice chat, text chat, or even in-person works fine, assuming everyone has a device that can get online.</p>
+    <p>A typical round beings with the host asking a question. Someone buzzes in. The host asks whoever buzzed in to give an answer.</p>
+    <p>If the answer was wrong, the host resets the room to let someone else buzz in. If correct, the host asks the next question, then resets the room.</p>
+
+    <h2>Can I use Buzz Off! on a mobile device?</h2>
+    Sure! I suggest zooming all the way in on the Buzz! button so it's easier to hit.
+
+    <h2>What do the little icons around the user names mean?</h2>
+    <table>
+        <tbody>
+            <tr>
+                <td>🌟</td>
+                <td><a href="#host">Room host.</a><br />The person in charge.</td>
+            </tr>
+            <tr>
+                <td>🐝</td>
+                <td>Buzzed in.<br />The person that hit the Buzz! button first.</td>
+            </tr>
+            <tr>
+                <td>🔒</td>
+                <td>Locked out.<br />You tried to buzz in while the room was <a href="#lock">prelocked</a>.</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2 id="host">What does it mean to be the room host?</h2>
+    <p>The room host was the first person to join the room, or the person who had been in the room longest when the host left. The room host has accesss to three extra buttons:</p>
+
+    <table>
+        <tbody>
+            <tr>
+                <td>Reset</td>
+                <td>Clears everyone's locked and buzzed-in status so that you can ask another question.</td>
+            </tr>
+            <tr>
+                <td><a href="#lock">Prelock</a></td>
+                <td>"Prelocks" the room. Anyone buzzing in while the room is locked will be locked out until the room is reset.</td>
+            </tr>
+            <tr>
+                <td><a href="#lock">Unlock</a></td>
+                <td>"Unlocks" the room. This only makes sense if the room is prelocked. People can buzz in normally after the room is unlocked.</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2 id="lock">What do "prelock" and "unlock" mean?</h2>
+    Prelocking is a way to punish players who buzz in while you're still asking the question. If someone tries to buzz in while the room is still locked, they'll be "locked out" and unable to buzz in until the room is reset.
+
+    <h2>What if I'd rather just have the button be disabled while I'm asking the question?</h2>
+    As the host, simply buzz in while you're asking the question, then reset the room when you're ready for someone else to buzz in.
+
+    <h2>Are there keyboard shortcuts?</h2>
+    <p>Yes! You can find these by hovering over the buttons and reading the tooltip, or in the table below:</p>
+    
+    <table>
+        <tbody>
+            <tr>
+                <td>Buzz!</td>
+                <td>Space Bar</td>
+            </tr>
+            <tr>
+                <td>Reset</td>
+                <td>R</td>
+            </tr>
+            <tr>
+                <td>Prelock</td>
+                <td>P or L</td>
+            </tr>
+            <tr>
+                <td>Unlock</td>
+                <td>U</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>Do I have to have JavaScript enabled to use Buzz Off!?</h2>
+    <p>Afraid so. Buzz Off! uses SignalR and WebSockets to work.</p>
+    <p>If it's any consolation, all the JavaScript used here is free and open source, and is the bare minimum needed to make Buzz Off! work. No tracking here!</p>
+
+    <h2>Why do you spell Buzz Off! with the exclamation point like that?</h2>
+    I think it's fun!
+
+    <h2>I have a question, problem, or feature request.</h2>
+    Feel free to open a <a href="https://github.com/Kansattica/BuzzOff/issues/new">GitHub issue</a> or email me at <a href="mailto:grace@hypnovir.us">grace at hypnovir dot us</a>!
+
+
 </body>
 </html>
