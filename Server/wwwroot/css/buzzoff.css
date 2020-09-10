@@ -1,62 +1,62 @@
 ﻿.buzzed-in {
-    color: red;
+	color: red;
 }
 
 body {
-    background-color: #111111;
-    color: #F2F1EF;
+	background-color: #111111;
+	color: #F2F1EF;
 }
 
 h2, h3 {
-    color: #00AA00;
+	color: #00AA00;
 }
 
 a {
-    color: #19B5FE;
+	color: #19B5FE;
 }
 
 a:visited {
-    color: #6495ED;
+	color: #6495ED;
 }
 
 hr {
-    max-width: 20%;
-    /*margin-left: 0px;
-    margin-right: 0px;*/
+	max-width: 20%;
+	/*margin-left: 0px;
+	margin-right: 0px;*/
 }
 
 .fancy-buttons {
-    margin: 0 auto;
-    margin-top: .5em;
-    text-align: center;
-    font-size: x-large;
+	margin: 0 auto;
+	margin-top: .5em;
+	text-align: center;
+	font-size: x-large;
 }
 
 .center {
-    text-align: center;
+	text-align: center;
 }
 
 #listheader {
-    display: block;
+	display: block;
 }
 
 ul {
-    display: inline;
-    list-style: none;
+	display: inline;
+	list-style: none;
 }
 
 #roomname {
-    margin-bottom: 1%;
+	margin-bottom: 1%;
 }
 
 .click-this {
-    font-size: x-large;
+	font-size: x-large;
 }
 
 #currentmessage {
-    font-size: xx-large;
+	font-size: xx-large;
 }
 
 .top {
-    margin-top: 3em;
+	margin-top: 3em;
 }
