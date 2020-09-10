@@ -28,8 +28,16 @@ namespace BuzzOff.Server.Hubs
 
 			if (roomUser.Room.IsPrelocked)
 			{
-				roomUser.User.LockedOut = true;
-				return Clients.Group(roomUser.Room.SignalRId).SendAsync("UpdateUserList", roomUser.Room.Users);
+				if (!roomUser.User.LockedOut)
+				{
+					roomUser.User.LockedOut = true;
+					return Clients.Group(roomUser.Room.SignalRId).SendAsync("UpdateUserList", roomUser.Room.Users);
+				}
+				else
+				{
+					// if they're already locked out, do nothing
+					return Task.CompletedTask;
+				}
 			}
 
 			// this lock ensures that the first one in (from the server's perspective) wins.
