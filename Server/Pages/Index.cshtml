@@ -13,6 +13,9 @@
 <input id="roomname" type="text" value="@Model.SuggestedName" size="44" class="center" />
 <p><label for="output">Click here to enter, then send the link to your friends:</label></p>
 @*Fill in the link section so you don't get that jarring jump between when the page loads and when the javascript fills it in.**@
+<noscript>
+    I'm afraid Buzz Off! requires JavaScript to work.
+</noscript>
 <p><a href="https://buzzoff.hypnovir.us/Room/@Model.SuggestedName" class="click-this" id="output">https://buzzoff.hypnovir.us/Room/@Model.SuggestedName</a></p>
 <p class="top">@Model.FlankEmoji By Grace Danger Lovelace @Model.FlankEmoji</p>
 <p><a href="https://github.com/Kansattica/BuzzOff" target="_blank">https://github.com/Kansattica/BuzzOff</a></p>

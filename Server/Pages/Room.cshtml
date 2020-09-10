@@ -7,6 +7,10 @@
 }
 <h2>Welcome to <span id="roomname">@(System.Web.HttpUtility.HtmlDecode(Model.RoomId))</span>!</h2>
 
+<noscript>
+    <p>I'm afraid Buzz Off! requires JavaScript to work.</p>
+</noscript>
+
 <button id="buzzbutton" class="fancy-buttons" title="You can also hit the space bar to buzz in.">Buzz!</button>
 <br />
 <div id="hostbuttons" hidden>
