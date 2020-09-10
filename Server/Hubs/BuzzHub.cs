@@ -40,6 +40,9 @@ namespace BuzzOff.Server.Hubs
 				}
 			}
 
+			// locked out users can't buzz in
+			if (roomUser.User.LockedOut) { return Task.CompletedTask; }
+
 			// this lock ensures that the first one in (from the server's perspective) wins.
 			// this is an exclusive lock to make sure only one person can have buzzed in.
 			roomUser.Room.Lock.EnterWriteLock();
