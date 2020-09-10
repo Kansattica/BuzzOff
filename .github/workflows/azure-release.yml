@@ -46,6 +46,7 @@ jobs:
         gzip -k --best wwwroot/*.xml
         gzip -k --best wwwroot/*.webmanifest
         gzip -k --best wwwroot/*.svg
+        gzip -k --best wwwroot/*.html
         brotli -k --best wwwroot/js/*.js
         brotli -k --best wwwroot/js/*.js.map
         brotli -k --best wwwroot/js/dist/browser/*.js
@@ -54,6 +55,7 @@ jobs:
         brotli -k --best wwwroot/*.xml
         brotli -k --best wwwroot/*.webmanifest
         brotli -k --best wwwroot/*.svg
+        brotli -k --best wwwroot/*.html
     - name: Azure Login
       uses: Azure/login@v1
       with:

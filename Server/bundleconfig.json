@@ -15,5 +15,14 @@
       "renameLocals": true
     },
     "sourceMap": true
+  },
+  {
+    "outputFileName": "wwwroot/help.min.html",
+    "inputFiles": [
+      "wwwroot/help.html"
+    ],
+    "minify": {
+      "enabled": true
+    }
   }
 ]

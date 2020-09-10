@@ -5,3 +5,4 @@ obj
 *.min.js
 *.min.css
 /Server/wwwroot/js/index.min.js.map
+/Server/wwwroot/help.min.html
