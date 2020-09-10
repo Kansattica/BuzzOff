@@ -94,6 +94,8 @@ connection.on("UpdateUserList", (users) => {
 		if (user.signalRId === connection.connectionId) {
 			amRoomHost = user.isRoomHost;
 
+			buzzbutton.disabled = user.lockedOut;
+
 			// if the server tells us our name changed, change it
 			if (user.name !== userName)
 				userName = newname.value = user.name;
