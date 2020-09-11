@@ -33,17 +33,20 @@ namespace BuzzOff.Server
 				};
 			}, (existingRoomId, existingRoom) =>
 			{
+				// this is kind of annoying, since it means that only one user can join the room at a time
+				// this is honestly fine in real-world scenarios, but the pathological case is not great.
+				// same with leaving, but it's not like you have to wait to leave the room.
 				existingRoom.Lock.EnterWriteLock();
 				try
 				{
 					existingRoom.Users.Add(user);
-					return existingRoom;
 				}
 				finally
 				{
 					existingRoom.Lock.ExitWriteLock();
 				}
-			});
+                return existingRoom;
+            });
 
 			var roomuser = new RoomUser { User = user, Room = updated };
 			_userConnectionToRoom.TryAdd(userId, roomuser);
