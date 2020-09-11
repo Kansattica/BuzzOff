@@ -27,7 +27,6 @@
 <body class="center">
     @RenderBody()
     <hr />
-    @*asp-append-version doesn't work here, so this is the next best thing.*@
-    <a href="~/help.min.html?@(BuzzOff.Server.BuildInfo.GitHash)" target="_blank">Help and FAQ</a>
+    <a href="~/help.min.html" target="_blank">Help and FAQ</a>
 </body>
 </html>

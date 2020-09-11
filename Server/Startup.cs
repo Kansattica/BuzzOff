@@ -74,7 +74,11 @@ namespace BuzzOff.Server
 				ContentTypeProvider = provider,
 				OnPrepareResponse = ctx =>
 				{
-					ctx.Context.Response.Headers.Append("Cache-Control", "public, max-age=31536000");
+					// can't do the cachebusting thing as easily with HTML files, so don't cache them as long
+					if (ctx.File.Name.EndsWith(".html"))
+						ctx.Context.Response.Headers.Append("Cache-Control", "public, max-age=86400");
+					else
+						ctx.Context.Response.Headers.Append("Cache-Control", "public, max-age=31536000");
 				}
 			});
 
