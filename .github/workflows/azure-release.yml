@@ -8,8 +8,8 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-
-    steps:
+    if: "!contains(github.event.head_commit.message, 'norelease')"
+    steps:      
     - uses: actions/checkout@v2
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
