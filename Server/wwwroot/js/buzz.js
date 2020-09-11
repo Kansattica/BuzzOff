@@ -75,9 +75,9 @@ var buzzShouldBeDisabled = false;
 connection.on("UpdateUserList", (users) => {
 	userlist.innerHTML = "";
 	if (users.length === 1) {
-		listheader.innerText = "User:";
+		listheader.innerText = "Player:";
 	} else {
-		listheader.innerText = users.length + " Users:";
+		listheader.innerText = users.length + " Players:";
 	}
 
 	let amRoomHost = false;
