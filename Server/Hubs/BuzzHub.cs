@@ -56,12 +56,15 @@ namespace BuzzOff.Server.Hubs
 				 Clients.Clients(roomUser.Room.RoomHost.SignalRId, Context.ConnectionId).SendAsync("Buzz", true));
 		}
 
+		const int MaximumNameLength = 40;
 		public Task UpdateName(string newName)
 		{
 			if (string.IsNullOrWhiteSpace(newName))
 				newName = RandomHelpers.RandomUserName();
 			else
 				newName = newName.Trim();
+
+			if (newName.Length > MaximumNameLength) { newName = newName.Remove(MaximumNameLength - 1); }
 
 			var roomUser = _rooms.GetRoomFromUser(Context.ConnectionId);
 
