@@ -74,9 +74,6 @@ connection.on("UpdateRoom", (room) => {
 
 	buzzbutton.innerText = surround("Buzz!", room.isPrelocked, '🔒');
 
-	prelock.disabled = room.isPrelocked;
-	unlock.disabled = !room.isPrelocked;
-
 	buzzbutton.disabled = buzzShouldBeDisabled = !room.buzzButtonEnabled;
 
 	userlist.innerHTML = "";
@@ -114,6 +111,10 @@ connection.on("UpdateRoom", (room) => {
 		}
 	}
 	firstTime = false;
+	if (amRoomHost) {
+		prelock.disabled = room.isPrelocked;
+		unlock.disabled = !room.isPrelocked;
+	}
 	hostbuttons.hidden = !amRoomHost;
 });
 
