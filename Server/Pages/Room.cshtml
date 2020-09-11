@@ -33,6 +33,12 @@
 <button id="randomname">Randomize Name</button>
 <hr />
 <label class="sound" for="makesound">Sound?</label> <input class="sound" type="checkbox" id="makesound" checked />
+<audio id="buzzsound">
+	<source src="/sound/buzzer.ogg" type="audio/ogg" />
+	<source src="/sound/buzzer.mp3" type="audio/mpeg" />
+	<source src="/sound/buzzer.mp3" type="audio/mp3" />
+	<p>Your browser doesn't appear to support playing sound, FYI.</p>
+</audio>
 
 @section PageJS {
 <script type="text/javascript" asp-append-version="true" src="~/js/dist/browser/signalr.min.js"></script>

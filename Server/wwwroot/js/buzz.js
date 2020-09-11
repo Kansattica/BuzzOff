@@ -13,6 +13,7 @@ const listheader = document.getElementById("listheader");
 const prelock = document.getElementById("prelock");
 const unlock = document.getElementById("unlock");
 const makesound = document.getElementById("makesound");
+const buzzsound = document.getElementById("buzzsound");
 
 let userName = newname.value;
 const roomId = document.getElementById("roomname").innerText;
@@ -122,29 +123,16 @@ connection.on("PrelockStatus", (isPrelocked) => {
 
 connection.on("SendMessage", updateMessage);
 
-let buzzsound = false;
 connection.on("Buzz", (shouldBuzz) => {
-	if (!shouldBuzz && buzzsound) {
+	if (!shouldBuzz) {
 		buzzsound.pause();
 		buzzsound.currentTime = 0;
 		return;
     }
 
-	if (makesound.checked) {
-		if (!buzzsound) {
-			buzzsound = new Audio();
-
-			// see https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/canPlayType
-			// sound courtesy of https://freesound.org/s/423219/
-			if (buzzsound.canPlayType && (buzzsound.canPlayType('audio/ogg; codecs="vorbis"') === "probably"))
-				buzzsound = new Audio("/sound/buzzer.ogg");
-			else
-				buzzsound.src = new Audio("/sound/buzzer.mp3");
-			buzzsound.volume = .9;
-		}
-		if (buzzsound.paused)
-			buzzsound.play();
-	}
+	if (makesound.checked && buzzsound.paused) 
+        buzzsound.play();
+    
 });
 
 updateMessage("Connecting...");
@@ -154,30 +142,30 @@ start();
 buzzbutton.onclick = function () { connection.send("BuzzIn"); };
 
 function pressedKey(ev, keyCode) {
-	return ev.repeat === false && ev.code === keyCode;
+    return ev.repeat === false && ev.code === keyCode;
 }
 
 window.onkeydown = function (ev) {
-	if (pressedKey(ev, "Space")) {
-		connection.send("BuzzIn");
+    if (pressedKey(ev, "Space")) {
+        connection.send("BuzzIn");
 
-		// avoid the weird scenario where you have the reset button selected, and hitting the space bar buzzes and resets.
-		buzzbutton.focus();
-	}
-	else if (pressedKey(ev, "KeyR")) {
-		connection.send("Reset");
-	} else if (pressedKey(ev, "KeyP") || pressedKey(ev, "KeyL")) {
-		connection.send("SetPrelock", true);
-	}  else if (pressedKey(ev, "KeyU")) {
-		connection.send("SetPrelock", false);
-	}
+        // avoid the weird scenario where you have the reset button selected, and hitting the space bar buzzes and resets.
+        buzzbutton.focus();
+    }
+    else if (pressedKey(ev, "KeyR")) {
+        connection.send("Reset");
+    } else if (pressedKey(ev, "KeyP") || pressedKey(ev, "KeyL")) {
+        connection.send("SetPrelock", true);
+    } else if (pressedKey(ev, "KeyU")) {
+        connection.send("SetPrelock", false);
+    }
 }
 
 resetbutton.onclick = function () { connection.send("Reset"); };
 
 newname.onkeydown = function (ev) {
-	if (pressedKey(ev, "Enter"))
-		updateName();
+    if (pressedKey(ev, "Enter"))
+        updateName();
 }
 
 randomname.onclick = randomName;
