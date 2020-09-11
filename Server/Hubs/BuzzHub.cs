@@ -26,6 +26,7 @@ namespace BuzzOff.Server.Hubs
 		{
 			var roomUser = _rooms.GetRoomFromUser(Context.ConnectionId);
 
+            // if the room is prelocked and the user isn't locked out yet, lock them out
             if (roomUser.Room.IsPrelocked && !roomUser.User.LockedOut)
             {
                 roomUser.User.LockedOut = true;
