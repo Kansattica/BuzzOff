@@ -18,6 +18,7 @@ namespace BuzzOff.Server.Entities
 
 		public List<User> Users { get; set; }
 		public bool IsPrelocked { get; set; } = false;
+		public bool BuzzButtonEnabled { get; set; } = true;
 
 		public override bool Equals(object obj) => Equals(obj as Room);
 

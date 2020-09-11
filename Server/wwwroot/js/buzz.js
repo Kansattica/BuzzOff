@@ -82,6 +82,8 @@ connection.on("UpdateRoom", (room) => {
 	prelock.disabled = room.isPrelocked;
 	unlock.disabled = !room.isPrelocked;
 
+	buzzbutton.disabled = buzzShouldBeDisabled = !room.buzzButtonEnabled;
+
 	userlist.innerHTML = "";
 	if (users.length === 1) {
 		listheader.innerText = "Player:";
@@ -118,10 +120,6 @@ connection.on("UpdateRoom", (room) => {
 	}
 	firstTime = false;
 	hostbuttons.hidden = !amRoomHost;
-});
-
-connection.on("SetButton", (shouldEnable) => {
-	buzzbutton.disabled = buzzShouldBeDisabled = !shouldEnable;
 });
 
 connection.on("SendMessage", updateMessage);

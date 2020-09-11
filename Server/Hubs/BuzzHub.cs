@@ -43,14 +43,14 @@ namespace BuzzOff.Server.Hubs
 				// if someone's already buzzed in, no prize
 				if (roomUser.Room.Users.Any(x => x.BuzzedIn)) { return Task.CompletedTask; }
 				roomUser.User.BuzzedIn = true;
+				roomUser.Room.BuzzButtonEnabled = false;
 			}
 			finally
 			{
 				roomUser.Room.Lock.ExitWriteLock();
 			}
 
-			return Task.WhenAll(Clients.Group(roomUser.Room.SignalRId).SendAsync("SetButton", false),
-				 Clients.Group(roomUser.Room.SignalRId).SendAsync("UpdateRoom", roomUser.Room),
+			return Task.WhenAll(Clients.Group(roomUser.Room.SignalRId).SendAsync("UpdateRoom", roomUser.Room),
 				 // only make buzz noises for the host and the person who buzzed in.
 				 // if you want this to buzz for everyone, replace the Clients.Clients() part with Clients.Group(roomUser.Room.SignalRId).
 				 Clients.Clients(roomUser.Room.RoomHost.SignalRId, Context.ConnectionId).SendAsync("Buzz", true));
@@ -97,6 +97,7 @@ namespace BuzzOff.Server.Hubs
 			{
 				roomUser.Room.Users.ForEach(x => { x.BuzzedIn = false; x.LockedOut = false; });
 				roomUser.Room.IsPrelocked = false;
+				roomUser.Room.BuzzButtonEnabled = true;
 			}
 			finally
 			{
@@ -104,7 +105,6 @@ namespace BuzzOff.Server.Hubs
 			}
 
 			return Task.WhenAll(
-				Clients.Group(roomUser.Room.SignalRId).SendAsync("SetButton", true),
 				Clients.Group(roomUser.Room.SignalRId).SendAsync("UpdateRoom", roomUser.Room),
 				Clients.Group(roomUser.Room.SignalRId).SendAsync("SendMessage", ""),
 				Clients.Group(roomUser.Room.SignalRId).SendAsync("Buzz", false));
