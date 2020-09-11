@@ -122,11 +122,8 @@ namespace BuzzOff.Server.Hubs
 
 			roomUser.Room.IsPrelocked = isLocked;
 
-			// disable the button when prelocked, maybe?
 			// if the room host wants to disable the button while they're talking, they can just buzz in and reset when ready.
-			return Task.WhenAll(
-				Clients.Group(roomUser.Room.SignalRId).SendAsync("UpdateRoom", roomUser.Room),
-				Clients.Group(roomUser.Room.SignalRId).SendAsync("SendMessage", isLocked ? "🔒 Please wait to buzz in. 🔒" : "🔓 Go! 🔓"));
+			return Clients.Group(roomUser.Room.SignalRId).SendAsync("UpdateRoom", roomUser.Room);
 		}
 
 		public override async Task OnDisconnectedAsync(Exception exception)
