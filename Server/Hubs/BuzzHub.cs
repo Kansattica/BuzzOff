@@ -52,6 +52,7 @@ namespace BuzzOff.Server.Hubs
 
 			return Task.WhenAll(Clients.Group(roomUser.Room.SignalRId).SendAsync("SetButton", false),
 				 Clients.Group(roomUser.Room.SignalRId).SendAsync("UpdateUserList", roomUser.Room.Users),
+				 // only make buzz noises for the host and the person who buzzed in.
 				 Clients.Clients(roomUser.Room.RoomHost.SignalRId, Context.ConnectionId).SendAsync("Buzz"));
 		}
 
