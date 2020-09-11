@@ -89,7 +89,7 @@ connection.on("UpdateRoom", (room) => {
 	let amRoomHost = false;
 	for (const user of users) {
 		const li = document.createElement("li");
-		li.textContent = surround(surround(surround(user.name, user.isRoomHost, '🌟'), user.buzzedIn, '🐝'), user.lockedOut, '🔒');
+		li.textContent = surround(surround(surround(user.name, user.isHost, '🌟'), user.buzzedIn, '🐝'), user.lockedOut, '🔒');
 		
 		if (user.buzzedIn) {
 			li.className = "buzzed-in";
@@ -99,7 +99,7 @@ connection.on("UpdateRoom", (room) => {
 		userlist.appendChild(li);
 
 		if (user.signalRId === connection.connectionId) {
-			amRoomHost = user.isRoomHost;
+			amRoomHost = user.isHost;
 
 			buzzbutton.disabled = buzzShouldBeDisabled || user.lockedOut;
 

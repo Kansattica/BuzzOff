@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace BuzzOff.Server.Entities
@@ -7,7 +7,7 @@ namespace BuzzOff.Server.Entities
 	{
 		public string Name { get; set; }
 		public string SignalRId { get; set; }
-		public bool IsRoomHost { get; set; } = false;
+		public bool IsHost { get; set; } = false;
 		public bool BuzzedIn { get; set; } = false;
 		public bool LockedOut { get; set; } = false;
 

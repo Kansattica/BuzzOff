@@ -25,7 +25,7 @@ namespace BuzzOff.Server
 
 			var updated = _activeRooms.AddOrUpdate(roomId, newRoomId =>
 			{
-				user.IsRoomHost = true;
+				user.IsHost = true;
 				return new Room {
 					SignalRId = newRoomId,
 					RoomHost = user,
@@ -75,10 +75,10 @@ namespace BuzzOff.Server
 						{
 							_userConnectionToRoom.TryRemove(roomuser.User.SignalRId, out var _);
 
-							if (roomuser.User.IsRoomHost && roomuser.Room.Users.Count > 0)
+							if (roomuser.User.IsHost && roomuser.Room.Users.Count > 0)
 							{
 								roomuser.Room.RoomHost = roomuser.Room.Users.First();
-								roomuser.Room.RoomHost.IsRoomHost = true;
+								roomuser.Room.RoomHost.IsHost = true;
 							}
 						}
 
