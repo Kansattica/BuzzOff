@@ -56,7 +56,7 @@ namespace BuzzOff.Server.Hubs
 				 Clients.Clients(roomUser.Room.RoomHost.SignalRId, Context.ConnectionId).SendAsync("Buzz", true));
 		}
 
-        private const int MaximumNameLength = 40;
+		private const int MaximumNameLength = 40;
 		public Task UpdateName(string newName)
 		{
 			if (string.IsNullOrWhiteSpace(newName))
