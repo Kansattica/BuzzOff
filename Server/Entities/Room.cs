@@ -1,16 +1,23 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 using System.Threading;
 
 namespace BuzzOff.Server.Entities
 {
 	public class Room : IEquatable<Room>
 	{
+		[JsonIgnore]
 		public string SignalRId { get; set; }
+
+		[JsonIgnore]
 		public User RoomHost { get; set; }
-		public bool IsPrelocked { get; set; } = false;
+
+		[JsonIgnore]
 		public ReaderWriterLockSlim Lock { get; } = new ReaderWriterLockSlim();
+
 		public List<User> Users { get; set; }
+		public bool IsPrelocked { get; set; } = false;
 
 		public override bool Equals(object obj) => Equals(obj as Room);
 

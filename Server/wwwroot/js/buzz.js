@@ -74,7 +74,11 @@ updatename.onclick = updateName;
 var firstTime = true;
 var buzzShouldBeDisabled = false;
 
-connection.on("UpdateUserList", (users) => {
+connection.on("UpdateRoom", (room) => {
+	const users = room.users;
+
+	buzzbutton.innerText = surround("Buzz!", room.isPrelocked, '🔒');
+
 	userlist.innerHTML = "";
 	if (users.length === 1) {
 		listheader.innerText = "Player:";
@@ -115,10 +119,6 @@ connection.on("UpdateUserList", (users) => {
 
 connection.on("SetButton", (shouldEnable) => {
 	buzzbutton.disabled = buzzShouldBeDisabled = !shouldEnable;
-});
-
-connection.on("PrelockStatus", (isPrelocked) => {
-	buzzbutton.innerText = surround("Buzz!", isPrelocked, '🔒');
 });
 
 connection.on("SendMessage", updateMessage);
