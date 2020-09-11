@@ -109,7 +109,7 @@ connection.on("UpdateRoom", (room) => {
 		}
 		else if (firstTime && userName === user.name) {
 			// if our randomly generated name is the same as another's, we have to change
-			// but only if we just got here
+			// but only if we just got here. The server will handle it otherwise.
 			updateName("");
 		}
 	}
