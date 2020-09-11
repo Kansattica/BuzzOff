@@ -19,7 +19,7 @@ namespace BuzzOff.Server.Hubs
 
 			return Task.WhenAll(Groups.AddToGroupAsync(Context.ConnectionId, roomId),
 			  Clients.Group(roomId).SendAsync("UpdateUserList", entered.Room.Users),
-			  Clients.Group(roomId).SendAsync("PrelockStatus", entered.Room.IsPrelocked));
+			  Clients.Caller.SendAsync("PrelockStatus", entered.Room.IsPrelocked));
 		}
 
 		public Task BuzzIn()
