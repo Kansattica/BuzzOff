@@ -106,7 +106,7 @@ namespace BuzzOff.Server.Hubs
                 Clients.Group(roomUser.Room.SignalRId).SendAsync("SetButton", true),
                 Clients.Group(roomUser.Room.SignalRId).SendAsync("UpdateUserList", roomUser.Room.Users),
                 Clients.Group(roomUser.Room.SignalRId).SendAsync("SendMessage", ""),
-                Clients.Group(roomUser.Room.SignalRId).SendAsync("PrelockStatus", roomUser.Room.IsPrelocked));
+                Clients.Group(roomUser.Room.SignalRId).SendAsync("PrelockStatus", false));
         }
 
         public Task SetPrelock(bool isLocked)
