@@ -56,7 +56,7 @@ namespace BuzzOff.Server.Hubs
 				 Clients.Clients(roomUser.Room.RoomHost.SignalRId, Context.ConnectionId).SendAsync("Buzz", true));
 		}
 
-		const int MaximumNameLength = 40;
+        private const int MaximumNameLength = 40;
 		public Task UpdateName(string newName)
 		{
 			if (string.IsNullOrWhiteSpace(newName))
@@ -90,7 +90,7 @@ namespace BuzzOff.Server.Hubs
 			var roomUser = _rooms.GetRoomFromUser(Context.ConnectionId);
 
 			// only the room owner can clear
-			if (roomUser.Room.RoomHost.SignalRId != Context.ConnectionId)
+			if (!roomUser.User.IsHost)
 			{
 				return Task.CompletedTask;
 			}
@@ -118,7 +118,7 @@ namespace BuzzOff.Server.Hubs
 			var roomUser = _rooms.GetRoomFromUser(Context.ConnectionId);
 
 			// only the room owner can prelock and unlock
-			if (roomUser.Room.RoomHost.SignalRId != Context.ConnectionId)
+			if (!roomUser.User.IsHost)
 			{
 				return Task.CompletedTask;
 			}
