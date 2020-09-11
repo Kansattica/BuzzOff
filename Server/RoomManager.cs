@@ -45,8 +45,8 @@ namespace BuzzOff.Server
 				{
 					existingRoom.Lock.ExitWriteLock();
 				}
-                return existingRoom;
-            });
+				return existingRoom;
+			});
 
 			var roomuser = new RoomUser { User = user, Room = updated };
 			_userConnectionToRoom.TryAdd(userId, roomuser);
