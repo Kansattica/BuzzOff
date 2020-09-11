@@ -2,8 +2,8 @@
 @model BuzzOff.Server.Pages.IndexModel
 @addTagHelper "*, Microsoft.AspNetCore.Mvc.TagHelpers"
 @{
-    Layout = "_Layout";
-    ViewData["Title"] = "Buzz Off!";
+	Layout = "_Layout";
+	ViewData["Title"] = "Buzz Off!";
 }
 <h2>Welcome to Buzz Off!</h2>
 <h3>A simple website for running quiz shows, classes, and anything else that needs to know who "buzzed in" first.</h3>
@@ -14,7 +14,7 @@
 <p><label for="output">Click here to enter, then send the link to your friends:</label></p>
 @*Fill in the link section so you don't get that jarring jump between when the page loads and when the javascript fills it in.**@
 <noscript>
-    I'm afraid Buzz Off! requires JavaScript to work.
+	I'm afraid Buzz Off! requires JavaScript to work.
 </noscript>
 <p><a href="https://buzzoff.hypnovir.us/Room/@Model.SuggestedName" class="click-this" id="output">https://buzzoff.hypnovir.us/Room/@Model.SuggestedName</a></p>
 <p class="top">@Model.FlankEmoji By Grace Danger Lovelace @Model.FlankEmoji</p>

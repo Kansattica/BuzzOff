@@ -131,7 +131,7 @@ connection.on("Buzz", () => {
 			buzzsound.volume = .9;
 		}
 		if (buzzsound.paused)
-            buzzsound.play();
+			buzzsound.play();
 	}
 });
 

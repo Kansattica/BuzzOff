@@ -2,21 +2,21 @@
 @model BuzzOff.Server.Pages.RoomModel
 @addTagHelper "*, Microsoft.AspNetCore.Mvc.TagHelpers"
 @{
-    Layout = "_Layout";
-    ViewData["Title"] = $"{System.Web.HttpUtility.HtmlDecode(Model.RoomId)} | Buzz Off!";
+	Layout = "_Layout";
+	ViewData["Title"] = $"{System.Web.HttpUtility.HtmlDecode(Model.RoomId)} | Buzz Off!";
 }
 <h2>Welcome to <span id="roomname">@(System.Web.HttpUtility.HtmlDecode(Model.RoomId))</span>!</h2>
 
 <noscript>
-    <p>I'm afraid Buzz Off! requires JavaScript to work.</p>
+	<p>I'm afraid Buzz Off! requires JavaScript to work.</p>
 </noscript>
 
 <button id="buzzbutton" class="fancy-buttons" title="You can also hit the space bar to buzz in.">Buzz!</button>
 <br />
 <div id="hostbuttons" hidden>
-    <button id="resetbutton" class="fancy-buttons" title="Only the room host can reset. Hotkey: R">Reset</button><br />
-    <button id="prelock" class="fancy-buttons" title="Anyone who buzzes in while the room is locked can't buzz in until you reset. Use this to keep people from buzzing in while you're still reading the question. Hotkey: P or L">Prelock</button>
-    <button id="unlock" class="fancy-buttons" title="Remove the prelock and let people buzz in. Hotkey: U">Unlock</button>
+	<button id="resetbutton" class="fancy-buttons" title="Only the room host can reset. Hotkey: R">Reset</button><br />
+	<button id="prelock" class="fancy-buttons" title="Anyone who buzzes in while the room is locked can't buzz in until you reset. Use this to keep people from buzzing in while you're still reading the question. Hotkey: P or L">Prelock</button>
+	<button id="unlock" class="fancy-buttons" title="Remove the prelock and let people buzz in. Hotkey: U">Unlock</button>
 </div>
 <hr />
 <span id="currentmessage"></span>
