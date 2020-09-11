@@ -54,7 +54,7 @@ namespace BuzzOff.Server.Hubs
 				 Clients.Group(roomUser.Room.SignalRId).SendAsync("UpdateUserList", roomUser.Room.Users),
 				 // only make buzz noises for the host and the person who buzzed in.
 				 // if you want this to buzz for everyone, replace the Clients.Clients() part with Clients.Group(roomUser.Room.SignalRId).
-				 Clients.Clients(roomUser.Room.RoomHost.SignalRId, Context.ConnectionId).SendAsync("Buzz"));
+				 Clients.Clients(roomUser.Room.RoomHost.SignalRId, Context.ConnectionId).SendAsync("Buzz", true));
 		}
 
 		public Task UpdateName(string newName)
@@ -108,6 +108,7 @@ namespace BuzzOff.Server.Hubs
 				Clients.Group(roomUser.Room.SignalRId).SendAsync("SetButton", true),
 				Clients.Group(roomUser.Room.SignalRId).SendAsync("UpdateUserList", roomUser.Room.Users),
 				Clients.Group(roomUser.Room.SignalRId).SendAsync("SendMessage", ""),
+				Clients.Group(roomUser.Room.SignalRId).SendAsync("Buzz", false),
 				Clients.Group(roomUser.Room.SignalRId).SendAsync("PrelockStatus", false));
 		}
 

@@ -123,7 +123,13 @@ connection.on("PrelockStatus", (isPrelocked) => {
 connection.on("SendMessage", updateMessage);
 
 let buzzsound = false;
-connection.on("Buzz", () => {
+connection.on("Buzz", (shouldBuzz) => {
+	if (!shouldBuzz && buzzsound) {
+		buzzsound.pause();
+		buzzsound.currentTime = 0;
+		return;
+    }
+
 	if (makesound.checked) {
 		if (!buzzsound) {
 			buzzsound = new Audio();
@@ -131,9 +137,9 @@ connection.on("Buzz", () => {
 			// see https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/canPlayType
 			// sound courtesy of https://freesound.org/s/423219/
 			if (buzzsound.canPlayType && (buzzsound.canPlayType('audio/ogg; codecs="vorbis"') === "probably"))
-				buzzsound.src = "/sound/buzzer.ogg";
+				buzzsound = new Audio("/sound/buzzer.ogg");
 			else
-				buzzsound.src = "/sound/buzzer.mp3";
+				buzzsound.src = new Audio("/sound/buzzer.mp3");
 			buzzsound.volume = .9;
 		}
 		if (buzzsound.paused)
