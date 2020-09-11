@@ -126,8 +126,14 @@ let buzzsound = false;
 connection.on("Buzz", () => {
 	if (makesound.checked) {
 		if (!buzzsound) {
-			// courtesy of https://freesound.org/s/423219/
-			buzzsound = new Audio("/sound/buzzer.ogg");
+			buzzsound = new Audio();
+
+			// see https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/canPlayType
+			// sound courtesy of https://freesound.org/s/423219/
+			if (buzzsound.canPlayType && (buzzsound.canPlayType('audio/ogg; codecs="vorbis"') === "probably"))
+				buzzsound.src = "/sound/buzzer.ogg";
+			else
+				buzzsound.src = "/sound/buzzer.mp3";
 			buzzsound.volume = .9;
 		}
 		if (buzzsound.paused)
