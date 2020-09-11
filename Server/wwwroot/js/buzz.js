@@ -125,10 +125,10 @@ connection.on("Buzz", (shouldBuzz) => {
 		buzzsound.pause();
 		buzzsound.currentTime = 0;
 		return;
-    }
+	}
 
 	if (makesound.checked && buzzsound.paused) 
-        buzzsound.play();
+		buzzsound.play();
 });
 
 updateMessage("Connecting...");
