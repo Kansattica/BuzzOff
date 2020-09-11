@@ -56,8 +56,6 @@ function surround(name, shouldSurround, emoji) {
 }
 
 function updateName(newName) {
-	newname.value = newName;
-
 	if (newName !== userName) {
 		userName = newName;
 		connection.send("UpdateName", userName);
