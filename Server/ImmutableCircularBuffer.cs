@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Immutable;
 using System.Threading;
 
@@ -25,6 +25,7 @@ namespace BuzzOff.Server
 
 			// without this, the server always starts on the same thing, 
 			// which will lead to problems if the server restarts while people are using it.
+			// plus, it helps with the apparent randomness if the buffers are staggered.
 			lock (_rand)
 			{
 				idx = _rand.Next(0, _data.Length);
@@ -53,7 +54,7 @@ namespace BuzzOff.Server
 				// This is where I believe it's possible to skip indices if there's thread contention.
 				Interlocked.CompareExchange(ref idx, inBoundsIdx, localIdx);
 
-				// make sure to use the guaranteed-in-bounds index
+				// make sure to use the guaranteed in-bounds index
 				localIdx = inBoundsIdx;
 			}
 
