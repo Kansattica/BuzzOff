@@ -51,7 +51,9 @@ namespace BuzzOff.Server
 			var roomuser = new RoomUser { User = user, Room = updated };
 			_userConnectionToRoom.TryAdd(userId, roomuser);
 
-			_telemetry.TrackEvent("JoinRoom", new Dictionary<string, string> { { "UserId", userId }, { "RoomId", roomId } });
+			_telemetry.TrackEvent("JoinRoom",
+				properties: new Dictionary<string, string> { { "UserId", userId }, { "RoomId", roomId } },
+				metrics: new Dictionary<string, double> { { "UsersInRoom", updated.Users.Count } });
 			CollectMetrics();
 			return roomuser;
 		}
