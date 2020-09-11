@@ -124,6 +124,7 @@ connection.on("PrelockStatus", (isPrelocked) => {
 connection.on("SendMessage", updateMessage);
 
 connection.on("Buzz", (shouldBuzz) => {
+	buzzsound.muted = !makesoud.checked;
 	if (!shouldBuzz) {
 		buzzsound.pause();
 		buzzsound.currentTime = 0;
@@ -132,7 +133,6 @@ connection.on("Buzz", (shouldBuzz) => {
 
 	if (makesound.checked && buzzsound.paused) 
         buzzsound.play();
-    
 });
 
 updateMessage("Connecting...");
@@ -142,10 +142,14 @@ start();
 buzzbutton.onclick = function () { connection.send("BuzzIn"); };
 
 function pressedKey(ev, keyCode) {
-    return ev.repeat === false && ev.code === keyCode;
+    return ev.code === keyCode;
 }
 
 window.onkeydown = function (ev) {
+	if (ev.repeat) {
+		return;
+	}
+
     if (pressedKey(ev, "Space")) {
         connection.send("BuzzIn");
 
@@ -164,7 +168,7 @@ window.onkeydown = function (ev) {
 resetbutton.onclick = function () { connection.send("Reset"); };
 
 newname.onkeydown = function (ev) {
-    if (pressedKey(ev, "Enter"))
+	if (ev.repeat === false && pressedKey(ev, "Enter"))
         updateName();
 }
 
