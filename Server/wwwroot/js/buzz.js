@@ -79,6 +79,9 @@ connection.on("UpdateRoom", (room) => {
 
 	buzzbutton.innerText = surround("Buzz!", room.isPrelocked, '🔒');
 
+	prelock.disabled = room.isPrelocked;
+	unlock.disabled = !room.isPrelocked;
+
 	userlist.innerHTML = "";
 	if (users.length === 1) {
 		listheader.innerText = "Player:";
