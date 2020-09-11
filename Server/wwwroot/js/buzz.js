@@ -89,7 +89,7 @@ connection.on("UpdateRoom", (room) => {
 	let amRoomHost = false;
 	for (const user of users) {
 		const li = document.createElement("li");
-		li.textContent = surround(surround(surround(user.name, user.buzzedIn, '🐝'), user.isRoomHost, '🌟'), user.lockedOut, '🔒');
+		li.textContent = surround(surround(surround(user.name, user.isRoomHost, '🌟'), user.buzzedIn, '🐝'), user.lockedOut, '🔒');
 		
 		if (user.buzzedIn) {
 			li.className = "buzzed-in";
