@@ -141,34 +141,28 @@ start();
 
 buzzbutton.onclick = function () { connection.send("BuzzIn"); };
 
-function pressedKey(ev, keyCode) {
-    return ev.code === keyCode;
+const keyFunc = {
+	" ": function() {
+		connection.send("BuzzIn");
+		// avoid the weird scenario where you have the reset button selected, and hitting the space bar buzzes and resets.
+		buzzbutton.focus();
+	},
+	"r": function () { connection.send("Reset"); },
+	"p": function () { connection.send("SetPrelock", true); },
+	"l": function () { connection.send("SetPrelock", true); },
+	"u": function () { connection.send("SetPrelock", false); }
 }
 
 window.onkeydown = function (ev) {
-	if (ev.repeat) {
-		return;
-	}
-
-    if (pressedKey(ev, "Space")) {
-        connection.send("BuzzIn");
-
-        // avoid the weird scenario where you have the reset button selected, and hitting the space bar buzzes and resets.
-        buzzbutton.focus();
-    }
-    else if (pressedKey(ev, "KeyR")) {
-        connection.send("Reset");
-    } else if (pressedKey(ev, "KeyP") || pressedKey(ev, "KeyL")) {
-        connection.send("SetPrelock", true);
-    } else if (pressedKey(ev, "KeyU")) {
-        connection.send("SetPrelock", false);
-    }
+	const key = ev.key.toLowerCase();
+	if (ev.repeat || !keyFunc.hasOwnProperty(key)) { return; }
+	keyFunc[key]();
 }
 
 resetbutton.onclick = function () { connection.send("Reset"); };
 
 newname.onkeydown = function (ev) {
-	if (ev.repeat === false && pressedKey(ev, "Enter"))
+	if (ev.repeat === false && ev.key === "Enter")
         updateName();
 }
 
