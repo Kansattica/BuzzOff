@@ -59,6 +59,8 @@ namespace BuzzOff.Server.Hubs
         {
             if (string.IsNullOrWhiteSpace(newName))
                 newName = RandomHelpers.RandomUserName();
+            else
+                newName = newName.Trim();
 
             var roomUser = _rooms.GetRoomFromUser(Context.ConnectionId);
 
@@ -66,7 +68,7 @@ namespace BuzzOff.Server.Hubs
             try
             {
                 // if someone tries some funny business where they change their name to someone else's
-                if (roomUser.Room.Users.Any(x => x.SignalRId != Context.ConnectionId && x.Name.Trim() == newName.Trim()))
+                if (roomUser.Room.Users.Any(x => x.SignalRId != Context.ConnectionId && x.Name == newName))
                     newName = "Counterfeit " + newName;
             }
             finally
