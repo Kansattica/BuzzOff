@@ -158,6 +158,7 @@ window.onkeydown = function (ev) {
 resetbutton.onclick = function () { connection.send("Reset"); };
 
 newname.onkeydown = function (ev) {
+	ev.stopPropagation();
 	if (ev.repeat === false && ev.key === "Enter")
 		updateName(newname.value);
 }
