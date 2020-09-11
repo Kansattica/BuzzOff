@@ -122,7 +122,8 @@ namespace BuzzOff.Server.Hubs
 
 			roomUser.Room.IsPrelocked = isLocked;
 
-			// if the room host wants to disable the button while they're talking, they can just buzz in and reset when ready.
+			// this one's a little borderline. I can see the use of having a separate SetPrelocked call, but that leads to weird edge cases like:
+			// if a new user joins, do we call SetPrelocked on them, or do we let the isPrelocked on the room handle it?
 			return Clients.Group(roomUser.Room.SignalRId).SendAsync("UpdateRoom", roomUser.Room);
 		}
 
@@ -130,7 +131,8 @@ namespace BuzzOff.Server.Hubs
 		{
 			var room = _rooms.LeaveRoom(Context.ConnectionId);
 
-			// shouldn't happen, but it's possible with a misbehaving client and it's cheap to guard against
+			// the room shouldn't be null, but it's possible with a misbehaving client (say, one that connects with SignalR, but never calls JoinRoom)
+			// and it's cheap to guard against anyways.
 			if (room != null)
 				await Clients.Group(room.SignalRId).SendAsync("UpdateRoom", room);
 
