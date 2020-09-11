@@ -43,6 +43,7 @@ jobs:
         gzip -k --best wwwroot/js/dist/browser/*.js
         gzip -k --best wwwroot/js/dist/browser/*.js.map
         gzip -k --best wwwroot/css/*.css
+        gzip -k --best wwwroot/sound/*.ogg
         gzip -k --best wwwroot/*.xml
         gzip -k --best wwwroot/*.webmanifest
         gzip -k --best wwwroot/*.svg
@@ -52,6 +53,7 @@ jobs:
         brotli -k --best wwwroot/js/dist/browser/*.js
         brotli -k --best wwwroot/js/dist/browser/*.js.map
         brotli -k --best wwwroot/css/*.css
+        brotli -k --best wwwroot/sound/*.ogg
         brotli -k --best wwwroot/*.xml
         brotli -k --best wwwroot/*.webmanifest
         brotli -k --best wwwroot/*.svg

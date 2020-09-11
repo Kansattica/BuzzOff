@@ -12,6 +12,7 @@ const randomname = document.getElementById("randomname");
 const listheader = document.getElementById("listheader");
 const prelock = document.getElementById("prelock");
 const unlock = document.getElementById("unlock");
+const makesound = document.getElementById("makesound");
 
 let userName = newname.value;
 const roomId = document.getElementById("roomname").innerText;
@@ -120,6 +121,19 @@ connection.on("PrelockStatus", (isPrelocked) => {
 });
 
 connection.on("SendMessage", updateMessage);
+
+let buzzsound = false;
+connection.on("Buzz", () => {
+	if (makesound.checked) {
+		if (!buzzsound) {
+			// courtesy of https://freesound.org/s/423219/
+			buzzsound = new Audio("/sound/buzzer.ogg");
+			buzzsound.volume = .9;
+		}
+		if (buzzsound.paused)
+            buzzsound.play();
+	}
+});
 
 updateMessage("Connecting...");
 // Start the connection.

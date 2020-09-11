@@ -51,7 +51,9 @@ namespace BuzzOff.Server.Hubs
 			}
 
 			return Task.WhenAll(Clients.Group(roomUser.Room.SignalRId).SendAsync("SetButton", false),
-				 Clients.Group(roomUser.Room.SignalRId).SendAsync("UpdateUserList", roomUser.Room.Users));
+				 Clients.Group(roomUser.Room.SignalRId).SendAsync("UpdateUserList", roomUser.Room.Users),
+				 Clients.Caller.SendAsync("Buzz"),
+				 Clients.Client(roomUser.Room.RoomHost.SignalRId).SendAsync("Buzz"));
 		}
 
 		public Task UpdateName(string newName)
