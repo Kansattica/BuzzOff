@@ -75,6 +75,8 @@ namespace BuzzOff.Server
 				OnPrepareResponse = ctx =>
 				{
 					// can't do the cachebusting thing as easily with HTML files, so don't cache them as long
+					// we do cachebusting with css and javascript, so might as well cache those forever
+					// the sounds are relatively large and don't change, so cache those forever, too
 					if (ctx.File.Name.EndsWith(".html"))
 						ctx.Context.Response.Headers.Append("Cache-Control", "public, max-age=86400");
 					else
