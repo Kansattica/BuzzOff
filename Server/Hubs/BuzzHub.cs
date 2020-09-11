@@ -131,11 +131,11 @@ namespace BuzzOff.Server.Hubs
 
         public override async Task OnDisconnectedAsync(Exception exception)
         {
-            var roomUser = _rooms.LeaveRoom(Context.ConnectionId);
+            var room = _rooms.LeaveRoom(Context.ConnectionId);
 
             // shouldn't happen, but it's possible with a misbehaving client and it's cheap to guard against
-            if (roomUser != null)
-                await Clients.Group(roomUser.SignalRId).SendAsync("UpdateUserList", roomUser.Users);
+            if (room != null)
+                await Clients.Group(room.SignalRId).SendAsync("UpdateUserList", room.Users);
 
             await base.OnDisconnectedAsync(exception);
         }
