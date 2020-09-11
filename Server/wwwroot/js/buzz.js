@@ -55,8 +55,8 @@ function surround(name, shouldSurround, emoji) {
 	return shouldSurround ? `${emoji} ${name} ${emoji}` : name;
 }
 
-function updateName() {
-	const newName = newname.value;
+function updateName(newName) {
+	newname.value = newName;
 
 	if (newName !== userName) {
 		userName = newName;
@@ -64,12 +64,7 @@ function updateName() {
 	}
 }
 
-function randomName() {
-	newname.value = "";
-	updateName();
-}
-
-updatename.onclick = updateName;
+updatename.onclick = function () { updateName(newname.value); };
 
 var firstTime = true;
 var buzzShouldBeDisabled = false;
@@ -115,7 +110,7 @@ connection.on("UpdateRoom", (room) => {
 		else if (firstTime && userName === user.name) {
 			// if our randomly generated name is the same as another's, we have to change
 			// but only if we just got here
-				randomName();
+			updateName("");
 		}
 	}
 	firstTime = false;
@@ -164,10 +159,10 @@ resetbutton.onclick = function () { connection.send("Reset"); };
 
 newname.onkeydown = function (ev) {
 	if (ev.repeat === false && ev.key === "Enter")
-        updateName();
+		updateName(newname.value);
 }
 
-randomname.onclick = randomName;
+randomname.onclick = function () { updateName("") };
 
 prelock.onclick = function () { connection.send("SetPrelock", true); }
 unlock.onclick = function () { connection.send("SetPrelock", false); }
