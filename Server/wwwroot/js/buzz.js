@@ -124,7 +124,7 @@ connection.on("PrelockStatus", (isPrelocked) => {
 connection.on("SendMessage", updateMessage);
 
 connection.on("Buzz", (shouldBuzz) => {
-	buzzsound.muted = !makesoud.checked;
+	buzzsound.muted = !makesound.checked;
 	if (!shouldBuzz) {
 		buzzsound.pause();
 		buzzsound.currentTime = 0;
