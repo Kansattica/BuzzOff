@@ -26,10 +26,7 @@ namespace BuzzOff.Server
 		public void ConfigureServices(IServiceCollection services)
 		{
 			services.AddSignalR();
-			services.AddRazorPages(options =>
-			{
-				options.Conventions.AddPageRoute("/Index", "/Room");
-			});
+			services.AddRazorPages();
 			services.AddResponseCompression(opts =>
 			{
 				opts.EnableForHttps = true;
@@ -91,7 +88,7 @@ namespace BuzzOff.Server
 			{
 				endpoints.MapRazorPages();
 				endpoints.MapHub<BuzzHub>("/buzz");
-				endpoints.MapFallbackToFile("index.html");
+				endpoints.MapFallbackToPage("/Index");
 			});
 		}
 	}
