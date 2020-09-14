@@ -15,6 +15,8 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 3.1.401
+    - name: Install zopfli
+      run: sudo apt install -y zopfli
     - name: Install dependencies
       run: dotnet restore
     - name: Install libman and signalr
@@ -38,17 +40,17 @@ jobs:
     - name: Ahead-of-time compress static assets
       run: |
         cd built/wwwroot
-        gzip -k --best js/*.js
-        gzip -k --best js/*.js.map
-        gzip -k --best js/dist/browser/*.js
-        gzip -k --best js/dist/browser/*.js.map
-        gzip -k --best css/*.css
-        gzip -k --best sound/*.ogg
-        gzip -k --best sound/*.mp3
-        gzip -k --best *.xml
-        gzip -k --best *.webmanifest
-        gzip -k --best *.svg
-        gzip -k --best *.html
+        zopfli js/*.js
+        zopfli js/*.js.map
+        zopfli js/dist/browser/*.js
+        zopfli js/dist/browser/*.js.map
+        zopfli css/*.css
+        zopfli sound/*.ogg
+        zopfli sound/*.mp3
+        zopfli *.xml
+        zopfli *.webmanifest
+        zopfli *.svg
+        zopfli *.html
         brotli -k --best js/*.js
         brotli -k --best js/*.js.map
         brotli -k --best js/dist/browser/*.js
