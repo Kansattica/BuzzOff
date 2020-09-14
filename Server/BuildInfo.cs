@@ -14,7 +14,7 @@ namespace BuzzOff.Server
 		private static DateTimeOffset GetTimestamp()
 		{
 			if (long.TryParse("@@BUILD_TIME@@", out var timestamp))
-				return TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTimeOffset.FromUnixTimeSeconds(timestamp), "Pacific Standard Time");
+				return TimeZoneInfo.ConvertTime(DateTimeOffset.FromUnixTimeSeconds(timestamp), TimeZoneInfo.Local);
 			return DateTimeOffset.MinValue;
 		}
 	}
