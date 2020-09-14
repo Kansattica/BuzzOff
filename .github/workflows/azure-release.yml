@@ -39,17 +39,17 @@ jobs:
     - name: Ahead-of-time compress static assets
       run: |
         cd built/wwwroot
-        zopfli --i25 js/*.js
-        zopfli --i25 js/*.js.map
-        zopfli --i25 js/dist/browser/*.js
-        zopfli --i25 js/dist/browser/*.js.map
-        zopfli --i25 css/*.css
-        zopfli --i25 sound/*.ogg
-        zopfli --i25 sound/*.mp3
-        zopfli --i25 *.xml
-        zopfli --i25 *.webmanifest
-        zopfli --i25 *.svg
-        zopfli --i25 *.html
+        zopfli --i50 js/*.js
+        zopfli --i50 js/*.js.map
+        zopfli --i50 js/dist/browser/*.js
+        zopfli --i50 js/dist/browser/*.js.map
+        zopfli --i50 css/*.css
+        zopfli --i50 sound/*.ogg
+        zopfli --i50 sound/*.mp3
+        zopfli --i50 *.xml
+        zopfli --i50 *.webmanifest
+        zopfli --i50 *.svg
+        zopfli --i50 *.html
         brotli -k --best js/*.js
         brotli -k --best js/*.js.map
         brotli -k --best js/dist/browser/*.js
