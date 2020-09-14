@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -14,7 +14,7 @@ namespace BuzzOff.Server
 		private static DateTimeOffset GetTimestamp()
 		{
 			if (long.TryParse("@@BUILD_TIME@@", out var timestamp))
-				return DateTimeOffset.FromUnixTimeSeconds(timestamp);
+				return TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTimeOffset.FromUnixTimeSeconds(timestamp), "Pacific Standard Time");
 			return DateTimeOffset.MinValue;
 		}
 	}
