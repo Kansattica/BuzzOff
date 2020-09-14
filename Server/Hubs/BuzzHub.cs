@@ -25,15 +25,15 @@ namespace BuzzOff.Server.Hubs
 		{
 			var roomUser = _rooms.GetRoomFromUser(Context.ConnectionId);
 
-			// if the room is prelocked and the user isn't locked out yet, lock them out
-			if (roomUser.Room.IsPrelocked && !roomUser.User.LockedOut)
+			// locked out users can't buzz in
+			if (roomUser.User.LockedOut) { return Task.CompletedTask; }
+
+			// if the room is prelocked and the user isn't locked out yet, lock them out and tell everyone.
+			if (roomUser.Room.IsPrelocked)
 			{
 				roomUser.User.LockedOut = true;
 				return Clients.Group(roomUser.Room.SignalRId).SendAsync("UpdateRoom", roomUser.Room);
 			}
-
-			// locked out users can't buzz in
-			if (roomUser.User.LockedOut) { return Task.CompletedTask; }
 
 			// this lock ensures that the first one in (from the server's perspective) wins.
 			// this is an exclusive lock to make sure only one person can have buzzed in.
