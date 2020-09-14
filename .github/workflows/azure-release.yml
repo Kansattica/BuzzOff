@@ -37,25 +37,28 @@ jobs:
       run: dotnet publish --configuration Release --no-restore -o built
     - name: Ahead-of-time compress static assets
       run: |
-        cd built
-        gzip -k --best wwwroot/js/*.js
-        gzip -k --best wwwroot/js/*.js.map
-        gzip -k --best wwwroot/js/dist/browser/*.js
-        gzip -k --best wwwroot/js/dist/browser/*.js.map
-        gzip -k --best wwwroot/css/*.css
-        gzip -k --best wwwroot/*.xml
-        gzip -k --best wwwroot/*.webmanifest
-        gzip -k --best wwwroot/*.svg
-        gzip -k --best wwwroot/*.html
-        brotli -k --best wwwroot/js/*.js
-        brotli -k --best wwwroot/js/*.js.map
-        brotli -k --best wwwroot/js/dist/browser/*.js
-        brotli -k --best wwwroot/js/dist/browser/*.js.map
-        brotli -k --best wwwroot/css/*.css
-        brotli -k --best wwwroot/*.xml
-        brotli -k --best wwwroot/*.webmanifest
-        brotli -k --best wwwroot/*.svg
-        brotli -k --best wwwroot/*.html
+        cd built/wwwroot
+        gzip -k --best js/*.js
+        gzip -k --best js/*.js.map
+        gzip -k --best js/dist/browser/*.js
+        gzip -k --best js/dist/browser/*.js.map
+        gzip -k --best css/*.css
+        gzip -k --best sound/*
+        gzip -k --best *.xml
+        gzip -k --best *.webmanifest
+        gzip -k --best *.svg
+        gzip -k --best *.html
+        brotli -k --best js/*.js
+        brotli -k --best js/*.js.map
+        brotli -k --best js/dist/browser/*.js
+        brotli -k --best js/dist/browser/*.js.map
+        brotli -k --best css/*.css
+        brotli -k --best sound/*
+        brotli -k --best *.xml
+        brotli -k --best *.webmanifest
+        brotli -k --best *.svg
+        brotli -k --best *.html
+        wc sound/*
     - name: Azure Login
       uses: Azure/login@v1
       with:
