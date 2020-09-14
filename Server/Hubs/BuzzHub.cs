@@ -98,7 +98,7 @@ namespace BuzzOff.Server.Hubs
 			roomUser.Room.Lock.EnterWriteLock();
 			try
 			{
-				roomUser.Room.Users.ForEach(x => { x.BuzzedIn = false; x.LockedOut = false; });
+				roomUser.Room.Users.ForEach(x => { x.BuzzedIn = x.LockedOut = false; });
 				roomUser.Room.BuzzButtonEnabled = true;
 			}
 			finally
