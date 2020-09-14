@@ -43,7 +43,8 @@ jobs:
         gzip -k --best js/dist/browser/*.js
         gzip -k --best js/dist/browser/*.js.map
         gzip -k --best css/*.css
-        gzip -k --best sound/*
+        gzip -k --best sound/*.ogg
+        gzip -k --best sound/*.mp3
         gzip -k --best *.xml
         gzip -k --best *.webmanifest
         gzip -k --best *.svg
@@ -53,7 +54,8 @@ jobs:
         brotli -k --best js/dist/browser/*.js
         brotli -k --best js/dist/browser/*.js.map
         brotli -k --best css/*.css
-        brotli -k --best sound/*
+        brotli -k --best sound/*.ogg
+        brotli -k --best sound/*.mp3
         brotli -k --best *.xml
         brotli -k --best *.webmanifest
         brotli -k --best *.svg
