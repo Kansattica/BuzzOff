@@ -72,7 +72,7 @@ namespace BuzzOff.Server.Hubs
 			try
 			{
 				// if someone tries some funny business where they change their name to someone else's
-				if (roomUser.Room.Users.Any(x => x.SignalRId != Context.ConnectionId && x.Name == newName))
+				if (roomUser.Room.Users.Any(x => x.Name == newName && x.SignalRId != Context.ConnectionId))
 					newName = "Counterfeit " + newName;
 			}
 			finally
