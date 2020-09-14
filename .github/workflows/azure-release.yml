@@ -1,4 +1,4 @@
-name: Release to Azure
+name: Build and Release
 
 on:
   push:
@@ -43,7 +43,7 @@ jobs:
         cd built/wwwroot
         zopfli --i50 **/*.!(*@(png|gz|br))
         brotli -k --best **/*.!(*@(png|gz|br))
-        ls -R
+        ls -lR
     - name: Azure Login
       uses: Azure/login@v1
       if: "!contains(github.event.head_commit.message, 'norelease')"
