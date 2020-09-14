@@ -60,6 +60,7 @@ jobs:
         brotli -k --best wwwroot/*.webmanifest
         brotli -k --best wwwroot/*.svg
         brotli -k --best wwwroot/*.html
+        du wwwroot/sound/*
     - name: Azure Login
       uses: Azure/login@v1
       with:
