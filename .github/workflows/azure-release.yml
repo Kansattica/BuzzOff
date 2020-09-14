@@ -8,7 +8,6 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-    if: "!contains(github.event.head_commit.message, 'norelease')"
     steps:      
     - uses: actions/checkout@v2
     - name: Setup .NET Core
@@ -65,11 +64,13 @@ jobs:
         wc sound/*
     - name: Azure Login
       uses: Azure/login@v1
+      if: "!contains(github.event.head_commit.message, 'norelease')"
       with:
         # Paste output of `az ad sp create-for-rbac` as value of secret variable: AZURE_CREDENTIALS
         creds: ${{secrets.AZURE_CREDENTIALS}}
     - name: Azure WebApp
       uses: Azure/webapps-deploy@v2
+      if: "!contains(github.event.head_commit.message, 'norelease')"
       with:
         # Name of the Azure Web App
         app-name: BuzzOffDev
