@@ -99,7 +99,6 @@ namespace BuzzOff.Server.Hubs
 			try
 			{
 				roomUser.Room.Users.ForEach(x => { x.BuzzedIn = false; x.LockedOut = false; });
-				roomUser.Room.IsPrelocked = false;
 				roomUser.Room.BuzzButtonEnabled = true;
 			}
 			finally
