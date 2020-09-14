@@ -39,28 +39,28 @@ jobs:
     - name: Ahead-of-time compress static assets
       run: |
         cd built/wwwroot
-        zopfli --i50 js/*.js
-        zopfli --i50 js/*.js.map
-        zopfli --i50 js/dist/browser/*.js
-        zopfli --i50 js/dist/browser/*.js.map
-        zopfli --i50 css/*.css
-        zopfli --i50 sound/*.ogg
-        zopfli --i50 sound/*.mp3
-        zopfli --i50 *.xml
-        zopfli --i50 *.webmanifest
-        zopfli --i50 *.svg
-        zopfli --i50 *.html
-        brotli -k --best js/*.js
-        brotli -k --best js/*.js.map
-        brotli -k --best js/dist/browser/*.js
-        brotli -k --best js/dist/browser/*.js.map
-        brotli -k --best css/*.css
-        brotli -k --best sound/*.ogg
-        brotli -k --best sound/*.mp3
-        brotli -k --best *.xml
-        brotli -k --best *.webmanifest
-        brotli -k --best *.svg
-        brotli -k --best *.html
+        zopfli -v --i50 js/*.js
+        zopfli -v --i50 js/*.js.map
+        zopfli -v --i50 js/dist/browser/*.js
+        zopfli -v --i50 js/dist/browser/*.js.map
+        zopfli -v --i50 css/*.css
+        zopfli -v --i50 sound/*.ogg
+        zopfli -v --i50 sound/*.mp3
+        zopfli -v --i50 *.xml
+        zopfli -v --i50 *.webmanifest
+        zopfli -v --i50 *.svg
+        zopfli -v --i50 *.html
+        brotli -v -k --best js/*.js
+        brotli -v -k --best js/*.js.map
+        brotli -v -k --best js/dist/browser/*.js
+        brotli -v -k --best js/dist/browser/*.js.map
+        brotli -v -k --best css/*.css
+        brotli -v -k --best sound/*.ogg
+        brotli -v -k --best sound/*.mp3
+        brotli -v -k --best *.xml
+        brotli -v -k --best *.webmanifest
+        brotli -v -k --best *.svg
+        brotli -v -k --best *.html
     - name: Azure Login
       uses: Azure/login@v1
       if: "!contains(github.event.head_commit.message, 'norelease')"
