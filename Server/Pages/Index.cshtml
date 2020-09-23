@@ -17,7 +17,8 @@
 </noscript>
 @*Fill in the link section so you don't get that jarring jump between when the page loads and when the javascript fills it in.**@
 <p><a href="https://buzzoff.hypnovir.us/Room/@Model.SuggestedName" class="click-this" id="output">https://buzzoff.hypnovir.us/Room/@Model.SuggestedName</a></p>
-<p class="top">@Model.FlankEmoji By Grace Danger Lovelace @Model.FlankEmoji</p>
+<p class="top">Currently hosting @Model.UserCount user@(Model.UserCount == 1 ? "" : "s")  in @Model.RoomCount room@(Model.RoomCount == 1 ? "" : "s").</p>
+<p>@Model.FlankEmoji By Grace Danger Lovelace @Model.FlankEmoji</p>
 <p><a href="https://github.com/Kansattica/BuzzOff" target="_blank">https://github.com/Kansattica/BuzzOff</a></p>
 <p>Built from commit <a href="https://github.com/Kansattica/BuzzOff/commit/@(BuzzOff.Server.BuildInfo.GitHash)" target="_blank">@BuzzOff.Server.BuildInfo.ShortGitHash</a> on @BuzzOff.Server.BuildInfo.BuildTimestamp.</p>
 

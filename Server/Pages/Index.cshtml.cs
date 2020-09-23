@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -12,6 +12,9 @@ namespace BuzzOff.Server.Pages
 
 		public string SuggestedName { get; set; }
 		public string FlankEmoji { get; set; }
+
+		public int RoomCount { get => _roomManager.RoomCount; }
+		public int UserCount { get => _roomManager.UserCount; }
 
 		public IndexModel(RoomManager roomManager) => _roomManager = roomManager;
 
