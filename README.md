@@ -13,19 +13,15 @@ Try it out at [buzzoff.hypnovir.us](https://buzzoff.hypnovir.us)!
 
 3. `cd Server`. You'll be doing the rest of this from in here.
 
-4. Run `dotnet tool restore` and then `dotnet libman restore` to download the SignalR Javascript libraries. If you get a message about unpkg failing or whatever, just try again in a bit.
+4. Run `dotnet run --configuration Release` to compile and run the server. You'll be given your choice of two addresses to point your browser at. If you want to use the HTTPS endpoint, you'll have to run `dotnet dev-certs https --trust` first.
 
-5. Run `dotnet run --configuration Release` to compile and run the server. You'll be given your choice of two addresses to point your browser at. If you want to use the HTTPS endpoint, you'll have to run `dotnet dev-certs https --trust` first.
-
-6. If you want to deploy this to some other server with just the .NET runtime, you'll want to `dotnet publish --configuration Release`, copy the folder to where you want it, and and run `dotnet BuzzOff.Server.dll` there.
+5. If you want to deploy this to some other server with just the .NET runtime, you'll want to `dotnet publish --configuration Release`, copy the folder to where you want it, and and run `dotnet BuzzOff.Server.dll` there.
 
 ### Visual Studio
 
 3. Open `BuzzOff.sln`.
 
-4. Right click on `libman.json` in the Solution Explorer and click `Restore Client-Side Libraries` to download the SignalR Javascript libraries.
-
-5. Hit F5 and watch it go.
+4. Hit F5 and watch it go.
 
 ### Notes
 

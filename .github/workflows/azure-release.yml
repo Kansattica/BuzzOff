@@ -16,17 +16,6 @@ jobs:
         dotnet-version: 3.1.401
     - name: Install dependencies
       run: dotnet restore
-    - name: Install libman and signalr
-      run: |
-        cd Server
-        dotnet tool restore
-        dotnet libman restore
-        # fail if libman couldn't download the files.
-        if [[ -f wwwroot/js/dist/browser/signalr.js && -f wwwroot/js/dist/browser/signalr.min.js ]]; then
-          exit 0;
-        else
-          exit 1;
-        fi
     - name: Update build info
       run: |
         cd Server
