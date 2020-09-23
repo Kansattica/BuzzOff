@@ -23,6 +23,10 @@ function updateMessage (message) {
 	hideifnomessage.hidden = currentmessage.textContent === "";
 }
 
+if (typeof (signalr) === "undefined") {
+	updateMessage("Couldn't load signalr.js. Did you remember to restore with libman?");
+}
+
 var connection = new signalR.HubConnectionBuilder().withUrl("/buzz").withAutomaticReconnect().build();
 
 async function start() {
