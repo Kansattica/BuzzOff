@@ -14,17 +14,18 @@ const prelock = document.getElementById("prelock");
 const unlock = document.getElementById("unlock");
 const makesound = document.getElementById("makesound");
 const buzzsound = document.getElementById("buzzsound");
+const connstatus = document.getElementById("connstatus");
 
 let userName = newname.value;
 const roomId = document.getElementById("roomname").innerText;
 
-function updateMessage (message) {
+function updateMessage(message) {
 	currentmessage.textContent = message;
 	hideifnomessage.hidden = currentmessage.textContent === "";
 }
 
 if (typeof (signalr) === "undefined") {
-	updateMessage("Couldn't load signalr.js. Did you remember to restore with libman?");
+	updateMessage("Couldn't load signalr.js.");
 }
 
 var connection = new signalR.HubConnectionBuilder().withUrl("/buzz").withAutomaticReconnect().build();
@@ -32,7 +33,9 @@ var connection = new signalR.HubConnectionBuilder().withUrl("/buzz").withAutomat
 async function start() {
 	try {
 		await connection.start();
-		updateMessage("Connected!");
+		updateMessage("");
+		connstatus.innerText = "Connected!";
+		connstatus.className = "connected";
 		connection.send("JoinRoom", roomId, userName);
 	} catch (err) {
 		console.log(err);
@@ -42,16 +45,22 @@ async function start() {
 
 connection.onclose(async () => {
 	updateMessage("Disconnected. If it doesn't come back in a few seconds, try refreshing.")
+	connstatus.innerText = "Disconnected";
+	connstatus.className = "disconnected";
 	await start();
 });
 
 connection.onreconnecting((err) => {
 	updateMessage("Reconnecting...");
+	connstatus.innerText = "Reconnecting...";
+	connstatus.className = "connecting";
 	console.log(err);
 });
 
 connection.onreconnected(() => {
-	updateMessage("Reconnected!");
+	updateMessage("");
+	connstatus.innerText = "Connected!";
+	connstatus.className = "connected";
 	connection.send("JoinRoom", roomId, userName);
 });
 
@@ -89,7 +98,7 @@ connection.on("UpdateRoom", (room) => {
 	for (const user of users) {
 		const li = document.createElement("li");
 		li.textContent = surround(surround(surround(user.name, user.isHost, '🌟'), user.buzzedIn, '🐝'), user.lockedOut, '🔒');
-		
+
 		if (user.buzzedIn) {
 			li.className = "buzzed-in";
 			updateMessage(user.name + " buzzed in!");
@@ -131,7 +140,7 @@ connection.on("Buzz", (shouldBuzz) => {
 		return;
 	}
 
-	if (makesound.checked && buzzsound.paused) 
+	if (makesound.checked && buzzsound.paused)
 		buzzsound.play();
 });
 
@@ -142,7 +151,7 @@ start();
 buzzbutton.onclick = function () { connection.send("BuzzIn"); };
 
 const keyFunc = {
-	" ": function() {
+	" ": function () {
 		connection.send("BuzzIn");
 		// avoid the weird scenario where you have the reset button selected, and hitting the space bar buzzes and resets.
 		buzzbutton.focus();
