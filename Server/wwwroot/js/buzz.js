@@ -25,7 +25,7 @@ function updateMessage (message) {
 }
 
 if (typeof (signalr) === "undefined") {
-	updateMessage("Couldn't load signalr.js. Did you remember to restore with libman?");
+	updateMessage("Couldn't load signalr.js.");
 }
 
 var connection = new signalR.HubConnectionBuilder().withUrl("/buzz").withAutomaticReconnect().build();
