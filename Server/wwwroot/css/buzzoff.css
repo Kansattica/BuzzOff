@@ -1,4 +1,4 @@
-﻿.buzzed-in {
+﻿.buzzed-in, .disconnected {
 	color: red;
 }
 
@@ -8,6 +8,14 @@ body {
 }
 
 h2, h3 {
+	color: #00AA00;
+}
+
+.connecting {
+	color: yellow;
+}
+
+.connected {
 	color: #00AA00;
 }
 

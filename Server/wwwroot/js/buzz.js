@@ -14,6 +14,7 @@ const prelock = document.getElementById("prelock");
 const unlock = document.getElementById("unlock");
 const makesound = document.getElementById("makesound");
 const buzzsound = document.getElementById("buzzsound");
+const connstatus = document.getElementById("connstatus");
 
 let userName = newname.value;
 const roomId = document.getElementById("roomname").innerText;
@@ -32,7 +33,9 @@ var connection = new signalR.HubConnectionBuilder().withUrl("/buzz").withAutomat
 async function start() {
 	try {
 		await connection.start();
-		updateMessage("Connected!");
+		updateMessage("");
+		connstatus.innerText = "Connected!";
+		connstatus.className = "connected";
 		connection.send("JoinRoom", roomId, userName);
 	} catch (err) {
 		console.log(err);
@@ -42,16 +45,22 @@ async function start() {
 
 connection.onclose(async () => {
 	updateMessage("Disconnected. If it doesn't come back in a few seconds, try refreshing.")
+	connstatus.innerText = "Disconnected";
+	connstatus.className = "disconnected";
 	await start();
 });
 
 connection.onreconnecting((err) => {
 	updateMessage("Reconnecting...");
+	connstatus.innerText = "Reconnecting...";
+	connstatus.className = "connecting";
 	console.log(err);
 });
 
 connection.onreconnected(() => {
-	updateMessage("Reconnected!");
+	updateMessage("");
+    connstatus.innerText = "Connected!";
+    connstatus.className = "connected";
 	connection.send("JoinRoom", roomId, userName);
 });
 
