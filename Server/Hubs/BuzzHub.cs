@@ -41,8 +41,8 @@ namespace BuzzOff.Server.Hubs
 			roomUser.Room.Lock.EnterWriteLock();
 			try
 			{
-				// if you've already buzzed in, no prize
-				if (roomUser.Room.BuzzedInIds.Any(x => x == roomUser.User.SignalRId)) { return Task.CompletedTask; }
+				// if you've already buzzed in or we're full, no prize
+				if (roomUser.Room.BuzzedInIds.Count >= roomUser.Room.MaxBuzzedIn || roomUser.Room.BuzzedInIds.Any(x => x == roomUser.User.SignalRId)) { return Task.CompletedTask; }
 				roomUser.User.BuzzedIn = true;
 				roomUser.Room.BuzzedInIds.Add(roomUser.User.SignalRId);
 				//roomUser.Room.BuzzButtonEnabled = false;
@@ -130,6 +130,22 @@ namespace BuzzOff.Server.Hubs
 			// if a new user joins, do we call SetPrelocked on them, or do we let the isPrelocked on the room handle it?
 			return Clients.Group(roomUser.Room.SignalRId).SendAsync("UpdateRoom", roomUser.Room);
 		}
+
+		public Task UpdateMaxBuzzedIn(int count)
+        {
+			if (count != 1 && count != 3) { return Task.CompletedTask; }
+
+			var roomUser = _rooms.GetRoomFromUser(Context.ConnectionId);
+
+			if (!roomUser.User.IsHost)
+			{
+				return Task.CompletedTask;
+			}
+
+			roomUser.Room.MaxBuzzedIn = count;
+
+			return Clients.Group(roomUser.Room.SignalRId).SendAsync("UpdateRoom", roomUser.Room);
+        }
 
 		public override async Task OnDisconnectedAsync(Exception exception)
 		{

@@ -15,6 +15,7 @@ const unlock = document.getElementById("unlock");
 const makesound = document.getElementById("makesound");
 const buzzsound = document.getElementById("buzzsound");
 const connstatus = document.getElementById("connstatus");
+const countselect = document.getElementById("countselect");
 
 let userName = newname.value;
 const roomId = document.getElementById("roomname").innerText;
@@ -80,8 +81,6 @@ updatename.onclick = function () { updateName(newname.value); };
 var firstTime = true;
 var buzzShouldBeDisabled = false;
 
-const buzzOrder = ["🥇", "🥈", "🥉"];
-
 connection.on("UpdateRoom", (room) => {
 	const users = room.users;
 
@@ -95,6 +94,8 @@ connection.on("UpdateRoom", (room) => {
 	} else {
 		listheader.innerText = users.length + " Players:";
 	}
+
+    const buzzOrder = room.buzzedInIds.length == 1 ? ['🐝'] : ["🥇", "🥈", "🥉"];
 
 	let amRoomHost = false;
 	for (const user of users) {
@@ -127,6 +128,12 @@ connection.on("UpdateRoom", (room) => {
 	if (amRoomHost) {
 		prelock.disabled = room.isPrelocked;
 		unlock.disabled = !room.isPrelocked;
+		for (let i = 0; i < countselect.options.length; i++) {
+			if (parseInt(countselect.options[i].value) === room.maxBuzzedIn) {
+				countselect.selectedIndex = i;
+				break;
+			}
+		}
 	}
 	hostbuttons.hidden = !amRoomHost;
 });
@@ -181,3 +188,4 @@ randomname.onclick = function () { updateName("") };
 
 prelock.onclick = function () { connection.send("SetPrelock", true); }
 unlock.onclick = function () { connection.send("SetPrelock", false); }
+countselect.onchange = function (ev) { connection.send("UpdateMaxBuzzedIn", parseInt(ev.target.value)); };

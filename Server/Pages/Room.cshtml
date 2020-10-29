@@ -14,9 +14,14 @@
 <button id="buzzbutton" class="fancy-buttons" title="You can also hit the space bar to buzz in.">Buzz!</button>
 <br />
 <div id="hostbuttons" hidden>
-	<button id="resetbutton" class="fancy-buttons" title="Only the room host can reset. Hotkey: R">Reset</button><br />
-	<button id="prelock" class="fancy-buttons" title="Anyone who buzzes in while the room is locked can't buzz in until you reset. Use this to keep people from buzzing in while you're still reading the question. Hotkey: P or L">Prelock</button>
-	<button id="unlock" class="fancy-buttons" title="Remove the prelock and let people buzz in. Hotkey: U">Unlock</button>
+    <button id="resetbutton" class="fancy-buttons" title="Only the room host can reset. Hotkey: R">Reset</button><br />
+    <button id="prelock" class="fancy-buttons" title="Anyone who buzzes in while the room is locked can't buzz in until you reset. Use this to keep people from buzzing in while you're still reading the question. Hotkey: P or L">Prelock</button>
+    <button id="unlock" class="fancy-buttons" title="Remove the prelock and let people buzz in. Hotkey: U">Unlock</button><br />
+    <p><label for="countselect">Game Style:</label></p>
+    <select id="countselect">
+        <option value="1" selected>First Past The Post</option>
+        <option value="3">Top Three</option>
+    </select>
 </div>
 <hr />
 <span id="currentmessage"></span>
