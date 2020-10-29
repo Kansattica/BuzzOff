@@ -15,6 +15,7 @@ const unlock = document.getElementById("unlock");
 const makesound = document.getElementById("makesound");
 const buzzsound = document.getElementById("buzzsound");
 const connstatus = document.getElementById("connstatus");
+const modedisplay = document.getElementById("modedisplay");
 const countselect = document.getElementById("countselect");
 
 let userName = newname.value;
@@ -128,11 +129,12 @@ connection.on("UpdateRoom", (room) => {
 	if (amRoomHost) {
 		prelock.disabled = room.isPrelocked;
 		unlock.disabled = !room.isPrelocked;
-		for (let i = 0; i < countselect.options.length; i++) {
-			if (parseInt(countselect.options[i].value) === room.maxBuzzedIn) {
-				countselect.selectedIndex = i;
-				break;
-			}
+	}
+	for (let i = 0; i < countselect.options.length; i++) {
+		if (parseInt(countselect.options[i].value) === room.maxBuzzedIn) {
+			countselect.selectedIndex = i;
+			modedisplay.innerText = "Game Mode: " + countselect.options[i].innerText;
+			break;
 		}
 	}
 	hostbuttons.hidden = !amRoomHost;

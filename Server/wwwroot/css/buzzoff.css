@@ -7,7 +7,7 @@ body {
 	color: #F2F1EF;
 }
 
-h2, h3 {
+h2, h3, h4 {
 	color: #00AA00;
 }
 
@@ -51,7 +51,7 @@ hr {
 	list-style: none;
 }
 
-#roomname {
+.small-bottom {
 	margin-bottom: 1%;
 }
 

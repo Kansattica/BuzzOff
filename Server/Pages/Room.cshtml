@@ -5,8 +5,9 @@
 	Layout = "_Layout";
 	ViewData["Title"] = $"{System.Web.HttpUtility.HtmlDecode(Model.RoomId)} | Buzz Off!";
 }
-<h2>Welcome to <span id="roomname">@(System.Web.HttpUtility.HtmlDecode(Model.RoomId))</span>!</h2>
+<h2 class="small-bottom">Welcome to <span id="roomname">@(System.Web.HttpUtility.HtmlDecode(Model.RoomId))</span>!</h2>
 <h3 id="connstatus" class="connecting">Connecting...</h3>
+<h4 class="small-bottom" id="modedisplay"></h4>
 <noscript>
 	<p>I'm afraid Buzz Off! requires JavaScript to work.</p>
 </noscript>
