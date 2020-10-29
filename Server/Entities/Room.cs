@@ -19,9 +19,9 @@ namespace BuzzOff.Server.Entities
 		public List<User> Users { get; set; }
 		public List<string> BuzzedInIds { get; set; } = new List<string>();
 		public bool IsPrelocked { get; set; } = false;
-        public bool BuzzButtonEnabled => BuzzedInIds.Count < 3;
+		public bool BuzzButtonEnabled => BuzzedInIds.Count < 3;
 
-        public override bool Equals(object obj) => Equals(obj as Room);
+		public override bool Equals(object obj) => Equals(obj as Room);
 
 		public bool Equals(Room other) => other != null && SignalRId == other.SignalRId;
 
