@@ -110,7 +110,7 @@ connection.on("UpdateRoom", (room) => {
 		if (user.signalRId === connection.connectionId) {
 			amRoomHost = user.isHost;
 
-			buzzbutton.disabled = buzzShouldBeDisabled || user.lockedOut;
+			buzzbutton.disabled = buzzShouldBeDisabled || user.buzzedIn || user.lockedOut;
 
 			// if the server tells us our name changed, change it
 			if (user.name !== userName)
