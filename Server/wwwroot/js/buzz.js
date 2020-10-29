@@ -130,14 +130,14 @@ connection.on("UpdateRoom", (room) => {
 		prelock.disabled = room.isPrelocked;
 		unlock.disabled = !room.isPrelocked;
 	}
+	hostbuttons.hidden = !amRoomHost;
 	for (let i = 0; i < countselect.options.length; i++) {
 		if (parseInt(countselect.options[i].value) === room.maxBuzzedIn) {
 			countselect.selectedIndex = i;
 			modedisplay.innerText = "Game Mode: " + countselect.options[i].innerText;
-			break;
+			return;
 		}
 	}
-	hostbuttons.hidden = !amRoomHost;
 });
 
 connection.on("SendMessage", updateMessage);
