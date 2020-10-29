@@ -15,8 +15,11 @@ const unlock = document.getElementById("unlock");
 const makesound = document.getElementById("makesound");
 const buzzsound = document.getElementById("buzzsound");
 const connstatus = document.getElementById("connstatus");
+const modedisplay = document.getElementById("modedisplay");
+const countselect = document.getElementById("countselect");
+const colorblind = document.getElementById("colorblind");
 
-let userName = newname.value;
+let userName = "";
 const roomId = document.getElementById("roomname").innerText;
 
 function updateMessage(message) {
@@ -77,10 +80,11 @@ function updateName(newName) {
 
 updatename.onclick = function () { updateName(newname.value); };
 
-var firstTime = true;
 var buzzShouldBeDisabled = false;
 
-connection.on("UpdateRoom", (room) => {
+let currentRoom = undefined;
+
+function updateRoom(room) {
 	const users = room.users;
 
 	buzzbutton.innerText = surround("Buzz!", room.isPrelocked, '🔒');
@@ -94,40 +98,45 @@ connection.on("UpdateRoom", (room) => {
 		listheader.innerText = users.length + " Players:";
 	}
 
+	const buzzOrder = (room.maxBuzzedIn === 1 && room.buzzedInIds.length === 1) ? ['🐝'] : (colorblind.checked ? ["1️⃣", "2️⃣", "3️⃣"] : ["🥇", "🥈", "🥉"]);
+
 	let amRoomHost = false;
 	for (const user of users) {
 		const li = document.createElement("li");
-		li.textContent = surround(surround(surround(user.name, user.isHost, '🌟'), user.buzzedIn, '🐝'), user.lockedOut, '🔒');
+		li.textContent = surround(surround(surround(user.name, user.isHost, '🌟'), user.buzzedIn, buzzOrder[room.buzzedInIds.indexOf(user.signalRId)]), user.lockedOut, '🔒');
 
 		if (user.buzzedIn) {
 			li.className = "buzzed-in";
 			updateMessage(user.name + " buzzed in!");
-			buzzbutton.disabled = buzzShouldBeDisabled = true;
 		}
 		userlist.appendChild(li);
 
 		if (user.signalRId === connection.connectionId) {
 			amRoomHost = user.isHost;
 
-			buzzbutton.disabled = buzzShouldBeDisabled || user.lockedOut;
+			buzzbutton.disabled = buzzShouldBeDisabled || user.buzzedIn || user.lockedOut;
 
-			// if the server tells us our name changed, change it
-			if (user.name !== userName)
-				userName = newname.value = user.name;
-		}
-		else if (firstTime && userName === user.name) {
-			firstTime = false;
-			// if our randomly generated name is the same as another's, we have to change
-			// but only if we just got here. The server will handle it otherwise.
-			updateName("");
+			userName = newname.value = user.name;
 		}
 	}
-	firstTime = false;
+
 	if (amRoomHost) {
 		prelock.disabled = room.isPrelocked;
 		unlock.disabled = !room.isPrelocked;
 	}
+
 	hostbuttons.hidden = !amRoomHost;
+	for (let i = 0; i < countselect.options.length; i++) {
+		if (parseInt(countselect.options[i].value) === room.maxBuzzedIn) {
+			countselect.selectedIndex = i;
+			modedisplay.innerText = "Game Mode: " + countselect.options[i].innerText;
+			return;
+		}
+	}
+}
+
+connection.on("UpdateRoom", (room) => {
+	updateRoom(currentRoom = room);
 });
 
 connection.on("SendMessage", updateMessage);
@@ -180,3 +189,5 @@ randomname.onclick = function () { updateName("") };
 
 prelock.onclick = function () { connection.send("SetPrelock", true); }
 unlock.onclick = function () { connection.send("SetPrelock", false); }
+countselect.onchange = function (ev) { connection.send("UpdateMaxBuzzedIn", parseInt(ev.target.value)); };
+colorblind.onchange = function () { updateRoom(currentRoom); };

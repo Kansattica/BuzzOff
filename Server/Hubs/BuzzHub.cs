@@ -1,4 +1,5 @@
 using BuzzOff.Server.Entities;
+using Microsoft.AspNetCore.Routing.Patterns;
 using Microsoft.AspNetCore.SignalR;
 using System;
 using System.Collections.Generic;
@@ -15,7 +16,7 @@ namespace BuzzOff.Server.Hubs
 
 		public Task JoinRoom(string roomId, string userName)
 		{
-			var entered = _rooms.EnterRoom(userName, Context.ConnectionId, roomId);
+			var entered = _rooms.EnterRoom(string.IsNullOrWhiteSpace(userName) ? RandomHelpers.RandomUserName() : userName, Context.ConnectionId, roomId);
 
 			return Task.WhenAll(Groups.AddToGroupAsync(Context.ConnectionId, roomId),
 			  Clients.Group(roomId).SendAsync("UpdateRoom", entered.Room));
@@ -40,10 +41,11 @@ namespace BuzzOff.Server.Hubs
 			roomUser.Room.Lock.EnterWriteLock();
 			try
 			{
-				// if someone's already buzzed in, no prize
-				if (roomUser.Room.Users.Any(x => x.BuzzedIn)) { return Task.CompletedTask; }
+				// if you've already buzzed in or we're full, no prize
+				if (roomUser.Room.BuzzedInIds.Count >= roomUser.Room.MaxBuzzedIn || roomUser.Room.BuzzedInIds.Any(x => x == roomUser.User.SignalRId)) { return Task.CompletedTask; }
 				roomUser.User.BuzzedIn = true;
-				roomUser.Room.BuzzButtonEnabled = false;
+				roomUser.Room.BuzzedInIds.Add(roomUser.User.SignalRId);
+				//roomUser.Room.BuzzButtonEnabled = false;
 			}
 			finally
 			{
@@ -99,7 +101,7 @@ namespace BuzzOff.Server.Hubs
 			try
 			{
 				roomUser.Room.Users.ForEach(x => { x.BuzzedIn = x.LockedOut = false; });
-				roomUser.Room.BuzzButtonEnabled = true;
+				roomUser.Room.BuzzedInIds.Clear();
 			}
 			finally
 			{
@@ -128,6 +130,22 @@ namespace BuzzOff.Server.Hubs
 			// if a new user joins, do we call SetPrelocked on them, or do we let the isPrelocked on the room handle it?
 			return Clients.Group(roomUser.Room.SignalRId).SendAsync("UpdateRoom", roomUser.Room);
 		}
+
+		public Task UpdateMaxBuzzedIn(int count)
+        {
+			if (count != 1 && count != 3) { return Task.CompletedTask; }
+
+			var roomUser = _rooms.GetRoomFromUser(Context.ConnectionId);
+
+			if (!roomUser.User.IsHost)
+			{
+				return Task.CompletedTask;
+			}
+
+			roomUser.Room.MaxBuzzedIn = count;
+
+			return Clients.Group(roomUser.Room.SignalRId).SendAsync("UpdateRoom", roomUser.Room);
+        }
 
 		public override async Task OnDisconnectedAsync(Exception exception)
 		{

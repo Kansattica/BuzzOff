@@ -13,21 +13,9 @@ namespace BuzzOff.Server.Pages
 	{
 		[BindProperty(SupportsGet = true)]
 		public string RoomId { get; set; }
-		public string UserName { get; set; }
 
 		public void OnGet()
 		{
-			if (Request.Query.TryGetValue("user", out var value))
-			{
-				UserName = value.FirstOrDefault();
-			}
-
-			if (string.IsNullOrWhiteSpace(UserName))
-			{
-				UserName = RandomHelpers.RandomUserName();
-			}
-
-			UserName = HttpUtility.HtmlEncode(UserName);
 			RoomId = HttpUtility.HtmlEncode(RoomId);
 		}
 	}

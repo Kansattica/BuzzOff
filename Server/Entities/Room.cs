@@ -17,8 +17,10 @@ namespace BuzzOff.Server.Entities
 		public ReaderWriterLockSlim Lock { get; } = new ReaderWriterLockSlim();
 
 		public List<User> Users { get; set; }
+		public List<string> BuzzedInIds { get; set; } = new List<string>();
 		public bool IsPrelocked { get; set; } = false;
-		public bool BuzzButtonEnabled { get; set; } = true;
+		public int MaxBuzzedIn { get; set; } = 1;
+		public bool BuzzButtonEnabled => BuzzedInIds.Count < MaxBuzzedIn;
 
 		public override bool Equals(object obj) => Equals(obj as Room);
 
