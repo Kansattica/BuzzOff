@@ -16,7 +16,7 @@ namespace BuzzOff.Server.Hubs
 
 		public Task JoinRoom(string roomId, string userName)
 		{
-			var entered = _rooms.EnterRoom(userName, Context.ConnectionId, roomId);
+			var entered = _rooms.EnterRoom(string.IsNullOrWhiteSpace(userName) ? RandomHelpers.RandomUserName() : userName, Context.ConnectionId, roomId);
 
 			return Task.WhenAll(Groups.AddToGroupAsync(Context.ConnectionId, roomId),
 			  Clients.Group(roomId).SendAsync("UpdateRoom", entered.Room));

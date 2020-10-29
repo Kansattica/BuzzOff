@@ -19,7 +19,7 @@ const modedisplay = document.getElementById("modedisplay");
 const countselect = document.getElementById("countselect");
 const colorblind = document.getElementById("colorblind");
 
-let userName = newname.value;
+let userName = "";
 const roomId = document.getElementById("roomname").innerText;
 
 function updateMessage(message) {
@@ -80,7 +80,6 @@ function updateName(newName) {
 
 updatename.onclick = function () { updateName(newname.value); };
 
-var firstTime = true;
 var buzzShouldBeDisabled = false;
 
 let currentRoom = undefined;
@@ -119,18 +118,13 @@ function updateRoom(room) {
 
 			userName = newname.value = user.name;
 		}
-		else if (firstTime && userName === user.name) {
-			firstTime = false;
-			// if our randomly generated name is the same as another's, we have to change
-			// but only if we just got here. The server will handle it otherwise.
-			updateName("");
-		}
 	}
-	firstTime = false;
+
 	if (amRoomHost) {
 		prelock.disabled = room.isPrelocked;
 		unlock.disabled = !room.isPrelocked;
 	}
+
 	hostbuttons.hidden = !amRoomHost;
 	for (let i = 0; i < countselect.options.length; i++) {
 		if (parseInt(countselect.options[i].value) === room.maxBuzzedIn) {
