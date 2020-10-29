@@ -95,7 +95,7 @@ connection.on("UpdateRoom", (room) => {
 		listheader.innerText = users.length + " Players:";
 	}
 
-    const buzzOrder = room.buzzedInIds.length == 1 ? ['🐝'] : ["🥇", "🥈", "🥉"];
+	const buzzOrder = room.buzzedInIds.length == 1 ? ['🐝'] : ["🥇", "🥈", "🥉"];
 
 	let amRoomHost = false;
 	for (const user of users) {
