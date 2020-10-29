@@ -1,4 +1,5 @@
 using BuzzOff.Server.Entities;
+using Microsoft.AspNetCore.Routing.Patterns;
 using Microsoft.AspNetCore.SignalR;
 using System;
 using System.Collections.Generic;
@@ -40,10 +41,11 @@ namespace BuzzOff.Server.Hubs
 			roomUser.Room.Lock.EnterWriteLock();
 			try
 			{
-				// if someone's already buzzed in, no prize
-				if (roomUser.Room.Users.Any(x => x.BuzzedIn)) { return Task.CompletedTask; }
+				// if you've already buzzed in, no prize
+				if (roomUser.Room.BuzzedInIds.Any(x => x == roomUser.User.SignalRId)) { return Task.CompletedTask; }
 				roomUser.User.BuzzedIn = true;
-				roomUser.Room.BuzzButtonEnabled = false;
+				roomUser.Room.BuzzedInIds.Add(roomUser.User.SignalRId);
+				//roomUser.Room.BuzzButtonEnabled = false;
 			}
 			finally
 			{
@@ -99,7 +101,7 @@ namespace BuzzOff.Server.Hubs
 			try
 			{
 				roomUser.Room.Users.ForEach(x => { x.BuzzedIn = x.LockedOut = false; });
-				roomUser.Room.BuzzButtonEnabled = true;
+				roomUser.Room.BuzzedInIds.Clear();
 			}
 			finally
 			{

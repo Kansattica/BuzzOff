@@ -80,6 +80,8 @@ updatename.onclick = function () { updateName(newname.value); };
 var firstTime = true;
 var buzzShouldBeDisabled = false;
 
+const buzzOrder = ["🥇", "🥈", "🥉"];
+
 connection.on("UpdateRoom", (room) => {
 	const users = room.users;
 
@@ -97,12 +99,11 @@ connection.on("UpdateRoom", (room) => {
 	let amRoomHost = false;
 	for (const user of users) {
 		const li = document.createElement("li");
-		li.textContent = surround(surround(surround(user.name, user.isHost, '🌟'), user.buzzedIn, '🐝'), user.lockedOut, '🔒');
+		li.textContent = surround(surround(surround(user.name, user.isHost, '🌟'), user.buzzedIn, buzzOrder[room.buzzedInIds.indexOf(user.signalRId)]), user.lockedOut, '🔒');
 
 		if (user.buzzedIn) {
 			li.className = "buzzed-in";
 			updateMessage(user.name + " buzzed in!");
-			buzzbutton.disabled = buzzShouldBeDisabled = true;
 		}
 		userlist.appendChild(li);
 
