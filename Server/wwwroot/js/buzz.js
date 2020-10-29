@@ -117,9 +117,7 @@ function updateRoom(room) {
 
 			buzzbutton.disabled = buzzShouldBeDisabled || user.buzzedIn || user.lockedOut;
 
-			// if the server tells us our name changed, change it
-			if (user.name !== userName)
-				userName = newname.value = user.name;
+			userName = newname.value = user.name;
 		}
 		else if (firstTime && userName === user.name) {
 			firstTime = false;
