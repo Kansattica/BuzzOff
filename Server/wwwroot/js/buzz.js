@@ -132,7 +132,13 @@ function updateRoom(room) {
 		{
 			const name = buzzedInUsers[i];
 			const li = document.createElement("li");
-			li.textContent = name !== undefined ? name : "<missing user>";
+			if (name !== undefined) {
+				li.textContent = name;
+			}
+			else {
+				li.textContent = "(user disconnected)"
+				li.className = "disconnected";
+			}
 			ol.appendChild(li)
 		}
 		currentmessage.textContent  = '';
