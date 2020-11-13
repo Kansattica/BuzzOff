@@ -101,14 +101,14 @@ function updateRoom(room) {
 	const buzzOrder = (room.maxBuzzedIn === 1 && room.buzzedInIds.length === 1) ? ['🐝'] : (colorblind.checked ? ["1️⃣", "2️⃣", "3️⃣"] : ["🥇", "🥈", "🥉"]);
 
 	let amRoomHost = false;
+	const buzzedInUsers = new Map();
 	for (const user of users) {
 		const li = document.createElement("li");
 		li.textContent = surround(surround(surround(user.name, user.isHost, '🌟'), user.buzzedIn, buzzOrder[room.buzzedInIds.indexOf(user.signalRId)]), user.lockedOut, '🔒');
 
 		if (user.buzzedIn) {
 			li.className = "buzzed-in";
-			if (room.maxBuzzedIn === 1 && room.buzzedInIds.length === 1)
-				updateMessage(user.name + " buzzed in!");
+			buzzedInUsers.set(room.buzzedInIds.indexOf(user.signalRId) + 1, user.name);
 		}
 		userlist.appendChild(li);
 
@@ -119,6 +119,26 @@ function updateRoom(room) {
 
 			userName = newname.value = user.name;
 		}
+	}
+
+	if (buzzedInUsers.size === 1)
+	{
+		updateMessage(buzzedInUsers.get(1) + " buzzed in!");
+	}
+	else if (buzzedInUsers.size > 1)
+	{
+		const ol = document.createElement("ol");
+		for (let i = 0; i <= 3; i++)
+		{
+			const name = buzzedInUsers.get(i);
+			if (name !== undefined)
+			{
+				const li = document.createElement("li");
+				li.textContent = name;
+				ol.appendChild(li)
+			}
+		}
+		currentMessage.innerHTML = ol;
 	}
 
 	if (amRoomHost) {
