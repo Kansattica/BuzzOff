@@ -130,10 +130,10 @@ function updateRoom(room) {
 		const ul = document.createElement("ul");
 		for (let i = 0; i < room.buzzedInIds.length; i++)
 		{
-			const name = buzzedInUsers[i];
+			let name = buzzedInUsers[i];
 			const li = document.createElement("li");
 			if (name === undefined) {
-				li.textContent = "(user disconnected)"
+				name = "(user disconnected)"
 				li.className = "disconnected";
 			}
 			li.textContent = surround(name, true, buzzOrder[i]);
