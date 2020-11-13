@@ -127,22 +127,20 @@ function updateRoom(room) {
 	}
 	else if (buzzedInUsers.length >= 1)
 	{
-		const ol = document.createElement("ol");
+		const ul = document.createElement("ul");
 		for (let i = 0; i < room.buzzedInIds.length; i++)
 		{
 			const name = buzzedInUsers[i];
 			const li = document.createElement("li");
-			if (name !== undefined) {
-				li.textContent = name;
-			}
-			else {
+			if (name === undefined) {
 				li.textContent = "(user disconnected)"
 				li.className = "disconnected";
 			}
-			ol.appendChild(li)
+			li.textContent = surround(name, true, buzzOrder[i]);
+			ul.appendChild(li)
 		}
 		currentmessage.textContent  = '';
-		currentmessage.appendChild(ol);
+		currentmessage.appendChild(ul);
 		hideifnomessage.hidden = false;
 	}
 
