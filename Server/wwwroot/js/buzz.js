@@ -101,13 +101,14 @@ function updateRoom(room) {
 	const buzzOrder = (room.maxBuzzedIn === 1 && room.buzzedInIds.length === 1) ? ['🐝'] : (colorblind.checked ? ["1️⃣", "2️⃣", "3️⃣"] : ["🥇", "🥈", "🥉"]);
 
 	let amRoomHost = false;
+	const buzzedInUsers = [];
 	for (const user of users) {
 		const li = document.createElement("li");
 		li.textContent = surround(surround(surround(user.name, user.isHost, '🌟'), user.buzzedIn, buzzOrder[room.buzzedInIds.indexOf(user.signalRId)]), user.lockedOut, '🔒');
 
 		if (user.buzzedIn) {
 			li.className = "buzzed-in";
-			updateMessage(user.name + " buzzed in!");
+			buzzedInUsers[room.buzzedInIds.indexOf(user.signalRId)] = user.name;
 		}
 		userlist.appendChild(li);
 
@@ -118,6 +119,25 @@ function updateRoom(room) {
 
 			userName = newname.value = user.name;
 		}
+	}
+
+	if (room.maxBuzzedIn === 1 && room.buzzedInIds.length === 1)
+	{
+		updateMessage(buzzedInUsers[0] + " buzzed in!");
+	}
+	else if (buzzedInUsers.length >= 1)
+	{
+		const ol = document.createElement("ol");
+		for (let i = 0; i < room.buzzedInIds.length; i++)
+		{
+			const name = buzzedInUsers[i];
+			const li = document.createElement("li");
+			li.textContent = name !== undefined ? name : "<missing user>";
+			ol.appendChild(li)
+		}
+		currentmessage.textContent  = '';
+		currentmessage.appendChild(ol);
+		hideifnomessage.hidden = false;
 	}
 
 	if (amRoomHost) {
