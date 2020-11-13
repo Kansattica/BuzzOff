@@ -107,7 +107,8 @@ function updateRoom(room) {
 
 		if (user.buzzedIn) {
 			li.className = "buzzed-in";
-			updateMessage(user.name + " buzzed in!");
+			if (room.maxBuzzedIn === 1 && room.buzzedInIds.length === 1)
+				updateMessage(user.name + " buzzed in!");
 		}
 		userlist.appendChild(li);
 
