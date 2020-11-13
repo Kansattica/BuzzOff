@@ -101,14 +101,14 @@ function updateRoom(room) {
 	const buzzOrder = (room.maxBuzzedIn === 1 && room.buzzedInIds.length === 1) ? ['🐝'] : (colorblind.checked ? ["1️⃣", "2️⃣", "3️⃣"] : ["🥇", "🥈", "🥉"]);
 
 	let amRoomHost = false;
-	const buzzedInUsers = new Map();
+	const buzzedInUsers = [];
 	for (const user of users) {
 		const li = document.createElement("li");
 		li.textContent = surround(surround(surround(user.name, user.isHost, '🌟'), user.buzzedIn, buzzOrder[room.buzzedInIds.indexOf(user.signalRId)]), user.lockedOut, '🔒');
 
 		if (user.buzzedIn) {
 			li.className = "buzzed-in";
-			buzzedInUsers.set(room.buzzedInIds.indexOf(user.signalRId) + 1, user.name);
+			buzzedInUsers[room.buzzedInIds.indexOf(user.signalRId)] = user.name;
 		}
 		userlist.appendChild(li);
 
@@ -121,24 +121,23 @@ function updateRoom(room) {
 		}
 	}
 
-	if (buzzedInUsers.size === 1)
+	if (room.maxBuzzedIn === 1 && room.buzzedInIds.length === 1)
 	{
-		updateMessage(buzzedInUsers.get(1) + " buzzed in!");
+		updateMessage(buzzedInUsers[0] + " buzzed in!");
 	}
-	else if (buzzedInUsers.size > 1)
+	else if (buzzedInUsers.length >= 1)
 	{
 		const ol = document.createElement("ol");
-		for (let i = 0; i <= 3; i++)
+		for (let i = 0; i < room.buzzedInIds.length; i++)
 		{
-			const name = buzzedInUsers.get(i);
-			if (name !== undefined)
-			{
-				const li = document.createElement("li");
-				li.textContent = name;
-				ol.appendChild(li)
-			}
+			const name = buzzedInUsers[i];
+			const li = document.createElement("li");
+			li.textContent = name !== undefined ? name : "<missing user>";
+			ol.appendChild(li)
 		}
-		currentMessage.innerHTML = ol;
+		currentmessage.textContent  = '';
+		currentmessage.appendChild(ol);
+		hideifnomessage.hidden = false;
 	}
 
 	if (amRoomHost) {
