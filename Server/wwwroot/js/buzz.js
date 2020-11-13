@@ -20,7 +20,7 @@ const countselect = document.getElementById("countselect");
 const colorblind = document.getElementById("colorblind");
 
 let userName = "";
-const roomId = document.getElementById("roomname").innerText;
+const roomId = document.getElementById("roomname").textContent;
 
 function updateMessage(message) {
 	currentmessage.textContent = message;
@@ -37,7 +37,7 @@ async function start() {
 	try {
 		await connection.start();
 		updateMessage("");
-		connstatus.innerText = "Connected!";
+		connstatus.textContent = "Connected!";
 		connstatus.className = "connected";
 		connection.send("JoinRoom", roomId, userName);
 	} catch (err) {
@@ -48,21 +48,21 @@ async function start() {
 
 connection.onclose(async () => {
 	updateMessage("Disconnected. If it doesn't come back in a few seconds, try refreshing.")
-	connstatus.innerText = "Disconnected";
+	connstatus.textContent = "Disconnected";
 	connstatus.className = "disconnected";
 	await start();
 });
 
 connection.onreconnecting((err) => {
 	updateMessage("Reconnecting...");
-	connstatus.innerText = "Reconnecting...";
+	connstatus.textContent = "Reconnecting...";
 	connstatus.className = "connecting";
 	console.log(err);
 });
 
 connection.onreconnected(() => {
 	updateMessage("");
-	connstatus.innerText = "Connected!";
+	connstatus.textContent = "Connected!";
 	connstatus.className = "connected";
 	connection.send("JoinRoom", roomId, userName);
 });
@@ -87,15 +87,15 @@ let currentRoom = undefined;
 function updateRoom(room) {
 	const users = room.users;
 
-	buzzbutton.innerText = surround("Buzz!", room.isPrelocked, '🔒');
+	buzzbutton.textContent = surround("Buzz!", room.isPrelocked, '🔒');
 
 	buzzbutton.disabled = buzzShouldBeDisabled = !room.buzzButtonEnabled;
 
 	userlist.innerHTML = "";
 	if (users.length === 1) {
-		listheader.innerText = "Player:";
+		listheader.textContent = "Player:";
 	} else {
-		listheader.innerText = users.length + " Players:";
+		listheader.textContent = users.length + " Players:";
 	}
 
 	const buzzOrder = (room.maxBuzzedIn === 1 && room.buzzedInIds.length === 1) ? ['🐝'] : (colorblind.checked ? ["1️⃣", "2️⃣", "3️⃣"] : ["🥇", "🥈", "🥉"]);
@@ -129,7 +129,7 @@ function updateRoom(room) {
 	for (let i = 0; i < countselect.options.length; i++) {
 		if (parseInt(countselect.options[i].value) === room.maxBuzzedIn) {
 			countselect.selectedIndex = i;
-			modedisplay.innerText = "Game Mode: " + countselect.options[i].innerText;
+			modedisplay.textContent = "Game Mode: " + countselect.options[i].textContent;
 			return;
 		}
 	}

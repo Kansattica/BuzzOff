@@ -15,7 +15,7 @@ roomname.onfocus = function() {
 
 roomname.oninput = function() {
 	roomname.size = Math.max(roomname.value.length, 44);
-	output.innerText = output.href = roomname.value.length === 0 ? "" : encodeURI(baseUrl + "Room/" + roomname.value);
+	output.textContent = output.href = roomname.value.length === 0 ? "" : encodeURI(baseUrl + "Room/" + roomname.value);
 };
 
 roomname.oninput();
