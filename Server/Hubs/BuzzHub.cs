@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.SignalR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace BuzzOff.Server.Hubs
@@ -59,12 +60,20 @@ namespace BuzzOff.Server.Hubs
 		}
 
 		private const int MaximumNameLength = 40;
+		private static readonly Regex EmojisToStrip = new Regex(@"[🌟⭐🐝🥇🥈🥉🔒🔓🔏🔐1️⃣2️⃣3️⃣]", RegexOptions.Compiled);
+
+		private static string StripMeaningfulEmojis(string name)
+        {
+			// Don't let people put any of the emojis that the frontend uses to denote meaning in their names
+			return EmojisToStrip.Replace(name, "");
+        }
+
 		public Task UpdateName(string newName)
 		{
 			if (string.IsNullOrWhiteSpace(newName))
 				newName = RandomHelpers.RandomUserName();
 			else
-				newName = newName.Trim();
+				newName = StripMeaningfulEmojis(newName.Trim());
 
 			if (newName.Length > MaximumNameLength) { newName = newName.Remove(MaximumNameLength - 1); }
 
