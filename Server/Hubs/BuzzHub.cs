@@ -73,7 +73,7 @@ namespace BuzzOff.Server.Hubs
 			if (string.IsNullOrWhiteSpace(newName))
 				newName = RandomHelpers.RandomUserName();
 			else
-				newName = StripMeaningfulEmojis(newName.Trim());
+				newName = StripMeaningfulEmojis(newName).Trim();
 
 			if (newName.Length > MaximumNameLength) { newName = newName.Remove(MaximumNameLength - 1); }
 
