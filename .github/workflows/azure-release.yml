@@ -12,6 +12,10 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: '3.1.x'
+    - name: Check for outdated packages
+      run: |
+          dotnet tool install --global dotnet-outdated-tool
+          dotnet outdated
     - name: Update build info
       run: |
         cd Server
