@@ -13,10 +13,10 @@ namespace BuzzOff.Server.Pages
 		public string SuggestedName { get; set; }
 		public string FlankEmoji { get; set; }
 
-		public int RoomCount { get => _roomManager.RoomCount; }
-		public int UserCount { get => _roomManager.UserCount; }
+        public int RoomCount => _roomManager.RoomCount;
+        public int UserCount => _roomManager.UserCount;
 
-		public IndexModel(RoomManager roomManager) => _roomManager = roomManager;
+        public IndexModel(RoomManager roomManager) => _roomManager = roomManager;
 
 		public void OnGet()
 		{
