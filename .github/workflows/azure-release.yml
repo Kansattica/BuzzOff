@@ -12,15 +12,13 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 3.1.401
-    - name: Install dependencies
-      run: dotnet restore
     - name: Update build info
       run: |
         cd Server
         sed -i "s/@@GIT_HASH@@/$GITHUB_SHA/" BuildInfo.cs 
         sed -i "s/@@BUILD_TIME@@/$(date +%s)/" BuildInfo.cs 
     - name: Publish
-      run: dotnet publish --configuration Release --no-restore -o built
+      run: dotnet publish --configuration Release -o built
     - name: Install zopfli
       run: sudo apt install -y zopfli
     - name: Ahead-of-time compress static assets
