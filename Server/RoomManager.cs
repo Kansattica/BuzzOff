@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,10 +16,10 @@ namespace BuzzOff.Server
 
 		public RoomManager(TelemetryClient telemetryClient) => _telemetry = telemetryClient;
 
-		public int RoomCount { get => _activeRooms.Count; }
-		public int UserCount { get => _userConnectionToRoom.Count; }
+        public int RoomCount => _activeRooms.Count;
+        public int UserCount => _userConnectionToRoom.Count;
 
-		public RoomUser EnterRoom(string userName, string userId, string roomId)
+        public RoomUser EnterRoom(string userName, string userId, string roomId)
 		{
 			var user = new User {
 				Name = userName,
