@@ -70,10 +70,9 @@ namespace BuzzOff.Server.Hubs
 
 		public Task UpdateName(string newName)
 		{
+			newName = newName == null ? null : StripMeaningfulEmojis(newName).Trim();
 			if (string.IsNullOrWhiteSpace(newName))
 				newName = RandomHelpers.RandomUserName();
-			else
-				newName = StripMeaningfulEmojis(newName).Trim();
 
 			if (newName.Length > MaximumNameLength) { newName = newName.Remove(MaximumNameLength - 1); }
 
