@@ -117,7 +117,10 @@ function updateRoom(room) {
 
 			buzzbutton.disabled = buzzShouldBeDisabled || user.buzzedIn || user.lockedOut;
 
-			userName = newname.value = user.name;
+			userName = user.name;
+
+			if (newname !== document.activeElement)
+				newname.value = user.name;
 		}
 	}
 
