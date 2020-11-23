@@ -60,7 +60,7 @@ namespace BuzzOff.Server.Hubs
 		}
 
 		private const int MaximumNameLength = 40;
-		private static readonly Regex EmojisToStrip = new Regex(@"[🌟⭐🐝🥇🥈🥉🔒🔓🔏🔐1️⃣2️⃣3️⃣]", RegexOptions.Compiled);
+		private static readonly Regex EmojisToStrip = new Regex(@"🌟|⭐|🐝|🥇|🥈|🥉|🔒|🔓|🔏|🔐|1️⃣|2️⃣|3️⃣", RegexOptions.Compiled);
 
         private static string StripMeaningfulEmojis(string name) =>
             // Don't let people put any of the emojis that the frontend uses to denote meaning in their names
