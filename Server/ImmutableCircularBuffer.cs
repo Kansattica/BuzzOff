@@ -60,6 +60,7 @@ namespace BuzzOff.Server
 				// of the array, only one will succeed.
 				// It doesn't much matter which one.
 				// This is where I believe it's possible to skip indices if there's thread contention.
+				// That's fine for our purposes- it only matters that each thread has a different index.
 				Interlocked.CompareExchange(ref idx, inBoundsIdx, localIdx);
 
 				// make sure to use the guaranteed in-bounds index
