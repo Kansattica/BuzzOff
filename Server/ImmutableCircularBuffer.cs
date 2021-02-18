@@ -21,16 +21,24 @@ namespace BuzzOff.Server
 		/// <param name="data"></param>
 		public ImmutableCircularBuffer(params T[] data)
 		{
-			_data = ImmutableArray.Create(data);
-
 			// without this, the server always starts on the same thing, 
 			// which will lead to problems if the server restarts while people are using it.
-			// plus, it helps with the apparent randomness if the buffers are staggered.
+			// plus, shuffling the list on every startup increases the variety of possible names
 			lock (_rand)
 			{
-				idx = _rand.Next(0, _data.Length);
+				for (int i = 0; i < data.Length - 1; i++)
+                {
+					T temp = data[i];
+					int swapIdx = _rand.Next(i, data.Length);
+					data[i] = data[swapIdx];
+					data[swapIdx] = temp;
+                }
+				idx = _rand.Next(0, data.Length);
 			}
+
+			_data = ImmutableArray.Create(data);
 		}
+
 
 		/// <summary>
 		/// Thread-safely returns an element that is either the least recently returned or close to it.
