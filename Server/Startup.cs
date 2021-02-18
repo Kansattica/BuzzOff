@@ -63,6 +63,17 @@ namespace BuzzOff.Server
 				app.UseHttpsRedirection();
 			}
 
+            app.Use((context, next) =>
+            {
+                context.Response.Headers["X-Content-Type-Options"] = "nosniff";
+
+				// don't cache the main page or the room pages
+				// those expect to go to the server every time to get a new name
+				if (context.Request.Path.HasValue && (context.Request.Path.Value == "/" || context.Request.Path.Value.StartsWith("/Room/")))
+					context.Response.Headers["Cache-Control"] = "no-store";
+				return next();
+            });
+
 			var provider = new FileExtensionContentTypeProvider();
 			provider.Mappings[".webmanifest"] = "application/manifest+json";
 			provider.Mappings[".ogg"] = "audio/ogg";
@@ -73,7 +84,7 @@ namespace BuzzOff.Server
 				ContentTypeProvider = provider,
 				OnPrepareResponse = ctx =>
 				{
-					// can't do the cachebusting thing as easily with HTML files, so don't cache them as long
+					// can't do the cachebusting thing as easily with static HTML files (help.html), so don't cache them as long
 					// we do cachebusting with css and javascript, so might as well cache those forever
 					// the sounds are relatively large and don't change, so cache those forever, too
 					if (ctx.File.Name.EndsWith(".html"))
