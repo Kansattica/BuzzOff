@@ -79,7 +79,7 @@ namespace BuzzOff.Server
 					if (ctx.File.Name.EndsWith(".html"))
 						ctx.Context.Response.Headers.Append("Cache-Control", "public, max-age=86400");
 					else
-						ctx.Context.Response.Headers.Append("Cache-Control", "public, max-age=31536000");
+						ctx.Context.Response.Headers.Append("Cache-Control", "public, immutable, max-age=31536000");
 				}
 			});
 
