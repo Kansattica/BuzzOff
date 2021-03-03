@@ -68,7 +68,7 @@ connection.onreconnected(() => {
 });
 
 function surround(name, shouldSurround, emoji) {
-	return shouldSurround ? `${emoji} ${name} ${emoji}` : name;
+	return shouldSurround ? `${emoji}\xa0${name}\xa0${emoji}` : name;
 }
 
 function updateName(newName) {
@@ -104,12 +104,19 @@ function updateRoom(room) {
 	const buzzedInUsers = [];
 	for (const user of users) {
 		const li = document.createElement("li");
+
+		// \xa0 is a non-breaking space
+		// this should be handled serverside, but nothing wrong with double-checking
+		user.name = user.name.replace(/\s+/, '\xa0');
 		li.textContent = surround(surround(surround(user.name, user.isHost, '🌟'), user.buzzedIn, buzzOrder[room.buzzedInIds.indexOf(user.signalRId)]), user.lockedOut, '🔒');
 
 		if (user.buzzedIn) {
 			li.className = "buzzed-in";
 			buzzedInUsers[room.buzzedInIds.indexOf(user.signalRId)] = user.name;
 		}
+
+		li.id = user.isHost ? "hostentry" : "";
+
 		userlist.appendChild(li);
 
 		if (user.signalRId === connection.connectionId) {

@@ -47,7 +47,16 @@ hr {
 }
 
 #userlist {
-	display: inline;
+	display: inline-block;
+	width: fit-content;
+    columns: 20ch 3;
+    -webkit-columns: 20ch 3;
+    -moz-columns: 20ch 3;
+}
+
+#hostentry {
+	column-span: all;
+	margin-bottom: 1vh;
 }
 
 .small-bottom {
