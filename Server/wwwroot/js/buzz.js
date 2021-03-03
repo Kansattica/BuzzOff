@@ -116,7 +116,8 @@ function updateRoom(room) {
 			buzzedInUsers[room.buzzedInIds.indexOf(user.signalRId)] = user.name;
 		}
 
-		li.id = user.isHost ? "hostentry" : "";
+		if (user.isHost)
+			li.id = "hostentry";
 
 		userlist.appendChild(li);
 
