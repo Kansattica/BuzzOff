@@ -92,6 +92,7 @@ function updateRoom(room) {
 	buzzbutton.disabled = buzzShouldBeDisabled = !room.buzzButtonEnabled;
 
 	userlist.innerHTML = "";
+	userlist.className = users.length >= 10 ? "multicol" : "onecol";
 	if (users.length === 1) {
 		listheader.textContent = "Player:";
 	} else {

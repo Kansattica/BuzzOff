@@ -46,7 +46,11 @@ hr {
 	display: block;
 }
 
-#userlist {
+.onecol {
+	display: inline;
+}
+
+.multicol {
 	display: inline-block;
 	width: fit-content;
     columns: 20ch 3;
