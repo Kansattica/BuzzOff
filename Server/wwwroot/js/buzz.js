@@ -80,6 +80,10 @@ function updateName(newName) {
 
 updatename.onclick = function () { updateName(newname.value); };
 
+function valueOrDefault(val, def) {
+	return val ? val : def;
+}
+
 var buzzShouldBeDisabled = false;
 
 let currentRoom = undefined;
@@ -135,7 +139,7 @@ function updateRoom(room) {
 
 	if (room.maxBuzzedIn === 1 && room.buzzedInIds.length === 1)
 	{
-		updateMessage(buzzedInUsers[0] + " buzzed in!");
+		updateMessage(valueOrDefault(buzzedInUsers[0], "(user disconnected)") + " buzzed in!");
 	}
 	else if (buzzedInUsers.length >= 1)
 	{
