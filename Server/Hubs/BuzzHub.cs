@@ -20,8 +20,16 @@ namespace BuzzOff.Server.Hubs
 			var entered = _rooms.EnterRoom(string.IsNullOrWhiteSpace(userName) ? RandomHelpers.RandomUserName() : userName, Context.ConnectionId, roomId);
 
 			return Task.WhenAll(Groups.AddToGroupAsync(Context.ConnectionId, roomId),
-			  Clients.Group(roomId).SendAsync("UpdateRoom", entered.Room));
+			  UpdateRoomIfNeeded(entered.Room));
 		}
+
+		private Task UpdateRoomIfNeeded(Room room)
+        {
+			// basically, if another thread has the writelock (because they're mutating the room), they'll call UpdateRoom after
+			// if this is the case, don't bother updating, the next thread will do it.
+			// might as well check readlock, because the name-updating case also calls update room.
+			return room.Lock.IsWriteLockHeld || room.Lock.IsReadLockHeld ? Task.CompletedTask : Clients.Group(room.SignalRId).SendAsync("UpdateRoom", room);
+        }
 
 		public Task BuzzIn()
 		{
@@ -34,7 +42,7 @@ namespace BuzzOff.Server.Hubs
 			if (roomUser.Room.IsPrelocked)
 			{
 				roomUser.User.LockedOut = true;
-				return Clients.Group(roomUser.Room.SignalRId).SendAsync("UpdateRoom", roomUser.Room);
+				return UpdateRoomIfNeeded(roomUser.Room);
 			}
 
 			// this lock ensures that the first one in (from the server's perspective) wins.
@@ -53,7 +61,7 @@ namespace BuzzOff.Server.Hubs
 				roomUser.Room.Lock.ExitWriteLock();
 			}
 
-			return Task.WhenAll(Clients.Group(roomUser.Room.SignalRId).SendAsync("UpdateRoom", roomUser.Room),
+			return Task.WhenAll(UpdateRoomIfNeeded(roomUser.Room),
 				 // only make buzz noises for the host and the person who buzzed in.
 				 // if you want this to buzz for everyone, replace the Clients.Clients() part with Clients.Group(roomUser.Room.SignalRId).
 				 Clients.Clients(roomUser.Room.RoomHost.SignalRId, Context.ConnectionId).SendAsync("Buzz", true));
@@ -93,7 +101,7 @@ namespace BuzzOff.Server.Hubs
 
 			roomUser.User.Name = newName;
 
-			return Clients.Group(roomUser.Room.SignalRId).SendAsync("UpdateRoom", roomUser.Room);
+			return UpdateRoomIfNeeded(roomUser.Room);
 		}
 
 		public Task Reset()
@@ -118,7 +126,7 @@ namespace BuzzOff.Server.Hubs
 			}
 
 			return Task.WhenAll(
-				Clients.Group(roomUser.Room.SignalRId).SendAsync("UpdateRoom", roomUser.Room),
+				UpdateRoomIfNeeded(roomUser.Room),
 				Clients.Group(roomUser.Room.SignalRId).SendAsync("SendMessage", ""),
 				Clients.Group(roomUser.Room.SignalRId).SendAsync("Buzz", false));
 		}
@@ -137,7 +145,7 @@ namespace BuzzOff.Server.Hubs
 
 			// this one's a little borderline. I can see the use of having a separate SetPrelocked call, but that leads to weird edge cases like:
 			// if a new user joins, do we call SetPrelocked on them, or do we let the isPrelocked on the room handle it?
-			return Clients.Group(roomUser.Room.SignalRId).SendAsync("UpdateRoom", roomUser.Room);
+			return UpdateRoomIfNeeded(roomUser.Room);
 		}
 
 		public Task UpdateMaxBuzzedIn(int count)
@@ -153,8 +161,8 @@ namespace BuzzOff.Server.Hubs
 
 			roomUser.Room.MaxBuzzedIn = count;
 
-			return Clients.Group(roomUser.Room.SignalRId).SendAsync("UpdateRoom", roomUser.Room);
-        }
+			return UpdateRoomIfNeeded(roomUser.Room);
+		}
 
 		public override async Task OnDisconnectedAsync(Exception exception)
 		{
@@ -163,7 +171,7 @@ namespace BuzzOff.Server.Hubs
 			// the room shouldn't be null, but it's possible with a misbehaving client (say, one that connects with SignalR, but never calls JoinRoom)
 			// and it's cheap to guard against anyways.
 			if (room != null)
-				await Clients.Group(room.SignalRId).SendAsync("UpdateRoom", room);
+				await UpdateRoomIfNeeded(room);
 
 			await base.OnDisconnectedAsync(exception);
 		}
