@@ -5,7 +5,7 @@ Try it out at [buzzoff.princess.software](https://buzzoff.princess.software)!
 
 ### Run Your Own
 
-1. Make sure you have the latest [.NET Core 3.1](https://dotnet.microsoft.com/download/dotnet-core/3.1) SDK.
+1. Make sure you have the latest [.NET 5.0](https://dotnet.microsoft.com/download) SDK.
 
 2. Clone the repo to your machine.
 
