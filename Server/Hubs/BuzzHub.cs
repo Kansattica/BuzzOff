@@ -25,10 +25,9 @@ namespace BuzzOff.Server.Hubs
 
 		private Task UpdateRoomIfNeeded(Room room)
         {
-			// basically, if another thread has the writelock (because they're mutating the room), they'll call UpdateRoom after
-			// if this is the case, don't bother updating, the next thread will do it.
-			// might as well check readlock, because the name-updating case also calls update room.
-			return room.Lock.IsWriteLockHeld || room.Lock.IsReadLockHeld ? Task.CompletedTask : Clients.Group(room.SignalRId).SendAsync("UpdateRoom", room);
+			// This used to check if someone else was updating the room and, if so, wait to send out the room update
+			// but it just makes the updates feel weird and sluggish.
+			return Clients.Group(room.SignalRId).SendAsync("UpdateRoom", room);
         }
 
 		public Task BuzzIn()
